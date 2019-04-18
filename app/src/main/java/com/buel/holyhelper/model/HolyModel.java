@@ -181,6 +181,14 @@ public class HolyModel {
         }
 
         public static class teamModel {
+
+            public String uid;
+            public String etc;
+            public String leader;
+            public String name;
+            public String imgUrl;
+            public String groupUid;
+
             @Override
             public String toString() {
                 return "teamModel{" +
@@ -189,14 +197,9 @@ public class HolyModel {
                         ", leader='" + leader + '\'' +
                         ", name='" + name + '\'' +
                         ", imgUrl='" + imgUrl + '\'' +
+                        ", groupUid='" + groupUid + '\'' +
                         '}';
             }
-
-            public String uid;
-            public String etc;
-            public String leader;
-            public String name;
-            public String imgUrl;
 
             public Map<String, Object> convertMap() {
                 //memberRegistDate 와 uid 는 제외한다.
@@ -206,6 +209,7 @@ public class HolyModel {
                 map.put("leader", leader);
                 map.put("name", name);
                 map.put("imgUrl", imgUrl);
+                map.put("groupUid", groupUid);
                 return map;
             }
         }

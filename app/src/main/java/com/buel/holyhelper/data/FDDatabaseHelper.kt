@@ -126,11 +126,13 @@ object FDDatabaseHelper {
             onDataListener: DataTypeListener.OnCompleteListener<QuerySnapshot>) {
         FDDatabaseHelper.showProgress(true)
 
-        firestore.collection(CORPS_TABLE)
+        //team table을 group과 같은 레벨에 넣는다.
+        val colRef = firestore.collection(CORPS_TABLE)
                 .document(CommonData.getAdminUid())
-                .collection(GROUP_TABLE)
-                .document(CommonData.getGroupModel().uid)
                 .collection(TEAM_TABLE)
+                .whereEqualTo("groupUid" , CommonData.getGroupModel().uid)
+
+        colRef
                 .get().addOnSuccessListener { queryDocumentSnapshots ->
                     val tempMap = HashMap<String, HolyModel.groupModel.teamModel?>()
                     val documentSnapshots = queryDocumentSnapshots.documents as ArrayList<DocumentSnapshot>
@@ -263,8 +265,6 @@ object FDDatabaseHelper {
         FireStoreWriteManager.delete(
                 firestore.collection(CORPS_TABLE)
                         .document(CommonData.getCorpsUid())
-                        .collection(GROUP_TABLE)
-                        .document(CommonData.getGroupUid())
                         .collection(TEAM_TABLE)
                         .document(dataModel.uid),
                 DataTypeListener.OnCompleteListener {
@@ -280,8 +280,6 @@ object FDDatabaseHelper {
         FireStoreWriteManager.modify(
                 firestore.collection(CORPS_TABLE)
                         .document(CommonData.getCorpsUid())
-                        .collection(GROUP_TABLE)
-                        .document(CommonData.getGroupUid())
                         .collection(TEAM_TABLE)
                         .document(dataModel.uid),
                 map,
@@ -299,8 +297,6 @@ object FDDatabaseHelper {
         FireStoreWriteManager.insert(
                 firestore.collection(CORPS_TABLE)
                         .document(CommonData.getCorpsUid())
-                        .collection(GROUP_TABLE)
-                        .document(CommonData.getGroupUid())
                         .collection(TEAM_TABLE)
                         .document(),
                 dataModel,

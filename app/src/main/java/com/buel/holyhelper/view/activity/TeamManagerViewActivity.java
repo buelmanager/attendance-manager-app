@@ -139,6 +139,7 @@ public class TeamManagerViewActivity extends BaseActivity implements View.OnClic
         HolyModel.groupModel.teamModel teamModel = new HolyModel.groupModel.teamModel();
         teamModel.name = etName.getText().toString();
         teamModel.leader = etLeader.getText().toString();
+        teamModel.groupUid = CommonData.getGroupModel().uid;
 
         if (etEtc.getText().length() > 0)
             teamModel.etc = etEtc.getText().toString();
@@ -181,7 +182,6 @@ public class TeamManagerViewActivity extends BaseActivity implements View.OnClic
                     });
                 }
             });
-
         } else if (CommonData.getAdminMode() == AdminMode.MODIFY) {
             teamModel.uid = CommonData.getTeamUid();
             teamManager.modify(teamModel, new Management.OnCompleteListener() {

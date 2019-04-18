@@ -26,7 +26,6 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recycler_view)
-
         setTitle("소그룹을 추가하세요.")
 
         //setLayout();
@@ -35,8 +34,14 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
 
-        FDDatabaseHelper.getTeamDataToStore (DataTypeListener.OnCompleteListener {
-            t ->
+        FDDatabaseHelper.getTeamDataToStore(DataTypeListener.OnCompleteListener { t ->
+
+            //TODO develop branch에서 수정할것 : 리스트 없을때 fancy guide
+            if (t.isEmpty) {
+                //val ment = CommonString.GUIDE_FLOATING_BUTTON_ADD
+                //val title = CommonString.INFO_TITLE_SELECT_TEAM
+                //super.setGuideDailogAndOpenFabset(ment, title, super.fabFstActBtn)
+            }
             setLayout()
         })
     }
@@ -194,7 +199,7 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
             FDDatabaseHelper.getTeamDataToStore(DataTypeListener.OnCompleteListener {
                 val reTeams: ArrayList<HolyModel.groupModel.teamModel>?
 
-                var map : HashMap<String, HolyModel.groupModel.teamModel> = CommonData.getGroupModel().team as HashMap<String, HolyModel.groupModel.teamModel>
+                var map: HashMap<String, HolyModel.groupModel.teamModel> = CommonData.getGroupModel().team as HashMap<String, HolyModel.groupModel.teamModel>
                 reTeams = map.teamCovertList() as ArrayList<HolyModel.groupModel.teamModel>
 
                 if (reTeams == null) {

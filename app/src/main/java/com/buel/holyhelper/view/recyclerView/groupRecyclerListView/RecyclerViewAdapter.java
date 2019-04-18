@@ -29,7 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 
 public class RecyclerViewAdapter
-        extends RecyclerView.Adapter<RecyclerViewHolder>{
+        extends RecyclerView.Adapter<RecyclerViewHolder> {
 
 
     List<HolyModel.groupModel> itemArrayList;
@@ -43,7 +43,7 @@ public class RecyclerViewAdapter
         this.itemArrayList = itemArrayList;
     }
 
-    public RecyclerViewAdapter(ArrayList<HolyModel.groupModel> itemArrayList , View.OnClickListener onClickListener ) {
+    public RecyclerViewAdapter(ArrayList<HolyModel.groupModel> itemArrayList, View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
         this.itemArrayList = itemArrayList;
     }
@@ -51,7 +51,7 @@ public class RecyclerViewAdapter
     @NonNull
     @Override
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
         return new RecyclerViewHolder(view);
     }
 
@@ -63,7 +63,7 @@ public class RecyclerViewAdapter
         final HolyModel.groupModel group = itemArrayList.get(position);
         holder.recyclerViewItemMain.setBackgroundResource(R.drawable.common_google_signin_btn_icon_light_normal_background);
 
-        if( CommonData.getGroupModel() !=null) {
+        if (CommonData.getGroupModel() != null) {
             if (group.name.equals(CommonData.getGroupModel().name)) {
                 holder.recyclerViewItemMain.setBackgroundResource(R.drawable.common_google_signin_btn_icon_dark_normal_background);
             } else {
@@ -74,7 +74,7 @@ public class RecyclerViewAdapter
         if (CommonData.getAdminMode() == AdminMode.NORMAL) {
             holder.btn_item_delete.setVisibility(View.GONE);
             holder.btn_item_select.setVisibility(View.GONE);
-        } else if (CommonData.getAdminMode() == AdminMode.MODIFY)  {
+        } else if (CommonData.getAdminMode() == AdminMode.MODIFY) {
             holder.btn_item_select.setBackgroundResource(R.drawable.ic_settings_24dp);
             holder.btn_item_delete.setBackgroundResource(R.drawable.ic_delete_24dp);
             holder.btn_item_delete.setVisibility(View.VISIBLE);
@@ -82,13 +82,16 @@ public class RecyclerViewAdapter
             holder.recyclerViewItemMain.setBackgroundResource(R.drawable.common_google_signin_btn_icon_light_normal_background);
         }
 
-        holder.tv_item_name.setText(Html.fromHtml("<Strong>" + group.name+ "</Strong>"));
-        holder.tv_item_txt2.setText(Html.fromHtml(group.leader));
+        holder.tv_item_name.setText(Html.fromHtml("<Strong>" + group.name + "</Strong>"));
+        holder.tv_item_txt2.setText("");
+
+        if (group.leader != null)
+            holder.tv_item_txt2.setText(Html.fromHtml(group.leader));
 
         holder.recyclerViewItemMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onViewItemBtnClickedListener(v,position);
+                onViewItemBtnClickedListener(v, position);
             }
         });
         holder.btn_item_delete.setOnClickListener(new View.OnClickListener() {
@@ -109,10 +112,10 @@ public class RecyclerViewAdapter
 
     private void onDeleteBtnClickedListener(View v, int position) {
         final HolyModel.groupModel group = itemArrayList.get(position);
-        LoggerHelper.d("MemberShipRecyclerViewAdapter" , "btn_item_delete");
+        LoggerHelper.d("MemberShipRecyclerViewAdapter", "btn_item_delete");
         MaterialDailogUtil.simpleYesNoDialog(v.getContext(), new MaterialDailogUtil.OnDialogSelectListner() {
             @Override
-            public void onSelect(String s ) {
+            public void onSelect(String s) {
                 Management groupManager = new GroupManager();
                 groupManager.delete(group, new Management.OnCompleteListener() {
                     @Override
@@ -120,7 +123,7 @@ public class RecyclerViewAdapter
                         SharedPreferenceUtil.initModelData();
                         CommonData.setGroupModel(null);
                         CommonData.setTeamModel(null);
-                        if(onClickListener != null)   onClickListener.onClick(v);
+                        if (onClickListener != null) onClickListener.onClick(v);
                     }
                 });
             }
@@ -128,8 +131,8 @@ public class RecyclerViewAdapter
     }
 
     private void onViewItemBtnClickedListener(View v, int position) {
-        if( CommonData.getViewMode() == ViewMode.ADMIN){
-            LoggerHelper.d("MemberShipRecyclerViewAdapter" , "btn_item_select");
+        if (CommonData.getViewMode() == ViewMode.ADMIN) {
+            LoggerHelper.d("MemberShipRecyclerViewAdapter", "btn_item_select");
             HolyModel.groupModel groupModel = itemArrayList.get(position);
             CommonData.setTeamModel(null);
             CommonData.setGroupModel(groupModel);
