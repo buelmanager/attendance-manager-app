@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:gravity="center"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="81dp">
+
+    <TextView
+        android:id="@+id/corps_step1_view_page_tv_title"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/lightGray"
+        android:text=" * 전체 그룹 합산한 통계입니다."
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/corps_step1_view_page_fragment_sv"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/corps_step1_view_page_fragment_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <!--<ListView
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </ListView>-->
+
+</LinearLayout>

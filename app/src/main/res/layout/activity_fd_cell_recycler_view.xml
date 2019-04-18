@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightGray2"
+    tools:context=".view.recyclerView.foldcellRecyclerView.FoldCellRecyclerViewActivity">
+
+    <LinearLayout
+        android:id="@+id/top_bar_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include
+            layout="@layout/top_bar_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/activity_top"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/darkGray"
+        android:paddingTop="8dp"
+        android:paddingVertical="8dp">
+
+        <ImageView
+            android:id="@+id/recycler_view_main_iv_close"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_arrow_back_24dp"
+            android:backgroundTint="@color/white" />
+
+        <TextView
+            android:id="@+id/recycler_view_main_tv_desc"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:layout_toRightOf="@+id/recycler_view_main_iv_close"
+            android:layout_toLeftOf="@+id/recycler_view_main_iv_modify"
+            android:text="select recycler view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/recycler_view_main_iv_modify"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/ic_m_settings_24dp"
+            android:backgroundTint="@color/white" />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:padding="8dp"
+        android:dividerHeight="10dp"
+        android:id="@+id/recycler_view_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_bar_ll" />
+
+    <include
+        layout="@layout/fab_button_layout"/>
+</RelativeLayout>

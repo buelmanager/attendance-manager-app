@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    tools:context="com.buel.holyhelper.view.activity.BriefingActivity">
+
+    <RelativeLayout
+        android:id="@+id/activity_top"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/darkGray"
+        android:paddingVertical="8dp">
+
+        <Button
+            android:id="@+id/member_activity_view_btn_no"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/ic_arrow_back_24dp"
+            android:backgroundTint="@color/white" />
+
+        <TextView
+            android:id="@+id/member_manager_view_main_tv_desc"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="16dp"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@+id/recycler_view_main_iv_close"
+            android:text="select recycler view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+    <com.google.android.material.tabs.TabLayout
+
+        android:id="@+id/mainActivity_tablayout"
+        android:layout_below="@+id/activity_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lightGray"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+    <!--<androidx.viewpager2.widget.ViewPager2
+        android:layout_below="@+id/mainActivity_tablayout"
+        android:id="@+id/mainActivity_viewpager"
+        tools:layout_editor_absoluteY="47dp"
+        tools:layout_editor_absoluteX="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>-->
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/mainActivity_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mainActivity_tablayout"
+        tools:ignore="NotSibling"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="47dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/switch_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_dialog_dialer"
+        tools:ignore="VectorDrawableCompat" />
+</RelativeLayout>

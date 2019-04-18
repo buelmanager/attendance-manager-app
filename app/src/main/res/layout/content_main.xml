@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.viewpager.widget.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainActivity_viewpager"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.buel.holyhelper.MainActivity"
+    android:layout_below="@+id/mainActivity_tablayout"
+    tools:showIn="@layout/app_bar_main">
+<!--
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/mainActivity_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="always"
+        android:layout_below="@+id/mainActivity_tablayout"/>
+-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/mainActivity_viewpager">
+        <include layout="@layout/bottom_ads_layout" />
+    </LinearLayout>
+</androidx.viewpager.widget.ViewPager>
