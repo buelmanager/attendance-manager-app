@@ -5,6 +5,7 @@ import android.util.Log
 import com.buel.holyhelper.model.HolyModel
 import com.buel.holyhelper.view.DataTypeListener
 import com.commonLib.Common
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.orhanobut.logger.LoggerHelper
@@ -62,18 +63,16 @@ object FireStoreWriteManager {
 
     @SuppressLint("LongLogTag")
     @JvmStatic
-    fun multiInsert(memberList: List<HolyModel.groupModel>,
-                    documentReference: DocumentReference,
-                    listener: DataTypeListener.OnCompleteListener<Boolean>) {
+    fun groupMultiInsert(memberList: List<HolyModel.groupModel>,
+                         colReference: CollectionReference,
+                         listener: DataTypeListener.OnCompleteListener<Boolean>) {
 
         val batch = firestore.batch()
-
         for (eleMember in memberList) {
-            LoggerHelper.d("start multiInsert : " + eleMember.name)
-            batch.set(documentReference, eleMember)
+            val attendDocRef = colReference.document()
+            LoggerHelper.d("start groupMultiInsert : " + eleMember.name)
+            batch.set(attendDocRef, eleMember)
         }
-
-
 
         batch.commit().addOnSuccessListener {
             listener.onComplete(true)
@@ -81,4 +80,25 @@ object FireStoreWriteManager {
             listener.onComplete(false)
         }
     }
+
+    @SuppressLint("LongLogTag")
+    @JvmStatic
+    fun teamMultiInsert(memberList: List<HolyModel.groupModel.teamModel>,
+                         colReference: CollectionReference,
+                         listener: DataTypeListener.OnCompleteListener<Boolean>) {
+
+        val batch = firestore.batch()
+        for (eleMember in memberList) {
+            val attendDocRef = colReference.document()
+            LoggerHelper.d("start teamMultiInsert : " + eleMember.name)
+            batch.set(attendDocRef, eleMember)
+        }
+
+        batch.commit().addOnSuccessListener {
+            listener.onComplete(true)
+        }.addOnFailureListener {
+            listener.onComplete(false)
+        }
+    }
+
 }

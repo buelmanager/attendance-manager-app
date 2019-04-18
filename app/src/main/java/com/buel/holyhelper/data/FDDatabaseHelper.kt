@@ -118,6 +118,8 @@ object FDDatabaseHelper {
                     }
 
                     CommonData.getHolyModel().group = tempMap
+
+                    LoggerHelper.d(CommonData.getHolyModel().group)
                     onDataListener.onComplete(queryDocumentSnapshots)
                 }.addOnFailureListener { e -> LoggerHelper.e(e.message) }
     }
@@ -141,6 +143,32 @@ object FDDatabaseHelper {
                         tempMap[documentSnapshot.id] = documentSnapshot.toObject<HolyModel.groupModel.teamModel>(HolyModel.groupModel.teamModel::class.java)
                     }
                     CommonData.getGroupModel().team = tempMap
+                    CommonData.setTeamMap(tempMap)
+
+                    FDDatabaseHelper.showProgress(false)
+                    onDataListener.onComplete(queryDocumentSnapshots)
+                }
+    }
+
+    fun getTeamAllDataToStore(
+            onDataListener: DataTypeListener.OnCompleteListener<QuerySnapshot>) {
+        FDDatabaseHelper.showProgress(true)
+
+        //team table을 group과 같은 레벨에 넣는다.
+        val colRef = firestore.collection(CORPS_TABLE)
+                .document(CommonData.getAdminUid())
+                .collection(TEAM_TABLE)
+
+        colRef
+                .get().addOnSuccessListener { queryDocumentSnapshots ->
+                    val tempMap = HashMap<String, HolyModel.groupModel.teamModel?>()
+                    val documentSnapshots = queryDocumentSnapshots.documents as ArrayList<DocumentSnapshot>
+
+                    for (documentSnapshot in documentSnapshots) {
+                        tempMap[documentSnapshot.id] = documentSnapshot.toObject<HolyModel.groupModel.teamModel>(HolyModel.groupModel.teamModel::class.java)
+                    }
+                    //CommonData.getGroupModel().team = tempMap
+                    CommonData.setTeamMap(tempMap)
 
                     FDDatabaseHelper.showProgress(false)
                     onDataListener.onComplete(queryDocumentSnapshots)

@@ -2,7 +2,6 @@ package com.buel.holyhelper.view.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -21,6 +20,7 @@ import com.buel.holyhelper.model.HolyModel
 import com.buel.holyhelper.utils.AppUtil
 import com.buel.holyhelper.utils.PoiUtil
 import com.buel.holyhelper.utils.SortMapUtil
+import com.buel.holyhelper.utils.U.groupCovertList
 import com.buel.holyhelper.view.DataTypeListener
 import com.buel.holyhelper.view.SimpleListener
 import com.buel.holyhelper.view.recyclerView.memberShipRecyclerView.MemberShipRecyclerViewActivity
@@ -28,6 +28,7 @@ import com.commonLib.Common
 import com.commonLib.MaterialDailogUtil
 import com.commonLib.SuperToastUtil
 import com.orhanobut.logger.LoggerHelper
+import kotlinx.coroutines.runBlocking
 import org.apache.poi.ss.formula.functions.T
 
 class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.IBillingHandler {
@@ -186,7 +187,6 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
     }
 
     fun setUploadCompleteExcel(tempMemberList: ArrayList<HolyModel.memberModel>) {
-
         FireStoreMemberManager.multiInsert(tempMemberList, DataTypeListener.OnCompleteListener {
             FDDatabaseHelper.getAllcorpsMembers(SimpleListener.OnCompleteListener {
                 if (missList!!.size > 0) {
@@ -212,74 +212,185 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
                     "서버에 저장 하시겠습니까?"
             ) { s ->
                 super@SettingsActivity.showProgressDialog(true)
-                val runner = AsyncTaskRunner()
-                runner.execute()
+                //val runner = AsyncTaskRunner()
+                //runner.execute()
                 ExcelData = data
+                setExcelData()
             }
         }
 
     }
 
+    var membersList: ArrayList<HolyModel.memberModel> = arrayListOf()
+
+    //엑셀에서 받은 멤버 데이터를 groupName 을 키 값으로 그룹핑한다.
+    lateinit var memberToGroupMap: HashMap<String, List<HolyModel.memberModel>>
+
     private fun sendToServerFromEcxelData(data: Intent) {
         val selectedfile = data.data //The uri with the location of the file
-        val membersList = PoiUtil.readAndShareMembers(this@SettingsActivity, selectedfile!!)
+        membersList = PoiUtil.readAndShareMembers(this@SettingsActivity, selectedfile!!) as ArrayList<HolyModel.memberModel>
+
+        memberToGroupMap = membersList.groupBy { it.groupName } as HashMap
+
         val maxCnt = membersList.size
 
         if (maxCnt > 100) {
             Toast.makeText(this@SettingsActivity, "서버안정화로 현재 한번에 100명 이하로 제한합니다. 등록이 필요시 개발자에게 문의하세요.", Toast.LENGTH_SHORT).show()
             return
         }
-
-        setAddGroupFromExcel(membersList as ArrayList<HolyModel.memberModel>)
     }
 
+
     //서버에 그룹을 세팅한다.
-    private fun setAddGroupFromExcel(membersList: ArrayList<HolyModel.memberModel>) {
+    private fun setAddGroupFromExcel() {
 
         membersList.sortBy { it.groupName }
 
-        val curGroupMap = CommonData.getHolyModel().group
+        val curGroupMap = CommonData.getHolyModel().group ?: hashMapOf()
+
+        val colRef = FireStoreWriteManager.firestore
+                .collection(FDDatabaseHelper.CORPS_TABLE)
+                .document(CommonData.getHolyModel().uid)
+                .collection(FDDatabaseHelper.GROUP_TABLE)
+
+        var tempGroupList: ArrayList<HolyModel.groupModel> = arrayListOf()
+
+        for ((key, eleGroup) in memberToGroupMap) {
+
+            if (curGroupMap[key] == null) {
+                var gModel = HolyModel.groupModel()
+                gModel.name = key
+                tempGroupList.add(gModel)
+            }
+        }
+
+        FireStoreWriteManager.groupMultiInsert(tempGroupList, colRef, DataTypeListener.OnCompleteListener { t ->
+            LoggerHelper.d("FireStoreWriteManager.groupMultiInsert : " + t)
+            super@SettingsActivity.showProgressDialog(false)
+        })
+    }
+
+
+    //서버에 팀을 세팅한다.
+    private fun setAddTeamFromExcel() {
+        super@SettingsActivity.showProgressDialog(true)
+
+        membersList.sortBy { it.teamName }
+
+        val curGroupMap = CommonData.getHolyModel().group ?: hashMapOf()
+        val groupList = curGroupMap.map { it.value }
+
         LoggerHelper.d("curGroupMap.size : " + curGroupMap.size)
         LoggerHelper.d("curGroupMap : " + curGroupMap)
-        var tempGroupMap: HashMap<String, HolyModel.memberModel> = hashMapOf()
-        var tempGroupList: ArrayList<HolyModel.groupModel> = arrayListOf()
-        var curGroupName = "new"
-        var oldGroupName = "old"
-        for (elemember in membersList) {
 
-            curGroupName = elemember.groupName
-            if (!curGroupName.equals(oldGroupName)) {
+        val curTeamMap = CommonData.getTeamMap() ?: hashMapOf()
 
-                if (curGroupMap.filter { it.value.name == elemember.groupName }.isEmpty()) {
-                    var gModel = HolyModel.groupModel()
-                    gModel.name = elemember.groupName
+        LoggerHelper.d("curTeamMap.size : " + curTeamMap.size)
+        LoggerHelper.d("curTeamMap : " + curTeamMap)
 
-                    oldGroupName = curGroupName
-                    LoggerHelper.d("gModel.name : " + gModel.name)
+        var curTeamName = "new"
+        var oldteamName = "old"
 
-                    tempGroupList.add(gModel)
+        val colRef = FireStoreWriteManager.firestore
+                .collection(FDDatabaseHelper.CORPS_TABLE)
+                .document(CommonData.getHolyModel().uid)
+                .collection(FDDatabaseHelper.TEAM_TABLE)
+
+        val tempTeamList = arrayListOf<HolyModel.groupModel.teamModel>()
+        val groupMap = CommonData.getHolyModel().group
+
+        for (eleMember in membersList) {
+            eleMember.groupUID = groupMap.values.find { it.name ==eleMember.groupName }?.uid
+        }
+
+        var memberToGroupUidMap = membersList.groupBy { it.groupUID } as HashMap
+
+        for ((groupUid, memberModels) in memberToGroupUidMap) {
+            val inMemberToTeamMap = memberModels.groupBy { it.teamName } as HashMap
+            for ((key, eleTeam) in inMemberToTeamMap) {
+                if (curTeamMap.count { it.value.name == key } > 0
+                        && curTeamMap.count { it.value.groupUid == groupUid } > 0
+                ) {
+
+                } else {
+                    var tModel = HolyModel.groupModel.teamModel()
+                    tModel.name = key
+                    tModel.groupUid = groupUid
+                    tempTeamList.add(tModel)
                 }
             }
         }
 
-        val docRef = FireStoreWriteManager.firestore
-                .collection(FDDatabaseHelper.CORPS_TABLE)
-                .document(CommonData.getHolyModel().uid)
-                .collection(FDDatabaseHelper.GROUP_TABLE)
-                .document()
-
-        FireStoreWriteManager.multiInsert(tempGroupList, docRef, DataTypeListener.OnCompleteListener { t ->
-
-            LoggerHelper.d("FireStoreWriteManager.multiInsert : " + t)
-
+        FireStoreWriteManager.teamMultiInsert(tempTeamList, colRef, DataTypeListener.OnCompleteListener { t ->
+            LoggerHelper.d("FireStoreWriteManager.teamMultiInsert : " + t)
+            super@SettingsActivity.showProgressDialog(false)
         })
     }
 
-    private fun sendEcxelData(data: Intent) {
-        val selectedfile = data.data //The uri with the location of the file
-        val membersList = PoiUtil.readAndShareMembers(this@SettingsActivity, selectedfile!!)
+    //서버에 멤버 추가한다.
+    private fun setAddMemberFromExcel() {
+        super@SettingsActivity.showProgressDialog(true)
 
-        val memberManager = MemberManager()
+        membersList.sortBy { it.name }
+
+        val curGroupMap: HashMap<String, HolyModel.groupModel> = CommonData.getHolyModel().group as HashMap<String, HolyModel.groupModel>
+                ?: hashMapOf()
+        val groups: ArrayList<HolyModel.groupModel> = curGroupMap.groupCovertList() as ArrayList<HolyModel.groupModel>
+
+        LoggerHelper.d("curGroupMap.size : " + curGroupMap.size)
+        LoggerHelper.d("curGroupMap : " + curGroupMap)
+
+        val curTeamMap = CommonData.getTeamMap() ?: hashMapOf()
+
+        LoggerHelper.d("curTeamMap.size : " + curTeamMap.size)
+        LoggerHelper.d("curTeamMap : " + curTeamMap)
+
+        var curTeamName = "new"
+        var oldteamName = "old"
+
+        val colRef = FireStoreWriteManager.firestore
+                .collection(FDDatabaseHelper.CORPS_TABLE)
+                .document(CommonData.getHolyModel().uid)
+                .collection(FDDatabaseHelper.TEAM_TABLE)
+
+        val tempTeamList = arrayListOf<HolyModel.groupModel.teamModel>()
+        var tempTeamMap: HashMap<String, HolyModel.groupModel.teamModel> = hashMapOf()
+        for (eleGroup in groups) {
+            for (eleTeam in curTeamMap) {
+                tempTeamMap.put(eleGroup.name + eleTeam.value.name, eleTeam.value)
+            }
+        }
+
+        for (eleMember in membersList) {
+            curTeamName = eleMember.groupName + eleMember.teamName
+            if (curTeamName != oldteamName) {
+                if (tempTeamMap[curTeamName] == null) {
+
+                    var teamModel = HolyModel.groupModel.teamModel()
+                    teamModel.name = eleMember.teamName
+
+                    for (eleGroup in groups) {
+                        if (eleMember.groupName == eleGroup.name) {
+                            teamModel.groupUid = eleGroup.uid
+                        }
+                    }
+
+                    oldteamName = curTeamName
+
+                    tempTeamList.add(teamModel)
+                }
+            }
+        }
+
+
+        FireStoreWriteManager.teamMultiInsert(tempTeamList, colRef, DataTypeListener.OnCompleteListener { t ->
+            LoggerHelper.d("FireStoreWriteManager.teamMultiInsert : " + t)
+            super@SettingsActivity.showProgressDialog(false)
+        })
+    }
+
+    private fun sendEcxelData() {
+
         val missMemberMap = HashMap<String, HolyModel.memberModel>()
 
         if (missList != null) {
@@ -306,7 +417,8 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
                     if (tempName == eleMember.groupName) {
                         eleMember.groupUID = elemTemp.uid
-                        val teamMap = elemTemp.team ?: break
+                        val teamMap = CommonData.getTeamMap()
+                                .filter { it.value.groupUid == eleMember.groupUID }   //elemTemp.team ?: break
 
                         for ((key1, elemTeamTemp) in teamMap) {
                             elemTeamTemp.uid = key1
@@ -397,7 +509,6 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
             onCompleteListener: SimpleListener.OnCompleteListener) {
 
         FireStoreMemberManager.insert(memberModel, DataTypeListener.OnCompleteListener {
-
             onCompleteListener.onComplete()
         })
     }
@@ -488,28 +599,27 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
         updateTextViews()
     }
 
-    private inner class AsyncTaskRunner : AsyncTask<String, String, String>() {
+    fun setExcelData() {
+        runBlocking<Unit> {
+            sendToServerFromEcxelData(ExcelData!!)
+            setAddGroupFromExcel()
+            FDDatabaseHelper.getGroupDataToStore(DataTypeListener.OnCompleteListener {
+                LoggerHelper.d("FDDatabaseHelper.getGroupDataToStore  OnCompleteListener")
+                val gMap: HashMap<String, HolyModel.groupModel> = CommonData.getHolyModel().group as HashMap<String, HolyModel.groupModel>
+                for ((key, value) in gMap) {
+                    value.uid = key
+                }
+            })
 
-        private var resp: String? = null
-
-        override fun doInBackground(vararg params: String): String? {
-            publishProgress("Sleeping...") // Calls onProgressUpdate()
-            try {
-                sendToServerFromEcxelData(ExcelData!!)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                resp = e.message
-            }
-            return resp
+            setAddTeamFromExcel()
+            FDDatabaseHelper.getTeamAllDataToStore(DataTypeListener.OnCompleteListener {
+                LoggerHelper.d("FDDatabaseHelper.getTeamDataToStore  OnCompleteListener!!!!")
+                val tMap: HashMap<String, HolyModel.groupModel.teamModel> = CommonData.getTeamMap() as HashMap<String, HolyModel.groupModel.teamModel>
+                for ((key, value) in tMap) {
+                    value.uid = key
+                }
+            })
+            sendEcxelData()
         }
-
-        override fun onPostExecute(result: String) {
-            super@SettingsActivity.showProgressDialog(false)
-        }
-
-        override fun onPreExecute() {}
-
-
-        override fun onProgressUpdate(vararg text: String) {}
     }
 }
