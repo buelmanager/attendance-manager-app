@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".view.activity.SetCorpsActivity">
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/mainActivity_tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#666666"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/mainActivity_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/mainActivity_tablayout"/>
+</RelativeLayout>
+

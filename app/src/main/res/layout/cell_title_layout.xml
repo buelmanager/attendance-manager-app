@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bgContent"
+        android:baselineAligned="false">
+        <!-- LEFT TITLE PART -->
+        <RelativeLayout
+            android:id="@+id/back_color_rl"
+            android:layout_width="match_parent"
+            android:layout_height="155dp"
+            android:layout_weight="3"
+            android:background="@color/fd_cell_main_color"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingTop="20dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="20dp">
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_about" />
+
+            <TextView
+                android:id="@+id/title_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:textColor="@android:color/white"
+                android:textSize="26sp" />
+
+            <TextView
+                android:id="@+id/title_time_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true"
+                android:textColor="@android:color/white"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/title_date_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/title_time_label"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+        <!-- RIGHT TITLE PART -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/bgTitleRight"
+            android:paddingStart="15dp"
+            android:paddingLeft="15dp"
+            android:paddingTop="20dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="20dp">
+
+            <TextView
+                android:visibility="gone"
+                android:layout_alignLeft="@+id/btn_item_select"
+                android:id="@+id/btn_item_select_text"
+                android:layout_marginLeft="8dp"
+                android:text="@string/noReason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/button1_text"
+                android:layout_marginLeft="14dp"
+                android:layout_alignLeft="@+id/button1"
+                android:text="@string/attend2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:visibility="gone"
+                android:tooltipText="@string/noReason"
+                android:id="@+id/btn_item_select"
+                android:layout_width="40dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="16dp"
+                android:layout_toLeftOf="@+id/button1"
+                android:src="@drawable/ic_sms" />
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/btn_item_delete"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="8dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_delete_24dp" />
+
+            <LinearLayout
+                android:visibility="invisible"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="12dp"
+                android:id="@+id/button1"
+                android:orientation="vertical"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="?selectableItemBackgroundBorderless"
+                android:gravity="center">
+                <com.github.zagum.switchicon.SwitchIconView
+                    android:foregroundGravity="center_vertical"
+                    android:id="@+id/switchIcon1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="8dp"
+                    app:si_animation_duration="500"
+                    app:si_disabled_alpha=".5"
+                    app:si_disabled_color="#b7b7b7"
+                    app:si_enabled="false"
+                    app:si_no_dash="true"
+                    app:si_tint_color="@color/material_500_blue"
+                    app:srcCompat="@drawable/approved"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/title_from_to_dots"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/from_to_purple" />
+
+            <TextView
+                android:id="@+id/title_from_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/title_from_to_dots"
+                android:layout_marginTop="-5dp"
+                android:layout_toEndOf="@+id/title_from_to_dots"
+                android:layout_toRightOf="@+id/title_from_to_dots"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/title_from_to_dots_divider"
+                android:layout_width="200dp"
+                android:layout_height="1dp"
+                android:layout_below="@id/title_from_address"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="8dp"
+                android:layout_toLeftOf="@+id/btn_item_select"
+                android:layout_toRightOf="@+id/title_from_to_dots"
+                android:src="@color/contentDividerLine" />
+
+            <TextView
+                android:id="@+id/title_to_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/title_from_to_dots_divider"
+                android:layout_toEndOf="@id/title_from_to_dots"
+                android:layout_toRightOf="@id/title_from_to_dots"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:text="@string/pledge_badge"
+                android:id="@+id/title_requests_count"
+                style="@style/TitleBadgeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentBottom="true" />
+
+            <TextView
+                style="@style/TitleBadgeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/title_requests_count"
+                android:layout_alignStart="@id/title_requests_count"
+                android:layout_alignLeft="@id/title_requests_count"
+                android:text="@string/requests_count_badge" />
+
+            <TextView
+                android:layout_marginLeft="40dp"
+                android:text="@string/pledge_badge"
+                android:id="@+id/title_weight"
+                style="@style/TitleBadgeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/title_pledge"
+                android:layout_alignParentBottom="true"  />
+
+            <TextView
+                style="@style/TitleBadgeTitle"
+                android:layout_width="61dp"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/title_weight"
+                android:layout_alignStart="@+id/title_weight"
+                android:text="@string/weight_badge" />
+
+            <TextView
+                android:layout_marginLeft="40dp"
+                android:text="@string/pledge_badge"
+                android:id="@+id/title_pledge"
+                style="@style/TitleBadgeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/title_requests_count" />
+
+            <TextView
+                style="@style/TitleBadgeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/title_pledge"
+                android:layout_alignStart="@id/title_pledge"
+                android:layout_alignLeft="@id/title_pledge"
+                android:text="@string/pledge_badge" />
+
+        </RelativeLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="8dp"/>
+</LinearLayout>

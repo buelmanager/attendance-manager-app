@@ -1,0 +1,107 @@
+<resources>
+    <string name="app_name">HolyHelper</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="action_help">도움말 카페로 이동</string>
+    <string name="action_todeveloper">개발자에게! 건의하기</string>
+    <string name="action_no_price">홀리헬퍼 무료신청</string>
+    <string name="action_send_sub_admin">운영 관리자에게 메세지 보내기</string>
+    <string name="action_no_price_notice">홀리헬퍼 무료신청(개인정보의 연락처가 맞는지 확인해주세요)</string>
+
+    <string name="corp_setting_step1">corps</string>
+    <string name="corp_setting_step2">group</string>
+    <string name="corp_setting_step3">team</string>
+    <string name="corp_setting_step4">person</string>
+    <string name="select_helpoer">도움말을 선택하세요.</string>
+
+    <string name="briefing_step2">월별 통계</string>
+    <string name="briefing_step3">상세 통계</string>
+    <string name="briefing_step4">소그룹 통계</string>
+    <string name="briefing_step1">소그룹별 통계</string>
+    <string name="briefing_step5">settings</string>
+
+    <string name="dont_ask_again">Don\'t ask again</string>
+    <string name="progress_dialog">잠시만 기다려주세요.</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="clear_selection">Clear</string>
+    <string name="select_groupandteam">메뉴를 클릭하여 그룹/팀을 설정해 주세요. </string>
+
+    <string name="guid_floating_attend_button">하단의 출석체크 버튼을 클릭하여 출석체크 하실 수 있습니다.</string>
+
+    <string name="modefy">수정</string>
+    <string name="delete">삭제</string>
+    <string name="briefing">통계 현황</string>
+    <string name="admin">선택 · 관리</string>
+    <string name="attend2">체크</string>
+    <string name="attend">출석 체크</string>
+    <string name="offering">헌금 현황</string>
+    <string name="prayer_plan">작정 기도</string>
+    <string name="prayer_for">중보 기도</string>
+    <string name="notice">교회 공지 </string>
+    <string name="service_movie">설교 영상 </string>
+    <string name="about">About</string>
+    <string name="church_paper">교회 주보</string>
+    <string name="add_member">교적 관리</string>
+    <string name="exit">EXIT</string>
+    <string name="leftMenu_9">...</string>
+
+    <string name="notice_message">* 공지사항</string>
+    <string name="dont_again">다시보지 않기</string>
+    <string name="select_date">날짜를 선택하세요.</string>
+    <string name="select_time">예배 시간를 선택하세요.</string>
+    <string name="simple_list_title">선택하세요.</string>
+
+    <string name="yesno">실행하시겠습니까? </string>
+
+    <string name="select_group">먼저 부서를 선택해 주세요.</string>
+
+    <string name="name">이름</string>
+    <string name="address">주소</string>
+    <string name="address2">상세 주소(건물번호/동,호수 등)</string>
+    <string name="phone">전화번호</string>
+    <string name="gender">성별</string>
+    <string name="birth">생년월일</string>
+    <string name="isnew">등록구분</string>
+    <string name="memberRegistDate">등록일</string>
+    <string name="isexecutives">임원구분</string>
+    <string name="position">직책</string>
+    <string name="leader">인도자</string>
+    <string name="mleader">리더자</string>
+    <string name="etc">기타</string>
+    <string name="corps">교회</string>
+    <string name="group">부서</string>
+    <string name="team">소그룹</string>
+    <string name="noReason">사유</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_notification_channel_id">default_notification_channel_id</string>
+
+    <string name="order_id_mock" translatable="false"># 1234–5678</string>
+    <string name="price_mock" translatable="false">$25</string>
+    <string name="requests_count_mock" translatable="false">5</string>
+    <string name="requests_count_badge" translatable="false">생년월일</string>
+    <string name="weight_mock" translatable="false">50 oz</string>
+    <string name="weight_badge" translatable="false">등록구분</string>
+    <string name="pledge_mock" translatable="false">$150</string>
+    <string name="pledge_badge" translatable="false">성별</string>
+    <string name="sender_badge" translatable="false">회원</string>
+    <string name="client_name_mock" translatable="false">Edward Norton</string>
+    <string name="rating_mock" translatable="false">(26)</string>
+    <string name="from_badge" translatable="false">FROM</string>
+    <string name="to_badge" translatable="false">TO</string>
+    <string name="delivery_date_badge" translatable="false">DELIVERY DATE</string>
+    <string name="delivery_time_mock" translatable="false">6:30 pm</string>
+    <string name="delivery_date_mock" translatable="false">May 16, 2016</string>
+    <string name="deadline_badge" translatable="false">REQUEST DEADLINE</string>
+    <string name="deadline_time_mock" translatable="false">24 minutes</string>
+    <string name="request_btn_text" translatable="false">REQUEST</string>
+    <string name="btn_annotation_mock" translatable="false">5 people have sent a request</string>
+    <string name="content_from1_mock">W 90th St</string>
+    <string name="content_from2_mock">New York, NY 10025</string>
+    <string name="content_to1_mock">46th Ave</string>
+    <string name="content_to2_mock">Woodside, NY 11101</string>
+    <string name="title_activity_main2">Main2Activity</string>
+</resources>

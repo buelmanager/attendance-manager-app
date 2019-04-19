@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="none">
+        <item android:title="Administrator">
+            <menu>
+                <item
+                    android:id="@+id/nav_admin"
+                    android:icon="@drawable/ic_select_btn"
+                    android:title="@string/admin" />
+
+                <item
+                    android:id="@+id/nav_attendance"
+                    android:icon="@drawable/ic_atten_check"
+                    android:title="@string/attend" />
+                <item
+                    android:id="@+id/nav_noticea"
+                    android:icon="@drawable/ic_notice"
+                    android:title="@string/notice" />
+                <item
+                    android:id="@+id/nav_addmember"
+                    android:icon="@drawable/ic_add_member"
+                    android:title="@string/add_member" />
+            </menu>
+        </item>
+        <item android:title="Personal">
+            <menu>
+                <item
+                    android:id="@+id/nav_service_movie"
+                    android:icon="@drawable/ic_video"
+                    android:title="@string/service_movie" />
+                <item
+                    android:id="@+id/nav_offering"
+                    android:icon="@drawable/ic_offering"
+                    android:title="@string/offering" />
+                <item
+                    android:id="@+id/nav_prayer_plan"
+                    android:icon="@drawable/ic_diary"
+                    android:title="@string/prayer_plan" />
+                <item
+                    android:id="@+id/nav_prayer_for"
+                    android:icon="@drawable/ic_hearing"
+                    android:title="@string/prayer_for" />
+            </menu>
+        </item>
+        <item
+            android:id="@+id/exit"
+            android:icon="@drawable/ic_exit"
+            android:title="@string/exit" />
+    </group>
+</menu>
