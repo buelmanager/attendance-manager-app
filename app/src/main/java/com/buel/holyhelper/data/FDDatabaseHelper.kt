@@ -132,7 +132,7 @@ object FDDatabaseHelper {
         val colRef = firestore.collection(CORPS_TABLE)
                 .document(CommonData.getAdminUid())
                 .collection(TEAM_TABLE)
-                .whereEqualTo("groupUid" , CommonData.getGroupModel().uid)
+                //.whereEqualTo("groupUid" , CommonData.getGroupModel().uid)
 
         colRef
                 .get().addOnSuccessListener { queryDocumentSnapshots ->

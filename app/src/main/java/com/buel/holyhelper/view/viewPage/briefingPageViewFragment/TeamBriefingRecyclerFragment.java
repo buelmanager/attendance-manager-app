@@ -69,7 +69,7 @@ public class TeamBriefingRecyclerFragment extends AbstBriefingFragment {
         }
 
         if( CommonData.getTeamModel() == null || CommonData.getGroupModel() == null){
-            SuperToastUtil.toastE(getContext(), "팀을 추가해주세요.");
+            //SuperToastUtil.toastE(getContext(), "팀을 추가해주세요.");
             LoggerHelper.d("팀을 추가해주세요.");
             return;
         }
@@ -80,7 +80,7 @@ public class TeamBriefingRecyclerFragment extends AbstBriefingFragment {
             groups = (ArrayList<HolyModel.groupModel>) SortMapUtil.getSortGroupList(CommonData.getHolyModel().group);
             LoggerHelper.d("groups : " + groups);
         } catch (Exception e) {
-            SuperToastUtil.toastE(getContext(), "팀을 추가해주세요.");
+            //SuperToastUtil.toastE(getContext(), "팀을 추가해주세요.");
             LoggerHelper.d("팀을 추가해주세요.");
             return;
         }

@@ -341,6 +341,7 @@ public class MemberRecyclerViewAdapter
 
         final HolyModel.memberModel members = itemArrayList.get(position);
         if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
+
             //holder.btn_item_delete.setBackgroundResource(R.drawable.ic_check_box_outline_24dp);
             holder.btn_item_select.setBackgroundResource(R.drawable.ic_sms);
             //AppUtil.setBackColor(mContext, holder.btn_item_select, R.color.colorAccent);
@@ -351,6 +352,7 @@ public class MemberRecyclerViewAdapter
                     if (attendMap.get(members.name).equals("true")) {
                         //AppUtil.setBackColor(mContext, holder.btn_item_delete, R.color.blue400);
                         holder.switchIcon1.setIconEnabled(true);
+
                         holder.button1_text.setText("출석");
 
                         holder.back_color_rl.setBackgroundResource(R.color.fd_cell_main_color);
@@ -377,7 +379,7 @@ public class MemberRecyclerViewAdapter
             }
             holder.button1.setVisibility(View.VISIBLE);
             holder.button1_text.setVisibility(View.VISIBLE);
-
+            holder.attend_back_veiw.setVisibility(View.VISIBLE);
         } else if (CommonData.getViewMode() == ViewMode.ADMIN) {
             //holder.btn_item_delete.setBackgroundResource(R.drawable.ic_delete_24dp);
             if (CommonData.getMemberModel() != null) {

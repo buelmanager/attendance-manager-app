@@ -747,11 +747,13 @@ public class CommonData {
     }
 
     public static String getGroupName(String uid){
-        return CommonData.getHolyModel().group.get(uid).name;
+        return CommonData.getGroupMap().get(uid).name;
     }
 
     public static String getTeamName(String uid){
-        return CommonData.getGroupModel().team.get(uid).name;
+
+        LoggerHelper.d(CommonData.getTeamMap());
+        return CommonData.getTeamMap().get(uid).name;
     }
     /**
      * 현재 설정된 0000년00월(요일) 형태로 리턴

@@ -73,6 +73,17 @@
             android:paddingEnd="8dp"
             android:paddingBottom="20dp">
 
+
+            <View
+
+                android:visibility="gone"
+                android:layout_alignParentRight="true"
+                android:id="@+id/attend_back_veiw"
+                android:layout_width="110dp"
+                android:layout_height="70dp"
+                android:background="@layout/xml_border"
+                ></View>
+
             <TextView
                 android:visibility="gone"
                 android:layout_alignLeft="@+id/btn_item_select"

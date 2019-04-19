@@ -73,7 +73,7 @@ public class YearBriefingRecyclerFragment extends AbstBriefingFragment {
             });
             getAttandData();
         }else{
-            SuperToastUtil.toastE(getContext(), "팀을 추가해주세요.");
+            //SuperToastUtil.toastE(getContext(), "팀을 추가해주세요.");
             LoggerHelper.d("팀을 추가해주세요.");
         }
         return rootView;

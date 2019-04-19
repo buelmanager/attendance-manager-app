@@ -25,6 +25,7 @@ public class MemberRecyclerViewHolder extends RecyclerView.ViewHolder {
     RelativeLayout call_rl;
     ImageView call_btn;
     ImageView content_avatar;
+    View attend_back_veiw;
     TextView contentRequestBtn;
     TextView pledgePrice;
     TextView fromAddress;
@@ -89,6 +90,7 @@ public class MemberRecyclerViewHolder extends RecyclerView.ViewHolder {
         modefy_btn = itemView.findViewById(R.id.modefy_btn);
         delete_btn = itemView.findViewById(R.id.delete_btn);
         call_rl = itemView.findViewById(R.id.call_rl);
+        attend_back_veiw = itemView.findViewById(R.id.attend_back_veiw);
         content_delivery_date2 = itemView.findViewById(R.id.content_delivery_date2);
         content_deadline_time4 = itemView.findViewById(R.id.content_deadline_time4);
         content_delivery_time2 = itemView.findViewById(R.id.content_delivery_time2);
