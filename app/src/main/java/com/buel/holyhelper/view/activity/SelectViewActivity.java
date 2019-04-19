@@ -117,96 +117,75 @@ public class SelectViewActivity extends BaseActivity implements View.OnClickList
     @Override
     public void setHelperButton() {
         TutorialViewerUtil.getMemberAccountAdminTutorialModels(SelectViewActivity.this);
-
-        /*String strHelper = "";
-
-        if (CommonData.getViewMode() == ViewMode.ADMIN) {
-            strHelper = "<strong>† 수정/추가/관리</strong><br> " +
-                    "버튼을 클릭하여 " +  CommonString.CORP_NICK+"/"+CommonString.GROUP_NICK+"/"+ CommonString.TEAM_NICK+" 선택 및 관리가 가능합니다." + "<br><br>" +
-                    "<strong>† 멤버 선택</strong><br><br>" +
-                    "<strong>† 멤버 찾기</strong><br> " +
-                    "상단의 얼굴 버튼을 클릭하여 <br>멤버를 찾을수 있습니다.<br><br>" +
-                    "입력된 단어를 포함한 <br>모든 멤버의 리스트가 노출됩니다.<br><br>" +
-                    "빈칸을 넣을시에는 <br>전체 멤버가 노출됩니다.<br>" ;
-        }else if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
-            strHelper ="<strong>† 멤버 찾기</strong><br> " +
-                    "상단의 얼굴 버튼을 클릭하여 <br>멤버를 찾을수 있습니다.<br><br>" +
-                    "입력된 단어를 포함한 <br>모든 멤버의 리스트가 노출됩니다.<br><br>" +
-                    "빈칸을 넣을시에는 <br>전체 멤버가 노출됩니다.<br>" ;
-        }
-
-
-        MaterialDailogUtil.noticeDialog(
-                SelectViewActivity.this,
-                strHelper,
-                CommonString.INFO_HELPER_TITLE,
-                new MaterialDailogUtil.OnDialogSelectListner() {
-                    @Override
-                    public void onSelect(String s) {
-                        CommonData.setIsFstEnter(false);
-                        LoggerHelper.d("CommonData.getIsFstEnter() : " + CommonData.getIsFstEnter());
-                    }
-                });*/
     }
 
     private void setLayout() {
         setAdminMode();
 
-        if (CommonData.getHolyModel() != null) {
-            textViewCorpsTitle.setText(CommonString.CORP_NICK + " : " + CommonData.getHolyModel().name);
-            textViewCorpsDesc.setText(Html.fromHtml(
-                    "<strong>" + " 목사 " + "</strong>" + CommonData.getHolyModel().owner + "<br>" +
-                            "<strong>" + " 전화 " + "</strong>" + CommonData.getHolyModel().phone + "<br>" +
-                            "<strong>" + " 주소 " + "</strong>" + CommonData.getHolyModel().address + "<br>"
+        String cName = "";
+        String cphone = "";
+        String caddress = "";
+        String cowner = "";
 
-            ));
+        if (CommonData.getHolyModel() != null) {
+            cName = CommonData.getHolyModel().name;
+            if (CommonData.getHolyModel().owner != null) cphone = CommonData.getHolyModel().name;
+            if (CommonData.getHolyModel().phone != null) caddress = CommonData.getHolyModel().phone;
+            if (CommonData.getHolyModel().address != null)
+                cowner = CommonData.getHolyModel().address;
+
+            textViewCorpsTitle.setText(Html.fromHtml(CommonString.CORP_NICK + " : " + cName));
+            textViewCorpsDesc.setText(Html.fromHtml(
+                    "<strong>" + " 목사 " + "</strong>" + cowner + "<br>" +
+                            "<strong>" + " 전화 " + "</strong>" + cphone + "<br>" +
+                            "<strong>" + " 주소 " + "</strong>" + caddress + "<br>"));
+        } else {
+            CommonData.setTeamModel(null);
+            CommonData.setMemberModel(null);
+            return;
         }
+
+        String gName = "";
+        String gEtc = "";
+        String gLeader = "";
 
         if (CommonData.getGroupModel() != null) {
-            textViewGroupTitle.setText(CommonString.GROUP_NICK + " : " + CommonData.getGroupModel().name);
+            if (CommonData.getGroupModel().name != null) gName = CommonData.getGroupModel().name;
+            if (CommonData.getGroupModel().leader != null)
+                gLeader = CommonData.getGroupModel().leader;
+            if (CommonData.getGroupModel().leader != null) gEtc = CommonData.getGroupModel().etc;
+            textViewGroupTitle.setText((CommonString.GROUP_NICK + " : " + gName));
             textViewGroupDesc.setText(Html.fromHtml(
-                    "<strong>" + CommonString.DEFINITION_NAME_LEADER + "</strong> " + CommonData.getGroupModel().leader + "<br>" +
-                            "<strong>" + CommonString.DEFINITION_NAME_DEFAULT + "</strong> " + CommonData.getGroupModel().etc
-            ));
+                    "<strong>" + CommonString.DEFINITION_NAME_LEADER + "</strong> " + gLeader + "<br>" +
+                            "<strong>" + CommonString.DEFINITION_NAME_DEFAULT + "</strong> " + gEtc));
         } else {
             CommonData.setTeamModel(null);
             CommonData.setMemberModel(null);
             return;
         }
+
+        String tName = "";
+        String tleader = "";
+        String tetc = "";
 
         if (CommonData.getTeamModel() != null) {
-            textViewTeamTitle.setText(CommonString.TEAM_NICK + " : " + SortMapUtil.getInteger(CommonData.getTeamModel().name));
+
+            if (CommonData.getTeamModel().name != null) tName = CommonData.getTeamModel().name;
+            if (CommonData.getTeamModel().leader != null)
+                tleader = CommonData.getTeamModel().leader;
+            if (CommonData.getTeamModel().etc != null) tetc = CommonData.getTeamModel().etc;
+
+            textViewTeamTitle.setText(Html.fromHtml(CommonString.TEAM_NICK + " : " + tName));
             textViewTeamDesc.setText(Html.fromHtml(
-                    "<strong>" + CommonString.DEFINITION_NAME_LEADER + "</strong> " + CommonData.getTeamModel().leader + "<br>" +
-                            "<strong>" + CommonString.DEFINITION_NAME_TEAM_NICK + "</strong> " + CommonData.getTeamModel().etc
-            ));
+                    "<strong>" + CommonString.DEFINITION_NAME_LEADER + "</strong> " + tleader + "<br>" +
+                            "<strong>" + CommonString.DEFINITION_NAME_TEAM_NICK + "</strong> " + tetc));
+
+
         } else {
             CommonData.setTeamModel(null);
             CommonData.setMemberModel(null);
             return;
         }
-
-        if (CommonData.getMemberModel() != null) {
-            if (!CommonData.getMemberModel().groupUID.equals(CommonData.getGroupModel().uid) ||
-                    !CommonData.getMemberModel().teamUID.equals(CommonData.getTeamModel().uid)) {
-                CommonData.setMemberModel(null);
-                return;
-            }
-
-            /*textViewMemberTitle.setText("MEMBER : " + CommonData.getMemberModel().name);
-            textViewMemberDesc.setText(Html.fromHtml(
-                    "<strong>" + " POSITION " + "</strong>" + CommonData.getMemberModel().position + "<br>" +
-                            "<strong>" + " ADDRESS " + "</strong>" + CommonData.getMemberModel().address + "<br>" +
-                            "<strong>" + " PHONE " + "</strong>" + CommonData.getMemberModel().phone
-            ));*/
-        } else {
-            CommonData.setMemberModel(null);
-            return;
-        }
-    }
-
-    private void setModifyMode() {
-
     }
 
     private void setAdminMode() {
@@ -287,14 +266,6 @@ public class SelectViewActivity extends BaseActivity implements View.OnClickList
             CommonData.setHistoryClass((Class) SelectViewActivity.this.getClass());
         } else {
             LoggerHelper.d("[ " + v.getId() + " ] 없는 ID 입니다.");
-        }
-    }
-
-    public static class SettingsFragment extends PreferenceFragment {
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.preferences);
         }
     }
 }

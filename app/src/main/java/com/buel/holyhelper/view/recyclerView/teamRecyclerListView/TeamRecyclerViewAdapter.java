@@ -34,7 +34,8 @@ public class TeamRecyclerViewAdapter
     View.OnClickListener onClickListener;
 
 
-    public TeamRecyclerViewAdapter(ArrayList<HolyModel.groupModel.teamModel> itemArrayList, View.OnClickListener onClickListener) {
+    public TeamRecyclerViewAdapter(ArrayList<HolyModel.groupModel.teamModel> itemArrayList,
+                                   View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
         this.itemArrayList = itemArrayList;
     }
@@ -77,13 +78,14 @@ public class TeamRecyclerViewAdapter
         }
 
         holder.btn_item_delete.setOnClickListener(v -> onDeleteBtnClickedListener(v, position));
-
         holder.recyclerViewItemMain.setOnClickListener(v -> onViewItemBtnClickedListener(v, position));
-
         holder.btn_item_select.setOnClickListener(v -> onSelectBtnClickedListener(v, position));
-
         holder.tv_item_name.setText(Html.fromHtml("<Strong>" + SortMapUtil.getInteger(team.name).toString() + "</Strong>"));
-        holder.tv_item_txt2.setText(team.leader + "  " + team.etc);
+
+        if (team.leader == null) team.leader = "";
+        if (team.etc == null) team.etc = "";
+
+        holder.tv_item_txt2.setText(Html.fromHtml(team.leader + "  " + team.etc));
 
     }
 
@@ -121,5 +123,4 @@ public class TeamRecyclerViewAdapter
     public int getItemCount() {
         return itemArrayList.size();
     }
-
 }
