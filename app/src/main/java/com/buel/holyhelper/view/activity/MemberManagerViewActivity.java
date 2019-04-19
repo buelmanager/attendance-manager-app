@@ -194,9 +194,10 @@ public class MemberManagerViewActivity extends BaseActivity implements View.OnCl
             if (CommonData.getGroupModel() != null)
                 etGroup.setText(CommonData.getGroupModel().name);
 
-            LoggerHelper.d("CommonData.getTeamModel() : " + CommonData.getTeamModel());
-            LoggerHelper.d("CommonData.getTeamModel() toString  : " + CommonData.getTeamModel().toString());
+
             if (CommonData.getTeamModel() != null) {
+                LoggerHelper.d("CommonData.getTeamModel() : " + CommonData.getTeamModel());
+                LoggerHelper.d("CommonData.getTeamModel() toString  : " + CommonData.getTeamModel().toString());
                 etTeam.setText(SortMapUtil.getInteger(CommonData.getTeamModel().name).toString() + "  " + CommonData.getTeamModel().etc);
             }
 

@@ -215,7 +215,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
                 //val runner = AsyncTaskRunner()
                 //runner.execute()
                 ExcelData = data
-                setExcelData()
+                setGroupCoroutineExcelData()
             }
         }
 
@@ -235,7 +235,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
         val maxCnt = membersList.size
 
         if (maxCnt > 100) {
-            Toast.makeText(this@SettingsActivity, "서버안정화로 현재 한번에 100명 이하로 제한합니다. 등록이 필요시 개발자에게 문의하세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@SettingsActivity,
+                    "서버안정화로 현재 한번에 100명 이하로 제한합니다. 등록이 필요시 개발자에게 문의하세요.",
+                    Toast.LENGTH_SHORT).show()
             return
         }
     }
@@ -243,10 +245,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
     //서버에 그룹을 세팅한다.
     private fun setAddGroupFromExcel() {
-
+        LoggerHelper.d("setGroupCoroutineExcelData setAddGroupFromExcel ")
         membersList.sortBy { it.groupName }
 
-        val curGroupMap = CommonData.getHolyModel().group ?: hashMapOf()
+        val curGroupMap = CommonData.getGroupMap() ?: hashMapOf()
 
         val colRef = FireStoreWriteManager.firestore
                 .collection(FDDatabaseHelper.CORPS_TABLE)
@@ -256,8 +258,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
         var tempGroupList: ArrayList<HolyModel.groupModel> = arrayListOf()
 
         for ((key, eleGroup) in memberToGroupMap) {
-
-            if (curGroupMap[key] == null) {
+            if (curGroupMap.count { it.value.name == key } <= 0) {
                 var gModel = HolyModel.groupModel()
                 gModel.name = key
                 tempGroupList.add(gModel)
@@ -273,11 +274,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
     //서버에 팀을 세팅한다.
     private fun setAddTeamFromExcel() {
+
+        LoggerHelper.d("setGroupCoroutineExcelData setAddTeamFromExcel ")
+
         super@SettingsActivity.showProgressDialog(true)
 
         membersList.sortBy { it.teamName }
 
-        val curGroupMap = CommonData.getHolyModel().group ?: hashMapOf()
+        val curGroupMap = CommonData.getGroupMap() ?: hashMapOf()
         val groupList = curGroupMap.map { it.value }
 
         LoggerHelper.d("curGroupMap.size : " + curGroupMap.size)
@@ -297,10 +301,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
                 .collection(FDDatabaseHelper.TEAM_TABLE)
 
         val tempTeamList = arrayListOf<HolyModel.groupModel.teamModel>()
-        val groupMap = CommonData.getHolyModel().group
+        val groupMap = CommonData.getGroupMap()
 
         for (eleMember in membersList) {
-            eleMember.groupUID = groupMap.values.find { it.name ==eleMember.groupName }?.uid
+            eleMember.groupUID = groupMap.values.find { it.name == eleMember.groupName }?.uid
         }
 
         var memberToGroupUidMap = membersList.groupBy { it.groupUID } as HashMap
@@ -333,7 +337,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
         membersList.sortBy { it.name }
 
-        val curGroupMap: HashMap<String, HolyModel.groupModel> = CommonData.getHolyModel().group as HashMap<String, HolyModel.groupModel>
+        val curGroupMap: HashMap<String, HolyModel.groupModel> = CommonData.getGroupMap() as HashMap<String, HolyModel.groupModel>
                 ?: hashMapOf()
         val groups: ArrayList<HolyModel.groupModel> = curGroupMap.groupCovertList() as ArrayList<HolyModel.groupModel>
 
@@ -391,6 +395,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
     private fun sendEcxelData() {
 
+        LoggerHelper.d("setGroupCoroutineExcelData sendEcxelData ")
         val missMemberMap = HashMap<String, HolyModel.memberModel>()
 
         if (missList != null) {
@@ -410,7 +415,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
         var curCnt = 0
         for (eleMember in membersList) {
             if (!FDDatabaseHelper.getCompareData(eleMember)) {
-                val groupMap = CommonData.getHolyModel().group
+                val groupMap = CommonData.getGroupMap()
                 for ((key, elemTemp) in groupMap) {
                     elemTemp.uid = key
                     val tempName = elemTemp.name
@@ -599,27 +604,44 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
         updateTextViews()
     }
 
-    fun setExcelData() {
+    fun setGroupCoroutineExcelData() {
         runBlocking<Unit> {
             sendToServerFromEcxelData(ExcelData!!)
             setAddGroupFromExcel()
+
             FDDatabaseHelper.getGroupDataToStore(DataTypeListener.OnCompleteListener {
                 LoggerHelper.d("FDDatabaseHelper.getGroupDataToStore  OnCompleteListener")
-                val gMap: HashMap<String, HolyModel.groupModel> = CommonData.getHolyModel().group as HashMap<String, HolyModel.groupModel>
+                val gMap: HashMap<String, HolyModel.groupModel> = CommonData.getGroupMap()
+                        as HashMap<String, HolyModel.groupModel>
                 for ((key, value) in gMap) {
+
+                    LoggerHelper.d("getGroupDataToStore.key : $key  / value : $value")
+
                     value.uid = key
                 }
-            })
 
+                setTeamCoroutineExcelData()
+            })
+        }
+
+    }
+
+    fun setTeamCoroutineExcelData() {
+
+        runBlocking<Unit> {
             setAddTeamFromExcel()
             FDDatabaseHelper.getTeamAllDataToStore(DataTypeListener.OnCompleteListener {
                 LoggerHelper.d("FDDatabaseHelper.getTeamDataToStore  OnCompleteListener!!!!")
-                val tMap: HashMap<String, HolyModel.groupModel.teamModel> = CommonData.getTeamMap() as HashMap<String, HolyModel.groupModel.teamModel>
+                val tMap: HashMap<String, HolyModel.groupModel.teamModel> = CommonData.getTeamMap()
+                        as HashMap<String, HolyModel.groupModel.teamModel>
                 for ((key, value) in tMap) {
+
+                    LoggerHelper.d("getTeamDataToStore.key : $key  / value : $value")
                     value.uid = key
                 }
+
+                sendEcxelData()
             })
-            sendEcxelData()
         }
     }
 }

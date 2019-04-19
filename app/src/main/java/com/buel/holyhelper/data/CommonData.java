@@ -27,6 +27,16 @@ public class CommonData {
 
     private static Map<String,HolyModel.groupModel.teamModel> teamMap;
 
+    public static Map<String, HolyModel.groupModel> getGroupMap() {
+        return groupMap;
+    }
+
+    public static void setGroupMap(Map<String, HolyModel.groupModel> groupMap) {
+        CommonData.groupMap = groupMap;
+    }
+
+    private static Map<String,HolyModel.groupModel> groupMap;
+
     public static Map<String, HolyModel.groupModel.teamModel> getTeamMap() {
         return teamMap;
     }

@@ -118,7 +118,7 @@ object FDDatabaseHelper {
                     }
 
                     CommonData.getHolyModel().group = tempMap
-
+                    CommonData.setGroupMap(tempMap)
                     LoggerHelper.d(CommonData.getHolyModel().group)
                     onDataListener.onComplete(queryDocumentSnapshots)
                 }.addOnFailureListener { e -> LoggerHelper.e(e.message) }
