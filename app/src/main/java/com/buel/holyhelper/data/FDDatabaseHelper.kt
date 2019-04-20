@@ -707,6 +707,7 @@ object FDDatabaseHelper {
         return tempList
     }
 
+
     fun getTeamNameList(teamMap: Map<String, HolyModel.groupModel.teamModel>): ArrayList<String> {
         val tempList = ArrayList<String>()
 

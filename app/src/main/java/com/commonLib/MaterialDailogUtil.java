@@ -70,6 +70,9 @@ public class MaterialDailogUtil {
             return null;
         }
 
+        HolyModel.groupModel selGroup  = CommonData.getSelectedGroup();
+
+        //ArrayList<String> names = FDDatabaseHelper.INSTANCE.getTeamNameList(CommonData.getSelectedGroup().team);
         ArrayList<String> names = FDDatabaseHelper.INSTANCE.getTeamNameList(CommonData.getSelectedGroup().team);
 
         return new MaterialDialog.Builder(context)

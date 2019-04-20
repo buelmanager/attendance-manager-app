@@ -14,6 +14,8 @@ android {
         versionCode 7
         versionName version
     }
+
+
     buildTypes {
         release {
             minifyEnabled false
