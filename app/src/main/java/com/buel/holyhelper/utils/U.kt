@@ -16,7 +16,7 @@ object U {
         for ((k, v) in this) {
             tempList.add(v)
         }
-        tempList.sortBy { it.name }
+        tempList.sortBy { it.groupName }
         return tempList
     }
 

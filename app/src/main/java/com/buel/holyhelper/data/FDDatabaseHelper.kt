@@ -665,7 +665,7 @@ object FDDatabaseHelper {
             for (eleGroup in groups) {
                 LoggerHelper.d("CommonData.getGroupUid() : " + CommonData.getGroupUid())
                 if (CommonData.getGroupModel() != null) {
-                    LoggerHelper.d("CommonData.getGroupUid : " + CommonData.getGroupUid() + " // " + eleGroup.uid)
+                    //LoggerHelper.d("CommonData.getGroupUid : " + CommonData.getGroupUid() + " // " + eleGroup.uid)
                     if (CommonData.getGroupUid() == eleGroup.uid) {
                         CommonData.setGroupModel(eleGroup)
                         LoggerHelper.d("그룹 설정 정보가 갱신됩니다.", eleGroup.convertMap())

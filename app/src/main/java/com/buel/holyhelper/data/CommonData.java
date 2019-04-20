@@ -653,7 +653,7 @@ public class CommonData {
     }
 
     public static void setSelectedMonth(int selectedMonth) {
-        LoggerHelper.d("setSelectedMonth 를 세팅합니다. " + selectedMonth);
+        //LoggerHelper.d("setSelectedMonth 를 세팅합니다. " + selectedMonth);
         CommonData.selectedMonth = selectedMonth;
     }
 
@@ -762,7 +762,8 @@ public class CommonData {
      */
     public static String getCurrentFullDateStr() {
         return CommonData.getSelectedYear() + "년 " + CommonData.getSelectedMonth() + "월 " +
-                "(" + CalendarUtils.getDateDay(Integer.valueOf(CommonData.getSelectedDayOfWeek())) + ")";
+                "(" + CalendarUtils.getDateDay(Integer.valueOf(CommonData.getSelectedDayOfWeek())) + " : "  +
+                CalendarUtils.getDaysTime(Integer.valueOf(CommonData.getSelectedDays()))+ ")";
     }
 
     /**

@@ -20,11 +20,11 @@ android {
         applicationId "com.buel.holyhelper"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 44
-        versionName "1.0.044"
+        versionCode 45
+        versionName "1.0.045"
         multiDexEnabled true
         publishNonDefault true
-        archivesBaseName = "holyhelper_" + versionName + "_" + new Date().format("yyyyMMdd_HHmmss")
+        archivesBaseName = "holyhelper_" + versionName + "_" + new Date().format("yyyyMMdd")
     }
     lintOptions {
         checkReleaseBuilds false

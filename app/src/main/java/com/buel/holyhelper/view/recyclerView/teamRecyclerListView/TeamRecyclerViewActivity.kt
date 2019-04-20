@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.buel.holyhelper.R
 import com.buel.holyhelper.data.*
 import com.buel.holyhelper.model.HolyModel
-import com.buel.holyhelper.utils.SortMapUtil
 import com.buel.holyhelper.utils.U.teamCovertList
 import com.buel.holyhelper.view.DataTypeListener
 import com.buel.holyhelper.view.SimpleListener
@@ -35,7 +34,6 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
         super.onResume()
 
         FDDatabaseHelper.getTeamDataToStore(DataTypeListener.OnCompleteListener { t ->
-
             //TODO develop branch에서 수정할것 : 리스트 없을때 fancy guide
             if (t.isEmpty) {
                 //val ment = CommonString.GUIDE_FLOATING_BUTTON_ADD
@@ -83,20 +81,19 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
         }
 
         try {
-            val holyModel = CommonData.getHolyModel()
-            group = CommonData.getGroupModel() //holyModel.groupModel.get(CommonData.getGroupUid());
+            group = CommonData.getGroupModel()
             tvDesc.text = group!!.name
 
         } catch (e: Exception) {
             Toast.makeText(this, CommonString.INFO_TITLE_SELECTL_GROUP, Toast.LENGTH_SHORT).show()
             goSelect()
         }
+        var membersmap: MutableCollection<HolyModel.groupModel.teamModel> = CommonData.getTeamMap().values
 
         try {
-            LoggerHelper.d("groupModel uid : " + group!!.uid)
-            LoggerHelper.d("groupModel name : " + group.name)
-            LoggerHelper.d(group.team)
-            teams = SortMapUtil.getSortTeamList() as ArrayList<HolyModel.groupModel.teamModel>
+            teams = membersmap
+                    .filter { it.groupUid == CommonData.getGroupModel().uid }
+                    as ArrayList<HolyModel.groupModel.teamModel>
             LoggerHelper.d(teams)
         } catch (e: Exception) {
             super.setTopOkBtnVisibled(View.INVISIBLE)
@@ -116,29 +113,6 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
     override fun setHelperButton() {
         val strHelper = ""
         TutorialViewerUtil.getTeamSelectTutorial(this@TeamRecyclerViewActivity)
-
-        /*if (CommonData.getViewMode() == ViewMode.ADMIN) {
-            strHelper = "<strong>† 수정/관리</strong><br> " +
-                    "버튼을 클릭하여 팀 선택하세요." + "<br><br>" +
-                    "상단 설정버튼을 클릭하면 <br>팀 수정/삭제 관리가 가능합니다." + "<br><br>" +
-
-                    "<strong>† 추가 기능</strong><br> " +
-                    "하단의 팀 추가 버튼을 클릭하면 <br>팀추가가 가능합니다.<br><br>";
-
-        }
-
-
-        MaterialDailogUtil.noticeDialog(
-                TeamRecyclerViewActivity.this,
-                strHelper,
-                CommonString.INFO_HELPER_TITLE,
-                new MaterialDailogUtil.OnDialogSelectListner() {
-                    @Override
-                    public void onSelect(String s) {
-                        CommonData.setIsFstEnter(false);
-                        LoggerHelper.d("CommonData.getIsFstEnter() : " + CommonData.getIsFstEnter());
-                    }
-                });*/
     }
 
     override fun setActionButton() {
@@ -235,10 +209,5 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
             else if (CommonData.getAdminMode() == AdminMode.MODIFY)
                 setAdminMode()
         }
-    }
-
-    companion object {
-
-        private val TAG = "MemberRecyclerViewActivity"
     }
 }

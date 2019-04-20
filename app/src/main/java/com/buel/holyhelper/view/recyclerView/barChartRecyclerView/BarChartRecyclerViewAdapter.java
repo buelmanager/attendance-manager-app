@@ -11,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.buel.holyhelper.R;
 import com.buel.holyhelper.data.CommonData;
 import com.buel.holyhelper.model.BarChartModel;
@@ -23,9 +26,6 @@ import com.orhanobut.logger.LoggerHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 
 /**
@@ -75,7 +75,6 @@ public class BarChartRecyclerViewAdapter
 
             TextView textViewDiff = holder.tvDiff;
             TextView textViewyDiff = holder.tvyDiff;
-
             LinearLayout llDiff = holder.llDiff;
 
             String headOperType = "";

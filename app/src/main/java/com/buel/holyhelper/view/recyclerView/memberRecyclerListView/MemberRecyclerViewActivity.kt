@@ -26,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.orhanobut.logger.LoggerHelper
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.OnCompleteListener, View.OnClickListener {
@@ -57,85 +58,40 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
     private var attendBatchList: MutableList<AttendModel>? = null
 
-    //LoggerHelper.d("MemberRecyclerViewActivity", "start CommonData.getViewMode() :" + CommonData.getViewMode());
-    //CommonData.getHolyModel().memberModel;
-    //LoggerHelper.d("CommonData.getStrSearch() : " + CommonData.getStrSearch());
-    //if (elemMembers.groupUID.equals(CommonData.getGroupModel().uid)) {
-    //     if (elemMembers.teamUID.equals(CommonData.getTeamModel().uid)) {
-    //LoggerHelper.d("MemberRecyclerViewActivity", "멤버를 추가합니다. => " + elemMembers.name);
-    //  }
-    //}
-    /*
-        if (memberModel.size() < 1) {
-            LoggerHelper.e("member getdata error");
-            throw new Exception();
-        }*/ val data: ArrayList<*>
-        @Throws(Exception::class)
-        get() {
-            var members = ArrayList<HolyModel.memberModel>()
+    fun getMemberData(): ArrayList<HolyModel.memberModel> {
+        var members = ArrayList<HolyModel.memberModel>()
 
-            val membersMap = CommonData.getMembersMap()
-            LoggerHelper.e("holyModel membersie", membersMap.size.toString())
+        var membersMap = CommonData.getMembersMap()
+        //LoggerHelper.e("holyModel membersie", membersMap.size.toString())
 
-            var cnt = 0
+        var cnt = 0
 
-            LoggerHelper.e("getGroupModel().uid : " + CommonData.getGroupModel().uid)
-            LoggerHelper.e("getGroupModel().name : " + CommonData.getGroupModel().name)
-            LoggerHelper.e("getTeamModel().uid : " + CommonData.getTeamModel().uid)
-            LoggerHelper.e("getTeamModel().name : " + CommonData.getTeamModel().name)
+        if (CommonData.getViewMode() == ViewMode.ADMIN || CommonData.getViewMode() == ViewMode.ATTENDANCE) {
 
-            for (key in membersMap.keys) {
-                cnt++
-                val elemMembers = membersMap[key]
-                elemMembers!!.uid = key
+            LoggerHelper.d("MemberRecyclerViewActivity", "ViewMode.ADMIN/ATTENDANCE 데이터를 수집합니다.")
 
-                LoggerHelper.e("elemMembers.groupUID : " + elemMembers.groupUID)
-                LoggerHelper.e("elemMembers.teamUID : " + elemMembers.teamUID)
-
-                if (elemMembers.groupUID != null && elemMembers.teamUID != null || CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
-                    if (CommonData.getViewMode() == ViewMode.ADMIN) {
-                        LoggerHelper.d("MemberRecyclerViewActivity", "ViewMode.ADMIN 데이터를 수집합니다.")
-
-                        LoggerHelper.e("CommonData.getGroupModel().uid : " + CommonData.getGroupModel().uid)
-                        LoggerHelper.e("CommonData.getTeamModel().uid : " + CommonData.getTeamModel().uid)
-
-                        if (elemMembers.groupUID == CommonData.getGroupModel().uid) {
-                            if (elemMembers.teamUID == CommonData.getTeamModel().uid) {
-                                members.add(elemMembers)
-
-                                LoggerHelper.e("memberModel ADMIN : " + members.size)
-                            }
-                        }
-                    } else if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
-                        LoggerHelper.d("MemberRecyclerViewActivity", "ViewMode.ATTENDANCE 데이터를 수집합니다. : ")
-                        if (elemMembers.groupUID == CommonData.getGroupModel().uid) {
-                            if (elemMembers.teamUID == CommonData.getTeamModel().uid) {
-                                LoggerHelper.d("elemMembers : " + elemMembers.name)
-                                members.add(elemMembers)
-                            }
-                        }
-                    } else if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
-                        if (CommonData.getStrSearch() == "") {
-                            members.add(elemMembers)
-                        } else {
-                            LoggerHelper.d("MemberRecyclerViewActivity", "ViewMode.SEARCH_MEMBER 데이터를 수집합니다.")
-
-                            val compareMemberName = elemMembers.name.indexOf(CommonData.getStrSearch())
-                            if (compareMemberName != -1) {
-                                members.add(elemMembers)
-                            }
-                        }
+            var membersmap: MutableCollection<HolyModel.memberModel> = membersMap.values
+            members = membersmap.filter {
+                it.groupUID + it.teamUID  ==  CommonData.getGroupModel().uid + CommonData.getTeamModel().uid
+            } as ArrayList<HolyModel.memberModel>
+        } else if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
+            LoggerHelper.d("MemberRecyclerViewActivity", "ViewMode.SEARCH_MEMBER 데이터를 수집합니다.")
+            if (CommonData.getStrSearch() == "") {
+                members = membersMap.values as ArrayList<HolyModel.memberModel>
+            } else {
+                for (key in membersMap.keys) {
+                    val elemMembers = membersMap[key]
+                    elemMembers!!.uid = key
+                    val compareMemberName = elemMembers.name.indexOf(CommonData.getStrSearch())
+                    if (compareMemberName != -1) {
+                        members.add(elemMembers)
                     }
-
-                    LoggerHelper.e("memberModel : " + members.size)
-                } else {
-                    LoggerHelper.e("MemberRecyclerViewActivity", "선택된 수집 방법이 없습니다.")
                 }
             }
-
-            members = SortMapUtil.getSortMemberList(members) as ArrayList<HolyModel.memberModel>
-            return members
         }
+
+        return members
+    }
 
     @SuppressLint("LongLogTag")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -211,7 +167,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
     private fun setRecyclerView() {
         membersArrayList = null
         try {
-            membersArrayList = this.data as ArrayList<HolyModel.memberModel>
+            membersArrayList = getMemberData()
         } catch (e: Exception) {
 
             super.setTopOkBtnBackground(R.drawable.ic_m_settings_24dp)
@@ -356,7 +312,6 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         }
 
         okList = ArrayList()
-
 
         if (noReasonList != null) {
             noReasonList!!.clear()
@@ -531,7 +486,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         LoggerHelper.d("refresh")
         FDDatabaseHelper.getAllcorpsMembers(SimpleListener.OnCompleteListener {
             try {
-                membersArrayList = this.data as ArrayList<HolyModel.memberModel>
+                membersArrayList = getMemberData()
                 LoggerHelper.d("refresh remembers size : " + membersArrayList!!.size)
                 holderAdapter.setItemArrayList(membersArrayList)
                 recyclerView.refreshDrawableState()

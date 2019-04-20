@@ -3,6 +3,8 @@ package com.buel.holyhelper.utils;
 import android.content.Context;
 import android.graphics.Color;
 
+import androidx.annotation.NonNull;
+
 import com.buel.holyhelper.data.CommonData;
 import com.buel.holyhelper.model.AttendModel;
 import com.buel.holyhelper.model.BarChartModel;
@@ -24,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import androidx.annotation.NonNull;
-
 public class BarChartDataUtils {
 
     static ArrayList<AttendModel> attendModels = new ArrayList<>();
@@ -45,6 +45,8 @@ public class BarChartDataUtils {
     public static BarChartModel getAttandData(HolyModel.groupModel.teamModel teamModel, Boolean isGroup) {
         BarChartDataUtils.isGroup = isGroup;
         okDateMaps = new HashMap<>();
+
+        if(teamModel.etc==null) teamModel.etc = "";
         BarChartDataUtils.teamModel = teamModel;
         return getAttendRate();
     }
@@ -145,8 +147,14 @@ public class BarChartDataUtils {
         barChartModel.ment = ment;
         barChartModel.evg = mentMap.get("evgNum");
 
+        String strEtc;
+        if(teamModel.etc == ""){
+            strEtc = teamModel.etc;
+        }else{
+            strEtc = " : " + teamModel.etc;
+        }
         if (teamModel != null)
-            barChartModel.title = "<strong> [ " + CommonData.getGroupModel().name + " " + SortMapUtil.getInteger(teamModel.name) + " : " + teamModel.etc + " ] </strong>\n" + CommonData.getCurrentFullDateStr();
+            barChartModel.title = "<strong> [ " + CommonData.getGroupModel().name + " " + SortMapUtil.getInteger(teamModel.name) + strEtc + " ] </strong>\n" + CommonData.getCurrentFullDateStr();
         else {
             if (CommonData.getSelectedMonth() <= 0) {
                 barChartModel.title = (CommonData.getSelectedYear() - 1) + "년 " + (12 + CommonData.getSelectedMonth()) + "월 (" + CalendarUtils.getDateDay(CommonData.getSelectedDayOfWeek()) + ") " + CalendarUtils.getDaysTime(CommonData.getSelectedDays()) + "예배";
