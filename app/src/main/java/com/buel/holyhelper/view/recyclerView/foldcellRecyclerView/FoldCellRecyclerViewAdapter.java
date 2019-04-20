@@ -173,7 +173,7 @@ public class FoldCellRecyclerViewAdapter
         viewHolder.delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MaterialDailogUtil.simpleYesNoDialog(v.getContext(), "삭제하시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
+                MaterialDailogUtil.Companion.simpleYesNoDialog(v.getContext(), "삭제하시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
                     @Override
                     public void onSelect(String s) {
                         MemberManager memberManager = new MemberManager();
@@ -191,7 +191,7 @@ public class FoldCellRecyclerViewAdapter
 
         viewHolder.delete_btn.setVisibility(View.INVISIBLE);
         viewHolder.modefy_btn.setVisibility(View.INVISIBLE);
-        viewHolder.delete_iv.setOnClickListener(v -> MaterialDailogUtil.simpleYesNoDialog(v.getContext(), "삭제하시겠습니까?", s -> {
+        viewHolder.delete_iv.setOnClickListener(v -> MaterialDailogUtil.Companion.simpleYesNoDialog(v.getContext(), "삭제하시겠습니까?", s -> {
             MemberManager memberManager = new MemberManager();
             memberManager.delete(members, data -> LoggerHelper.d("아이디를 삭제하였습니다. 교적부"));
             onClickListener.onClick(v);
@@ -226,7 +226,7 @@ public class FoldCellRecyclerViewAdapter
             public void onClick(View v) {
 
 
-                MaterialDailogUtil.simpleYesNoDialog(v.getContext(), "전화를 하시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
+                MaterialDailogUtil.Companion.simpleYesNoDialog(v.getContext(), "전화를 하시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
                     @Override
                     public void onSelect(String s) {
                         String mTell = viewHolder.content_to_address_1.getText().toString().replace("-", "");

@@ -61,7 +61,7 @@ public class AppUtil {
 
         if(strUserName.equals(""))return;
 
-        MaterialDailogUtil.simpleDoneDialog(context, "운영 관리자에게 메세지를 보냈습니다.", strUserName, s -> {
+        MaterialDailogUtil.Companion.simpleDoneDialog(context, "운영 관리자에게 메세지를 보냈습니다.", strUserName, s -> {
             //goMain();
         });
     }
@@ -121,7 +121,7 @@ public class AppUtil {
 
     public static void checkCorpsPassword(Context context, HolyModel holyModel, SimpleListener listener) {
 
-        MaterialDailogUtil.simpleInputDoneDialog(context, "비번을 입력하세요.", "이름", new MaterialDailogUtil.OnDialogSelectListner() {
+        MaterialDailogUtil.Companion.simpleInputDoneDialog(context, "비번을 입력하세요.", "이름", new MaterialDailogUtil.OnDialogSelectListner() {
             @Override
             public void onSelect(String s) {
 

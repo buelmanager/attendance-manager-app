@@ -204,7 +204,7 @@ public class MemberRecyclerViewAdapter
         viewHolder.delete_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MaterialDailogUtil.simpleYesNoDialog(v.getContext(), "삭제하시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
+                MaterialDailogUtil.Companion.simpleYesNoDialog(v.getContext(), "삭제하시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
                     @Override
                     public void onSelect(String s) {
                         MemberManager memberManager = new MemberManager();
@@ -222,7 +222,7 @@ public class MemberRecyclerViewAdapter
 
         viewHolder.delete_btn.setVisibility(View.INVISIBLE);
         viewHolder.modefy_btn.setVisibility(View.INVISIBLE);
-        viewHolder.delete_iv.setOnClickListener(v -> MaterialDailogUtil.simpleYesNoDialog(v.getContext(), "삭제하시겠습니까?", s -> {
+        viewHolder.delete_iv.setOnClickListener(v -> MaterialDailogUtil.Companion.simpleYesNoDialog(v.getContext(), "삭제하시겠습니까?", s -> {
             MemberManager memberManager = new MemberManager();
             memberManager.delete(members, data -> LoggerHelper.d("아이디를 삭제하였습니다. 교적부"));
             memberRecyclerViewListener.onComplete(members, null, v);
@@ -254,7 +254,7 @@ public class MemberRecyclerViewAdapter
             public void onClick(View v) {
 
 
-                MaterialDailogUtil.simpleYesNoDialog(v.getContext(), "전화를 하시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
+                MaterialDailogUtil.Companion.simpleYesNoDialog(v.getContext(), "전화를 하시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
                     @Override
                     public void onSelect(String s) {
                         String mTell = viewHolder.content_to_address_1.getText().toString().replace("-", "");
@@ -410,13 +410,13 @@ public class MemberRecyclerViewAdapter
         if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
 
             LoggerHelper.d("결석사유!!");
-            MaterialDailogUtil.simpleInputDoneDialog(mContext, "결석 사유! ", "간단한 결석사유를 적어주세요.", new MaterialDailogUtil.OnDialogSelectListner() {
+            MaterialDailogUtil.Companion.simpleInputDoneDialog(mContext, "결석 사유! ", "간단한 결석사유를 적어주세요.", new MaterialDailogUtil.OnDialogSelectListner() {
                 @Override
                 public void onSelect(String s) {
                     if (s == null || s.equals("")) return;
                     members.noAttendReason = s;
 
-                    MaterialDailogUtil.simpleDoneDialog(mContext, "결석사유가 등록되었습니다.", s, null);
+                    MaterialDailogUtil.Companion.simpleDoneDialog(mContext, "결석사유가 등록되었습니다.", s, null);
                     LoggerHelper.d("memberModel.noAttendReason : " + members.noAttendReason);
 
                     members.attend = "false";
@@ -444,7 +444,7 @@ public class MemberRecyclerViewAdapter
         if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
             if (CommonData.isTutoMode()) {
                 CommonData.setIsTutoMode(false);
-                MaterialDailogUtil.simpleDoneDialog(mContext,
+                MaterialDailogUtil.Companion.simpleDoneDialog(mContext,
                         "축하합니다. 튜토리얼이 완료되었습니다.", new MaterialDailogUtil.OnDialogSelectListner() {
                             @Override
                             public void onSelect(String s) {

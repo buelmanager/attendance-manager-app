@@ -30,7 +30,7 @@ public class MemberManager
     }
 
     public static void searchMember(Context context, SimpleListener.OnCompleteListener onCompleteListener) {
-        MaterialDailogUtil.simpleInputDoneDialog(context, "이름을 입력하세요.", "이름", new MaterialDailogUtil.OnDialogSelectListner() {
+        MaterialDailogUtil.Companion.simpleInputDoneDialog(context, "이름을 입력하세요.", "이름", new MaterialDailogUtil.OnDialogSelectListner() {
             @Override
             public void onSelect(String s) {
                 CommonData.setViewMode(ViewMode.SEARCH_MEMBER);

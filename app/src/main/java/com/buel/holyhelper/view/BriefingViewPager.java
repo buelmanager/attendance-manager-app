@@ -66,7 +66,7 @@ public class BriefingViewPager  {
     }
 
     public static void setDataAndTime(MaterialDailogUtil.OnDialogSelectListner dialogSelectListner) {
-        MaterialDailogUtil.datePickerDialog(
+        MaterialDailogUtil.Companion.datePickerDialog(
                 context,
                 s -> {
 
@@ -75,7 +75,7 @@ public class BriefingViewPager  {
                             CommonData.getSelectedDay() + "/" +
                             CommonData.getSelectedDayOfWeek());
 
-                    MaterialDailogUtil.showSingleChoice(
+                    MaterialDailogUtil.Companion.showSingleChoice(
                             context,
                             R.array.days_option,
                             s1 -> {

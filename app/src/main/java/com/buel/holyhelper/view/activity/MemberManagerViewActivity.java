@@ -305,7 +305,7 @@ public class MemberManagerViewActivity extends BaseActivity implements View.OnCl
             public void onComplete() {
                 if (mImageUri == null) {
                     if (CommonData.isTutoMode()) {
-                        MaterialDailogUtil.simpleDoneDialog(MemberManagerViewActivity.this,
+                        MaterialDailogUtil.Companion.simpleDoneDialog(MemberManagerViewActivity.this,
                                 "#5 단계, 축하합니다. 이제 출석체크하러 갑니다!", new MaterialDailogUtil.OnDialogSelectListner() {
                                     @Override
                                     public void onSelect(String s) {
@@ -338,7 +338,7 @@ public class MemberManagerViewActivity extends BaseActivity implements View.OnCl
                                         showProgressDialog(false);
 
                                         if (CommonData.isTutoMode()) {
-                                            MaterialDailogUtil.simpleDoneDialog(MemberManagerViewActivity.this,
+                                            MaterialDailogUtil.Companion.simpleDoneDialog(MemberManagerViewActivity.this,
                                                     "#5 단계, 축하합니다. 이제 출석체크하러 갑니다!", new MaterialDailogUtil.OnDialogSelectListner() {
                                                         @Override
                                                         public void onSelect(String s) {
@@ -547,13 +547,13 @@ public class MemberManagerViewActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.member_activity_view_et_position:
             case R.id.member_activity_view_btn_position:
-                MaterialDailogUtil.simpleListDialog(
+                MaterialDailogUtil.Companion.simpleListDialog(
                         MemberManagerViewActivity.this,
                         R.array.position_option,
                         new MaterialDailogUtil.OnDialogSelectListner() {
                             @Override
                             public void onSelect(String s) {
-                                etPosition.setText(MaterialDailogUtil.getPosition(Integer.valueOf(s)));
+                                etPosition.setText(MaterialDailogUtil.Companion.getPosition(Integer.valueOf(s)));
                             }
                         });
                 break;
@@ -561,7 +561,7 @@ public class MemberManagerViewActivity extends BaseActivity implements View.OnCl
 
             case R.id.member_activity_view_btn_birth:
             case R.id.member_activity_view_et_birth:
-                MaterialDailogUtil.datePickerDialog2(
+                MaterialDailogUtil.Companion.datePickerDialog2(
                         MemberManagerViewActivity.this,
                         new MaterialDailogUtil.OnDialogSelectListner() {
                             @Override
@@ -575,20 +575,20 @@ public class MemberManagerViewActivity extends BaseActivity implements View.OnCl
 
             case R.id.member_activity_view_btn_isexecutives:
             case R.id.member_activity_view_et_isexecutives:
-                MaterialDailogUtil.simpleListDialog(
+                MaterialDailogUtil.Companion.simpleListDialog(
                         MemberManagerViewActivity.this,
                         R.array.new_excutive,
                         new MaterialDailogUtil.OnDialogSelectListner() {
                             @Override
                             public void onSelect(String s) {
-                                etIsExecutives.setText(MaterialDailogUtil.getExcutive(Integer.valueOf(s)));
+                                etIsExecutives.setText(MaterialDailogUtil.Companion.getExcutive(Integer.valueOf(s)));
                             }
                         });
                 break;
 
             case R.id.member_activity_view_btn_new:
             case R.id.member_activity_view_et_new:
-                MaterialDailogUtil.simpleListDialog(
+                MaterialDailogUtil.Companion.simpleListDialog(
                         MemberManagerViewActivity.this,
                         R.array.new_option,
                         new MaterialDailogUtil.OnDialogSelectListner() {
@@ -600,20 +600,20 @@ public class MemberManagerViewActivity extends BaseActivity implements View.OnCl
                                     isFstMember = false;
                                 else
                                     isFstMember = true;
-                                etNew.setText(MaterialDailogUtil.getNew(Integer.valueOf(s)));
+                                etNew.setText(MaterialDailogUtil.Companion.getNew(Integer.valueOf(s)));
                             }
                         });
                 break;
 
             case R.id.member_activity_view_btn_gender:
             case R.id.member_activity_view_et_gender:
-                MaterialDailogUtil.simpleListDialog(
+                MaterialDailogUtil.Companion.simpleListDialog(
                         MemberManagerViewActivity.this,
                         R.array.gender_option,
                         new MaterialDailogUtil.OnDialogSelectListner() {
                             @Override
                             public void onSelect(String s) {
-                                etGender.setText(MaterialDailogUtil.getGender(Integer.valueOf(s)));
+                                etGender.setText(MaterialDailogUtil.Companion.getGender(Integer.valueOf(s)));
                             }
                         });
                 break;
@@ -626,7 +626,7 @@ public class MemberManagerViewActivity extends BaseActivity implements View.OnCl
                 if (aBoolean) break;
 
                 //@Deprecated : 그룹이동 불가능 하도록 수정
-                MaterialDailogUtil.getGroupDialog(v.getContext(),
+                MaterialDailogUtil.Companion.getGroupDialog(v.getContext(),
                         new SimpleListener.OnCompleteListener() {
                             @Override
                             public void onComplete() {
@@ -641,7 +641,7 @@ public class MemberManagerViewActivity extends BaseActivity implements View.OnCl
             case R.id.member_activity_view_btn_team:
 
                 Common.hideKeyboard((Activity) v.getContext());
-                MaterialDailogUtil.getTeamDialog(v.getContext(),
+                MaterialDailogUtil.Companion.getTeamDialog(v.getContext(),
                         new SimpleListener.OnCompleteListener() {
                             @Override
                             public void onComplete() {

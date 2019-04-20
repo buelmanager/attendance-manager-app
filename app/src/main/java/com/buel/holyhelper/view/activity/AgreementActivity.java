@@ -23,14 +23,14 @@ public class AgreementActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
          if(v.getId() == R.id.detailview1_tv_agreement){
-             MaterialDailogUtil.simpleDoneDialog(AgreementActivity.this, "개인정보 수집/이용약관 및 소식알림 동의", CommonString.PERSON_DATA_CONTROL_INFO, new MaterialDailogUtil.OnDialogSelectListner() {
+             MaterialDailogUtil.Companion.simpleDoneDialog(AgreementActivity.this, "개인정보 수집/이용약관 및 소식알림 동의", CommonString.PERSON_DATA_CONTROL_INFO, new MaterialDailogUtil.OnDialogSelectListner() {
                  @Override
                  public void onSelect(String s) {
 
                  }
              });
          }else if(v.getId() == R.id.checkbox1_agreement){
-             MaterialDailogUtil.simpleYesNoDialog(AgreementActivity.this, "서비스 이용약관에 동의하십니까?", new MaterialDailogUtil.OnDialogSelectListner() {
+             MaterialDailogUtil.Companion.simpleYesNoDialog(AgreementActivity.this, "서비스 이용약관에 동의하십니까?", new MaterialDailogUtil.OnDialogSelectListner() {
                  @Override
                  public void onSelect(String s) {
                      goJoin();

@@ -113,7 +113,7 @@ public class RecyclerViewAdapter
     private void onDeleteBtnClickedListener(View v, int position) {
         final HolyModel.groupModel group = itemArrayList.get(position);
         LoggerHelper.d("MemberShipRecyclerViewAdapter", "btn_item_delete");
-        MaterialDailogUtil.simpleYesNoDialog(v.getContext(), new MaterialDailogUtil.OnDialogSelectListner() {
+        MaterialDailogUtil.Companion.simpleYesNoDialog(v.getContext(), new MaterialDailogUtil.OnDialogSelectListner() {
             @Override
             public void onSelect(String s) {
                 Management groupManager = new GroupManager();

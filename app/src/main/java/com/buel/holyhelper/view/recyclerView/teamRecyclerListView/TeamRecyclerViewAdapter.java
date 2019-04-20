@@ -92,7 +92,7 @@ public class TeamRecyclerViewAdapter
 
     private void onDeleteBtnClickedListener(View v, int position) {
         final HolyModel.groupModel.teamModel team = itemArrayList.get(position);
-        MaterialDailogUtil.simpleYesNoDialog(v.getContext(), s -> {
+        MaterialDailogUtil.Companion.simpleYesNoDialog(v.getContext(), s -> {
             Management teamManager = new TeamManager();
             teamManager.delete(team, data -> {
                 notifyDataSetChanged();

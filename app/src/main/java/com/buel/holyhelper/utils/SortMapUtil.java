@@ -44,10 +44,10 @@ public class SortMapUtil {
     public static List getSortTeamList() {
         LoggerHelper.d("getSortTeamList 1 ");
         HashMap<String, HolyModel.groupModel.teamModel> teamMap
-                = (HashMap<String, HolyModel.groupModel.teamModel>) CommonData.getGroupModel().team;
+                = (HashMap<String, HolyModel.groupModel.teamModel>) CommonData.getTeamMap();
 
 
-        LoggerHelper.d("getSortTeamList CommonData.getGroupModel().teamModel : " + CommonData.getGroupModel().team);
+        LoggerHelper.d("getSortTeamList CommonData.getGroupModel().teamModel : " + CommonData.getTeamMap());
 
         HashMap<Integer, HolyModel.groupModel.teamModel> tempMap = new HashMap<>();
 

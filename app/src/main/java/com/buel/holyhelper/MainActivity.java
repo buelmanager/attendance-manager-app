@@ -8,6 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
 import com.buel.holyhelper.data.AdminMode;
@@ -41,12 +47,6 @@ import com.orhanobut.logger.LoggerHelper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         View.OnClickListener,
@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity
         setTitle("");
 
         if (CommonData.getIsFstEnter() && CommonData.getAppNotice() != null) {
-            MaterialDailogUtil.noticeDialog(
+            MaterialDailogUtil.Companion.noticeDialog(
                     MainActivity.this,
                     CommonData.getAppNotice(),
                     s -> {
@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity
 
     private boolean checkSetTutoMode() {
         if (CommonData.getHolyModel() == null) {
-            MaterialDailogUtil.simpleDoneDialog(MainActivity.this,
+            MaterialDailogUtil.Companion.simpleDoneDialog(MainActivity.this,
                     "#1 단계, 교회 설정을 진행합니다.", s -> {
                         popToast(CommonString.CORP_NICK + " 설정 튜토리얼을 진행합니다.");
                         CommonData.setIsTutoMode(true);
@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity
          *         <item>설정관련 도움말</item>
          *         <item>정보입력 도움말</item>
          */
-        MaterialDailogUtil.simpleListDialog(
+        MaterialDailogUtil.Companion.simpleListDialog(
                 MainActivity.this,
                 R.array.main_hepler_option,
                 R.string.select_helpoer,
@@ -167,7 +167,7 @@ public class MainActivity extends BaseActivity
                 LoggerHelper.d(CommonData.getHolyModel());
 
                 if (CommonData.getHolyModel() == null) {
-                    MaterialDailogUtil.simpleDoneDialog(
+                    MaterialDailogUtil.Companion.simpleDoneDialog(
                             MainActivity.this,
                             CommonString.CORP_NICK + "정보 오류",
                             CommonString.CORP_NICK + " 정보가 정확하지 않습니다.",
@@ -190,7 +190,7 @@ public class MainActivity extends BaseActivity
                                 "\n[ 이메일 : " + CommonData.getHolyModel().adminEmail + " ] " +
                                 "\n[ 연락처 : " + CommonData.getHolyModel().adminPhone + " ] ";
 
-                MaterialDailogUtil.simpleDoneDialog(
+                MaterialDailogUtil.Companion.simpleDoneDialog(
                         MainActivity.this,
                         "권한이 없습니다.",
                         "관리자에게 권한요청을 하세요. \n" + strAdmin,
@@ -214,7 +214,7 @@ public class MainActivity extends BaseActivity
                             }
                         });
             } catch (Exception e) {
-                MaterialDailogUtil.simpleDoneDialog(
+                MaterialDailogUtil.Companion.simpleDoneDialog(
                         MainActivity.this,
                         "단체정보 오류",
                         CommonString.CORP_NICK + " 정보가 정확하지 않습니다.",
@@ -318,7 +318,7 @@ public class MainActivity extends BaseActivity
                 return true;
             }
 
-            MaterialDailogUtil.simpleInputDoneDialog(
+            MaterialDailogUtil.Companion.simpleInputDoneDialog(
                     MainActivity.this,
                     getString(R.string.action_send_sub_admin),
                     "운영 관리자에게 메세지를 보냅니다.",
@@ -340,7 +340,7 @@ public class MainActivity extends BaseActivity
                         }
                     });
         } else if (id == R.id.action_no_price) {
-            MaterialDailogUtil.simpleInputDoneDialog(
+            MaterialDailogUtil.Companion.simpleInputDoneDialog(
                     MainActivity.this,
                     getString(R.string.action_no_price_notice),
                     "무료사용에 대한 사유를 간단히 적어주세요.",
@@ -352,7 +352,7 @@ public class MainActivity extends BaseActivity
                                 aBoolean -> popToast("전달되었습니다. 연락드리겠습니다."));
                     });
         } else if (id == R.id.action_todeveloper) {
-            MaterialDailogUtil.simpleInputDoneDialog(
+            MaterialDailogUtil.Companion.simpleInputDoneDialog(
                     MainActivity.this,
                     getString(R.string.action_todeveloper),
                     "간단한 내용을 여기에 적어주세요",
@@ -399,7 +399,7 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
         if (id == R.id.nav_admin) {
             if (CommonData.getMemberShipType() == UserType.PERSONAL) {
-                MaterialDailogUtil.simpleInputDoneDialog(MainActivity.this, "비번을 입력하세요.", "이름", new MaterialDailogUtil.OnDialogSelectListner() {
+                MaterialDailogUtil.Companion.simpleInputDoneDialog(MainActivity.this, "비번을 입력하세요.", "이름", new MaterialDailogUtil.OnDialogSelectListner() {
                     @Override
                     public void onSelect(String s) {
 
@@ -426,7 +426,7 @@ public class MainActivity extends BaseActivity
             }
         } else if (id == R.id.nav_attendance) {
             if (CommonData.getMemberShipType() == UserType.PERSONAL) {
-                MaterialDailogUtil.simpleInputDoneDialog(MainActivity.this, "비번을 입력하세요.", "이름", new MaterialDailogUtil.OnDialogSelectListner() {
+                MaterialDailogUtil.Companion.simpleInputDoneDialog(MainActivity.this, "비번을 입력하세요.", "이름", new MaterialDailogUtil.OnDialogSelectListner() {
                     @Override
                     public void onSelect(String s) {
 
@@ -456,7 +456,7 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_addmember) {
 
             if (CommonData.getMemberShipType() == UserType.PERSONAL) {
-                MaterialDailogUtil.simpleInputDoneDialog(MainActivity.this, "비번을 입력하세요.", "이름", new MaterialDailogUtil.OnDialogSelectListner() {
+                MaterialDailogUtil.Companion.simpleInputDoneDialog(MainActivity.this, "비번을 입력하세요.", "이름", new MaterialDailogUtil.OnDialogSelectListner() {
                     @Override
                     public void onSelect(String s) {
 
@@ -487,7 +487,7 @@ public class MainActivity extends BaseActivity
                 CommonData.setHistoryClass((Class) MainActivity.this.getClass());
             }
         } else if (id == R.id.exit) {
-            MaterialDailogUtil.simpleYesNoDialog(
+            MaterialDailogUtil.Companion.simpleYesNoDialog(
                     MainActivity.this,
                     new MaterialDailogUtil.OnDialogSelectListner() {
                         @Override

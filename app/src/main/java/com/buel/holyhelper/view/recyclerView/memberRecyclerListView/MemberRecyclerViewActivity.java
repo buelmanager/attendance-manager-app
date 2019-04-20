@@ -6,6 +6,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.buel.holyhelper.R;
 import com.buel.holyhelper.data.AdminMode;
 import com.buel.holyhelper.data.CommonData;
@@ -33,9 +36,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 
 public class MemberRecyclerViewActivity
@@ -208,9 +208,9 @@ public class MemberRecyclerViewActivity
 
     private void setDataAndTime() {
         if (CommonData.getViewMode() != ViewMode.ATTENDANCE) return;
-        MaterialDailogUtil.datePickerDialog(
+        MaterialDailogUtil.Companion.datePickerDialog(
                 MemberRecyclerViewActivity.this,
-                s -> MaterialDailogUtil.showSingleChoice(
+                s -> MaterialDailogUtil.Companion.showSingleChoice(
                         MemberRecyclerViewActivity.this,
                         R.array.days_option,
                         s1 -> {
@@ -494,6 +494,8 @@ public class MemberRecyclerViewActivity
 
         int cnt = 0;
 
+        LoggerHelper.e("getGroupModel().uid : " + CommonData.getGroupModel().uid);
+        LoggerHelper.e("getGroupModel().name : " + CommonData.getGroupModel().name);
         LoggerHelper.e("getTeamModel().uid : " + CommonData.getTeamModel().uid);
         LoggerHelper.e("getTeamModel().name : " + CommonData.getTeamModel().name);
 
@@ -607,7 +609,7 @@ public class MemberRecyclerViewActivity
         if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
             AppUtil.sendSharedData(getApplicationContext(), sendMsg);
         } else {
-            MaterialDailogUtil.noticeDialog(
+            MaterialDailogUtil.Companion.noticeDialog(
                     MemberRecyclerViewActivity.this,
                     strHelper,
                     CommonString.INFO_HELPER_TITLE,
@@ -647,7 +649,7 @@ public class MemberRecyclerViewActivity
                 //showProgressDialog(true);
 
                 if (isAttendModifyed) {
-                    MaterialDailogUtil.simpleYesNoDialog(MemberRecyclerViewActivity.this, "출석이 변경되었습니다. 저장하지 않고 나가시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
+                    MaterialDailogUtil.Companion.simpleYesNoDialog(MemberRecyclerViewActivity.this, "출석이 변경되었습니다. 저장하지 않고 나가시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
                         @Override
                         public void onSelect(String s) {
                             goMain();
@@ -663,7 +665,7 @@ public class MemberRecyclerViewActivity
             setDataAndTime();
         } else if (v.getId() == R.id.top_bar_tv_detail_desc) {            //수정하기 버튼
 
-            MaterialDailogUtil.CustomDailogManager(
+            MaterialDailogUtil.Companion.CustomDailogManager(
                     this,
                     sendMsg2,
                     "통계 보기",
@@ -676,7 +678,7 @@ public class MemberRecyclerViewActivity
         } else if (v.getId() == R.id.top_bar_btn_ok) {            //수정하기 버튼
 
             if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
-                MaterialDailogUtil.noticeDialog(
+                MaterialDailogUtil.Companion.noticeDialog(
                         this,
                         sendMsg2,
                         "서버에 저장 하시겠습니까?",

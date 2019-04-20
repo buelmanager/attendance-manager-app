@@ -194,7 +194,7 @@ public class MemberShipRecyclerViewAdapter
         else title = "권한을 승인 하시겠습니까?";
 
         LoggerHelper.d("MemberShipRecyclerViewAdapter", "btn_item_delete");
-        MaterialDailogUtil.simpleYesNoDialog( v.getContext(), "권한을 변경하시겠습니까?" , new MaterialDailogUtil.OnDialogSelectListner() {
+        MaterialDailogUtil.Companion.simpleYesNoDialog( v.getContext(), "권한을 변경하시겠습니까?" , new MaterialDailogUtil.OnDialogSelectListner() {
             @Override
             public void onSelect(String s) {
                 onOkclickedModify(position, userModel);

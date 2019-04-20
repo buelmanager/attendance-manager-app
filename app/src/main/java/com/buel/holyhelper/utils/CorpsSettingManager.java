@@ -14,7 +14,7 @@ import com.commonLib.MaterialDailogUtil;
 public class CorpsSettingManager {
 
     public static void setTeam(Context context) {
-        MaterialDailogUtil.getTeamDialog(context,
+        MaterialDailogUtil.Companion.getTeamDialog(context,
                 new SimpleListener.OnCompleteListener() {
                     @Override
                     public void onComplete() {
@@ -25,7 +25,7 @@ public class CorpsSettingManager {
 
     public static void setGroup(Context context) {
         //@Deprecated : 그룹이동 불가능 하도록 수정
-        MaterialDailogUtil.getGroupDialog(context,
+        MaterialDailogUtil.Companion.getGroupDialog(context,
                 new SimpleListener.OnCompleteListener() {
                     @Override
                     public void onComplete() {
@@ -38,7 +38,7 @@ public class CorpsSettingManager {
 
     public static void setTeam(Context context,
                                DataTypeListener.OnCompleteListener<HolyModel.groupModel.teamModel> teamOnCompleteListener) {
-        MaterialDailogUtil.getTeamDialog(context,
+        MaterialDailogUtil.Companion.getTeamDialog(context,
                 new SimpleListener.OnCompleteListener() {
                     @Override
                     public void onComplete() {
@@ -54,7 +54,7 @@ public class CorpsSettingManager {
     public static void setGroup(Context context,
                                 DataTypeListener.OnCompleteListener<HolyModel.groupModel> groupOnCompleteListener) {
         //@Deprecated : 그룹이동 불가능 하도록 수정
-        MaterialDailogUtil.getGroupDialog(context,
+        MaterialDailogUtil.Companion.getGroupDialog(context,
                 new SimpleListener.OnCompleteListener() {
                     @Override
                     public void onComplete() {
@@ -69,7 +69,7 @@ public class CorpsSettingManager {
 
     public static void setTeam(Context context,
                                SimpleListener.OnCompleteListener onCompleteListener) {
-        MaterialDailogUtil.getTeamDialog(context,
+        MaterialDailogUtil.Companion.getTeamDialog(context,
                 new SimpleListener.OnCompleteListener() {
                     @Override
                     public void onComplete() {
@@ -85,7 +85,7 @@ public class CorpsSettingManager {
     public static void setGroup(Context context,
                                 SimpleListener.OnCompleteListener onCompleteListener) {
 
-        MaterialDailogUtil.getGroupDialog(context,
+        MaterialDailogUtil.Companion.getGroupDialog(context,
                 new SimpleListener.OnCompleteListener() {
                     @Override
                     public void onComplete() {

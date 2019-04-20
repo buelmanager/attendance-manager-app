@@ -106,7 +106,7 @@ public class MemberShipRecyclerViewActivity extends BaseActivity implements View
         }
 
 
-        MaterialDailogUtil.noticeDialog(
+        MaterialDailogUtil.Companion.noticeDialog(
                 MemberShipRecyclerViewActivity.this,
                 strHelper,
                 CommonString.INFO_HELPER_TITLE,

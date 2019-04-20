@@ -58,7 +58,7 @@ public class BarChartRecyclerViewActivity extends BaseActivity {
 
         if (CommonData.getViewMode() != ViewMode.BRIEFING) return;
 
-        MaterialDailogUtil.datePickerDialog(
+        MaterialDailogUtil.Companion.datePickerDialog(
                 BarChartRecyclerViewActivity.this,
                 new MaterialDailogUtil.OnDialogSelectListner() {
                     @Override
@@ -73,7 +73,7 @@ public class BarChartRecyclerViewActivity extends BaseActivity {
                                 CommonData.getSelectedMonth() + "/" +
                                 CommonData.getSelectedDay() + "/" +
                                 CommonData.getSelectedDayOfWeek());
-                        MaterialDailogUtil.showSingleChoice(
+                        MaterialDailogUtil.Companion.showSingleChoice(
                                 BarChartRecyclerViewActivity.this,
                                 R.array.days_option,
 

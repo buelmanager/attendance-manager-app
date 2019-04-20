@@ -3,18 +3,10 @@ package com.commonLib
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.CompoundButton
-import android.widget.DatePicker
-import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.TimePicker
-import android.widget.Toast
-
-import com.afollestad.materialdialogs.DialogAction
+import android.widget.*
 import com.afollestad.materialdialogs.MaterialDialog
 import com.buel.holyhelper.R
 import com.buel.holyhelper.data.CommonData
@@ -22,20 +14,13 @@ import com.buel.holyhelper.data.CommonString
 import com.buel.holyhelper.data.FDDatabaseHelper
 import com.buel.holyhelper.model.HolyModel
 import com.buel.holyhelper.utils.AppUtil
-import com.buel.holyhelper.utils.SortMapUtil
 import com.buel.holyhelper.view.DataTypeListener
 import com.buel.holyhelper.view.SimpleListener
 import com.buel.holyhelper.view.activity.CorpsManagerViewActivity
 import com.buel.holyhelper.view.activity.GroupManagerViewActivity
-import com.google.firebase.firestore.QuerySnapshot
 import com.orhanobut.logger.LoggerHelper
-
 import java.text.SimpleDateFormat
-import java.util.ArrayList
-import java.util.Calendar
-import java.util.Date
-import androidx.annotation.RequiresApi
-import com.commonLib.MaterialDailogUtil.Companion.isCancelable
+import java.util.*
 
 /**
  * Created by 19001283 on 2018-07-09.
@@ -95,8 +80,7 @@ class MaterialDailogUtil {
 
             val selGroup = CommonData.getSelectedGroup()
 
-            //ArrayList<String> names = FDDatabaseHelper.INSTANCE.getTeamNameList(CommonData.getSelectedGroup().team);
-            val names = FDDatabaseHelper.getTeamNameList(CommonData.getSelectedGroup().team)
+            val names = CommonData.getTeamMap().filter { it.value.groupUid == selGroup.uid }.map { it.value.name }
 
             return MaterialDialog.Builder(context)
                     .title(CommonString.INFO_TITLE_CONTROL_TEAM)
@@ -104,32 +88,18 @@ class MaterialDailogUtil {
                     .items(names)
                     .cancelable(isCancelable)
                     .itemsCallback { dialog, view, which, text ->
-                        val teams = SortMapUtil.getSortTeamList()
-                        var team: HolyModel.groupModel.teamModel? = null
-                        for (eleTeam in teams) {
+                        val teams = CommonData.getTeamMap()
 
-                            LoggerHelper.e("SortMapUtil.getInteger(eleTeam.name) : " + SortMapUtil.getInteger(eleTeam.name)!!)
-                            LoggerHelper.e("SortMapUtil.String.valueOf(text) : $text")
+                        var team: HolyModel.groupModel.teamModel? = teams.values.find {
 
-                            val intTxt = SortMapUtil.getInteger(text.toString())!!
-                            val intCompare = SortMapUtil.getInteger(eleTeam.name)!!
-
-                            LoggerHelper.e("compare : " + (intTxt == intCompare))
-
-                            if (intTxt == intCompare) {
-                                team = eleTeam
-                                LoggerHelper.e("MaterialDialog getTeamDialog", team!!.name + " // " + team.uid)
-                                break
-                            }
+                            LoggerHelper.d("CommonData.getSelectedGroup().name : " + CommonData.getSelectedGroup().uid + " / " + "it.groupUid : " + it.groupUid)
+                            LoggerHelper.d("text.toString() : " + text.toString()  + " / " + "it.name : " + it.name)
+                            it.groupUid == CommonData.getSelectedGroup().uid &&
+                                    it.name == text.toString()
                         }
 
-                        try {
-                            team!!.name = SortMapUtil.getInteger(team.name)!!.toString()
-                            CommonData.setSelectedTeam(team)
-                            CommonData.setTeamModel(team)
-                        } catch (e: Exception) {
-                            LoggerHelper.e("e : " + e.message)
-                        }
+                        CommonData.setSelectedTeam(team)
+                        CommonData.setTeamModel(team)
 
                         onCompleteListener.onComplete()
                     }.show()
@@ -139,7 +109,7 @@ class MaterialDailogUtil {
 
             if (CommonData.getHolyModel() == null) {
                 Toast.makeText(context, CommonString.INFO_TITLE_CONTROL_CORP, Toast.LENGTH_SHORT).show()
-                CommonData.setHistoryClass(context.javaClass as Class<*>)
+                //CommonData.setHistoryClass(context.javaClass as Class<T>?)
                 val intent = Intent(context.applicationContext, CorpsManagerViewActivity::class.java)
                 context.startActivity(intent)
                 return null
@@ -147,7 +117,7 @@ class MaterialDailogUtil {
 
             if (CommonData.getHolyModel().group == null || CommonData.getHolyModel().group.size == 0) {
                 Toast.makeText(context, CommonString.GROUP_NICK + " 리스트가 없어 생성화면으로 이동합니다.", Toast.LENGTH_SHORT).show()
-                CommonData.setHistoryClass(context.javaClass as Class<*>)
+                //CommonData.setHistoryClass(context.javaClass as Class<*>)
                 val intent = Intent(context.applicationContext, GroupManagerViewActivity::class.java)
                 context.startActivity(intent)
                 return null
@@ -294,7 +264,6 @@ class MaterialDailogUtil {
                     .show()
 
         }
-
 
         fun simpleInputDoneDialog(context: Context, title: String, hint: String,
                                   selectListner: OnDialogSelectListner?) {
@@ -727,11 +696,13 @@ class MaterialDailogUtil {
                     .show()
         }
 
+        @SuppressLint("NewApi")
         fun timePickerDialog(context: Context, selectListner: OnDialogSelectListner?) {
             val pickerView = LayoutInflater.from(context)
                     .inflate(R.layout.dialog_timepicker, null)
 
-            val timePicker = pickerView.findViewById<TimePicker>(R.id.timePicker)
+            val timePicker: TimePicker = pickerView.findViewById<TimePicker>(R.id.timePicker)
+
 
             val dialog = MaterialDialog.Builder(context)
                     .title("시간을 선택하세요.")

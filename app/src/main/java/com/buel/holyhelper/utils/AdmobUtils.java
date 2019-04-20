@@ -98,7 +98,8 @@ public class AdmobUtils {
     public static void loadRewardInterstitialAd() {
         if (CommonData.getIsAdsOpen().equals("true")) {
             if (CommonData.getCurrentPremiumType() == PremiupType.NORAML)
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                if (mInterstitialAd.isLoaded())
+                    mInterstitialAd.loadAd(new AdRequest.Builder().build());
         }
     }
 }

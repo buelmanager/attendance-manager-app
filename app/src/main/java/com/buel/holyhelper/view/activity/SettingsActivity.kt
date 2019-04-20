@@ -26,6 +26,7 @@ import com.buel.holyhelper.view.SimpleListener
 import com.buel.holyhelper.view.recyclerView.memberShipRecyclerView.MemberShipRecyclerViewActivity
 import com.commonLib.Common
 import com.commonLib.MaterialDailogUtil
+import com.commonLib.MaterialDailogUtil.Companion.simpleYesNoDialog
 import com.commonLib.SuperToastUtil
 import com.orhanobut.logger.LoggerHelper
 import kotlinx.coroutines.runBlocking
@@ -84,10 +85,13 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
                 MaterialDailogUtil.customDialog(
                         this@SettingsActivity,
-                        linearLayout
-                ) { s ->
+                        linearLayout ,
+                        selectListner = object : MaterialDailogUtil.OnDialogSelectListner {
+                            override fun onSelect(s: String) {
 
-                }
+                            }
+                        }
+                )
             }
 
             R.id.preference_activity_ll_4 -> {
@@ -144,13 +148,15 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
                     return
                 }
 
-
-                MaterialDailogUtil.simpleYesNoDialog(
+                simpleYesNoDialog(
                         this@SettingsActivity,
-                        "저장하시겠습니까?"
-                ) { s ->
-                    PoiUtil.saveAndShareMembers(this@SettingsActivity) { SuperToastUtil.toastE(this@SettingsActivity, " 저장이 완료되었습니다.") }
-                }
+                        "저장하시겠습니까?",
+                        object : MaterialDailogUtil.OnDialogSelectListner {
+                            override fun onSelect(s: String) {
+                                PoiUtil.saveAndShareMembers(this@SettingsActivity) { SuperToastUtil.toastE(this@SettingsActivity, " 저장이 완료되었습니다.") }
+                            }
+                        }
+                )
             }
 
             R.id.preference_activity_ll_8 -> {
@@ -161,25 +167,25 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
                 }
 
 
-                MaterialDailogUtil.simpleYesNoDialog(
+                simpleYesNoDialog(
                         this@SettingsActivity,
-                        "불러오시겠습니까?"
-                ) { s ->
+                        "불러오시겠습니까?",
+                        object : MaterialDailogUtil.OnDialogSelectListner {
+                            override fun onSelect(s: String) {
+                                AppUtil.checkAppPermission(this@SettingsActivity)
 
-                    AppUtil.checkAppPermission(this@SettingsActivity)
+                                LoggerHelper.d("Environment.getExternalStorageDirectory() : " + Environment.getExternalStorageDirectory())
+                                val intent1 = Intent()
+                                        .setType("*/*")
+                                        .setAction(Intent.ACTION_GET_CONTENT)
 
-                    LoggerHelper.d("Environment.getExternalStorageDirectory() : " + Environment.getExternalStorageDirectory())
-                    val intent1 = Intent()
-                            .setType("*/*")
-                            .setAction(Intent.ACTION_GET_CONTENT)
-
-                    startActivityForResult(Intent.createChooser(intent1, "Select a file"), 123)
-
-                }
+                                startActivityForResult(Intent.createChooser(intent1, "Select a file"), 123)
+                            }
+                        }
+                )
             }
-            R.id.preference_activity_ll_9 ->
 
-                popToast("준비중입니다.")
+            R.id.preference_activity_ll_9 ->    popToast("준비중입니다.")
             else -> {
             }
         }//if (!readyToPurchase) return;
@@ -194,9 +200,15 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
                     for (eleReason in missList!!) {
                         strReason += eleReason + "\n"
                     }
-                    MaterialDailogUtil.simpleDoneDialog(this@SettingsActivity, "업로드 실패한 명단", strReason) {
-                        //goMain();
-                    }
+                    MaterialDailogUtil.simpleDoneDialog(
+                            this@SettingsActivity,
+                            "업로드 실패한 명단",
+                            strReason ,
+                            selectListner = object : MaterialDailogUtil.OnDialogSelectListner {
+                                override fun onSelect(s: String) {
+
+                                }
+                            })
                 }
             })
         })
@@ -207,18 +219,19 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
             super.onActivityResult(requestCode, resultCode, data)
         }
         if (requestCode == 123 && resultCode == Activity.RESULT_OK) {
-            MaterialDailogUtil.simpleYesNoDialog(
+            simpleYesNoDialog(
                     this@SettingsActivity,
-                    "서버에 저장 하시겠습니까?"
-            ) { s ->
-                super@SettingsActivity.showProgressDialog(true)
-                //val runner = AsyncTaskRunner()
-                //runner.execute()
-                ExcelData = data
-                setGroupCoroutineExcelData()
-            }
+                    "서버에 저장 하시겠습니까?",
+                    selectListner = object : MaterialDailogUtil.OnDialogSelectListner {
+                override fun onSelect(s: String) {
+                    super@SettingsActivity.showProgressDialog(true)
+                    //val runner = AsyncTaskRunner()
+                    //runner.execute()
+                    ExcelData = data
+                    setGroupCoroutineExcelData()
+                }
+            })
         }
-
     }
 
     var membersList: ArrayList<HolyModel.memberModel> = arrayListOf()

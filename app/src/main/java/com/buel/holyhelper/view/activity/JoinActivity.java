@@ -137,7 +137,7 @@ public class JoinActivity extends BaseActivity implements View.OnClickListener {
     private void joinStep1() {
         super.setTopTitleDesc("계정 타입을 설정");
 
-        MaterialDailogUtil.showSingleChoice(
+        MaterialDailogUtil.Companion.showSingleChoice(
                 JoinActivity.this,
                 "계정 타입을 설정해 주세요.",
                 R.array.membership_option,
@@ -161,7 +161,7 @@ public class JoinActivity extends BaseActivity implements View.OnClickListener {
                         okList.add("동의합니다.");
                         okList.add("다시 선택하겠습니다.");
 
-                        MaterialDailogUtil.showSingleChoice(
+                        MaterialDailogUtil.Companion.showSingleChoice(
                                 JoinActivity.this,
                                 "[ " + userTypeName + " ] 계정으로 선택하셨습니다. \n동의하십니까?",
                                 okList,
@@ -240,7 +240,7 @@ public class JoinActivity extends BaseActivity implements View.OnClickListener {
         LoggerHelper.d ("onClickedSetSerial" , "CommonData.getAdminMode() : " + CommonData.getAdminMode());
         LoggerHelper.d ("onClickedSetSerial" , "isClickedSetSerial : " + isClickedSetSerial);
         if (CommonData.getAdminMode() == AdminMode.MODIFY && !isClickedSetSerial && CommonData.getMemberShipType() != UserType.SUPER_ADMIN) {
-            MaterialDailogUtil.simpleYesNoDialog(JoinActivity.this, CommonString.CORP_NICK + " 을/를 선택시 [운영 관리자] 권한을 다시 요청해야 합니다. 실행하시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
+            MaterialDailogUtil.Companion.simpleYesNoDialog(JoinActivity.this, CommonString.CORP_NICK + " 을/를 선택시 [운영 관리자] 권한을 다시 요청해야 합니다. 실행하시겠습니까?", new MaterialDailogUtil.OnDialogSelectListner() {
                 @Override
                 public void onSelect(String s) {
                     isClickedSetSerial =true;
@@ -250,7 +250,7 @@ public class JoinActivity extends BaseActivity implements View.OnClickListener {
             return;
         }
 
-        MaterialDailogUtil.simpleInputDoneDialog(JoinActivity.this, "교회 찾기!", "교회 이름만 넣어도 됩니다.", new MaterialDailogUtil.OnDialogSelectListner() {
+        MaterialDailogUtil.Companion.simpleInputDoneDialog(JoinActivity.this, "교회 찾기!", "교회 이름만 넣어도 됩니다.", new MaterialDailogUtil.OnDialogSelectListner() {
             @Override
             public void onSelect(String s) {
 
@@ -286,7 +286,7 @@ public class JoinActivity extends BaseActivity implements View.OnClickListener {
                             }
                         }
 
-                        MaterialDailogUtil.showSingleChoice(JoinActivity.this, CommonString.CORP_NICK + " 을/를 선택하세요.", tempList, new MaterialDailogUtil.OnDialogSelectListner() {
+                        MaterialDailogUtil.Companion.showSingleChoice(JoinActivity.this, CommonString.CORP_NICK + " 을/를 선택하세요.", tempList, new MaterialDailogUtil.OnDialogSelectListner() {
                             @Override
                             public void onSelect(String s) {
 

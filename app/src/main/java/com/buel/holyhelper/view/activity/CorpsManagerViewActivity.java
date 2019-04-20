@@ -170,7 +170,7 @@ public class CorpsManagerViewActivity
                                 FDDatabaseHelper.INSTANCE.getMyCorps(new SimpleListener.OnCompleteListener() {
                                     @Override
                                     public void onComplete() {
-                                        MaterialDailogUtil.simpleDoneDialog(CorpsManagerViewActivity.this,
+                                        MaterialDailogUtil.Companion.simpleDoneDialog(CorpsManagerViewActivity.this,
                                                 "#2 단계, 부서설정을 진행합니다.", new MaterialDailogUtil.OnDialogSelectListner() {
                                                     @Override
                                                     public void onSelect(String s) {
@@ -221,7 +221,7 @@ public class CorpsManagerViewActivity
                 if (CommonData.getMemberShipType() != UserType.SUPER_ADMIN) {
                     String title = "권한이 없습니다.";
                     String ment = CommonData.getUserModel().userType + " 유저는 해당 권한이없습니다. 관리자에게 문의하세요.";
-                    MaterialDailogUtil.simpleDoneDialog(CorpsManagerViewActivity.this, title, ment, new MaterialDailogUtil.OnDialogSelectListner() {
+                    MaterialDailogUtil.Companion.simpleDoneDialog(CorpsManagerViewActivity.this, title, ment, new MaterialDailogUtil.OnDialogSelectListner() {
                         @Override
                         public void onSelect(String s) {
                             goSelect();

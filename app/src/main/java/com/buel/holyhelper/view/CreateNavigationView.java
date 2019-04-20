@@ -101,7 +101,7 @@ public class CreateNavigationView implements RewardedVideoAdListener {
                         "Level 4 : " + CommonData.getLevel4() + " point 이상 ~" + "<br>" +
                         "Level 5 : " + CommonData.getLevel5() + " point 이상 ~" + "<br>";
 
-        dominateAdsHelpBtn.setOnClickListener(view1 -> MaterialDailogUtil.noticeDialog(
+        dominateAdsHelpBtn.setOnClickListener(view1 -> MaterialDailogUtil.Companion.noticeDialog(
                 context,
                 GUIDE_HELPER_POINT,
                 CommonString.INFO_LEVEL_HELPER_TITLE,

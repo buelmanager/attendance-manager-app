@@ -172,7 +172,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
             //로그인 버튼 클릭
             case R.id.top_bar_btn_back:
-                MaterialDailogUtil.simpleYesNoDialog(v.getContext(), "종료하시겠습니까?",
+                MaterialDailogUtil.Companion.simpleYesNoDialog(v.getContext(), "종료하시겠습니까?",
                         new MaterialDailogUtil.OnDialogSelectListner() {
                             @Override
                             public void onSelect(String s) {

@@ -64,7 +64,7 @@ public class YearBriefingRecyclerFragment extends AbstBriefingFragment {
             tvTitle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    MaterialDailogUtil.noticeDialog(
+                    MaterialDailogUtil.Companion.noticeDialog(
                             view.getContext(),
                             message,
                             "월간 통계란?",

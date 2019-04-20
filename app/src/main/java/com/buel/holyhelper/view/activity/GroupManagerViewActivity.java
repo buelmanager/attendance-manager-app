@@ -145,7 +145,7 @@ public class GroupManagerViewActivity extends BaseActivity implements View.OnCli
                                     }
                                 } catch (Exception e) {
                                 }
-                                MaterialDailogUtil.simpleDoneDialog(GroupManagerViewActivity.this,
+                                MaterialDailogUtil.Companion.simpleDoneDialog(GroupManagerViewActivity.this,
                                         "#3 단계, 소그룹 설정을 진행합니다.", s -> goSetTeam());
                             } else {
                                 goGroupRecycler();
@@ -204,7 +204,7 @@ public class GroupManagerViewActivity extends BaseActivity implements View.OnCli
                 if (!CommonData.getUserModel().userType.equals(UserType.SUPER_ADMIN.toString())) {
                     String title = "권한이 없습니다.";
                     String ment = CommonData.getUserModel().userType + " 유저는 해당 권한이없습니다. 관리자에게 문의하세요.";
-                    MaterialDailogUtil.simpleDoneDialog(GroupManagerViewActivity.this, title, ment, new MaterialDailogUtil.OnDialogSelectListner() {
+                    MaterialDailogUtil.Companion.simpleDoneDialog(GroupManagerViewActivity.this, title, ment, new MaterialDailogUtil.OnDialogSelectListner() {
                         @Override
                         public void onSelect(String s) {
                             goGroupRecycler();

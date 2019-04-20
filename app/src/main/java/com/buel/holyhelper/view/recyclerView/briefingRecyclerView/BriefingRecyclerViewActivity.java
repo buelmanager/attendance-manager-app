@@ -48,7 +48,7 @@ public class BriefingRecyclerViewActivity extends BaseActivity {
     private void setDataAndTime() {
         if (CommonData.getViewMode() != ViewMode.BRIEFING) return;
 
-        MaterialDailogUtil.datePickerDialog(
+        MaterialDailogUtil.Companion.datePickerDialog(
                 BriefingRecyclerViewActivity.this,
                 s -> {
                     LoggerHelper.d(CommonData.getSelectedYear() + "/" +
@@ -60,7 +60,7 @@ public class BriefingRecyclerViewActivity extends BaseActivity {
                             CommonData.getSelectedMonth() + "/" +
                             CommonData.getSelectedDay() + "/" +
                             CommonData.getSelectedDayOfWeek());
-                    MaterialDailogUtil.showSingleChoice(
+                    MaterialDailogUtil.Companion.showSingleChoice(
                             BriefingRecyclerViewActivity.this,
                             R.array.days_option,
                             s1 -> {

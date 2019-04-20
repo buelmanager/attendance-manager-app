@@ -115,6 +115,7 @@ object FDDatabaseHelper {
 
                     for (documentSnapshot in documentSnapshots) {
                         tempMap[documentSnapshot.id] = documentSnapshot.toObject<HolyModel.groupModel>(HolyModel.groupModel::class.java)
+                        tempMap[documentSnapshot.id]?.uid = documentSnapshot.id
                     }
 
                     CommonData.getHolyModel().group = tempMap
@@ -141,6 +142,7 @@ object FDDatabaseHelper {
 
                     for (documentSnapshot in documentSnapshots) {
                         tempMap[documentSnapshot.id] = documentSnapshot.toObject<HolyModel.groupModel.teamModel>(HolyModel.groupModel.teamModel::class.java)
+                        tempMap[documentSnapshot.id]?.uid = documentSnapshot.id
                     }
                     CommonData.getGroupModel().team = tempMap
                     CommonData.setTeamMap(tempMap)
@@ -166,6 +168,7 @@ object FDDatabaseHelper {
 
                     for (documentSnapshot in documentSnapshots) {
                         tempMap[documentSnapshot.id] = documentSnapshot.toObject<HolyModel.groupModel.teamModel>(HolyModel.groupModel.teamModel::class.java)
+                        tempMap[documentSnapshot.id]?.uid = documentSnapshot.id
                     }
                     //CommonData.getGroupModel().team = tempMap
                     CommonData.setTeamMap(tempMap)

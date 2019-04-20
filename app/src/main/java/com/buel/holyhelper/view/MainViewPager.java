@@ -74,7 +74,7 @@ public class MainViewPager {
 
             return;
         }
-        MaterialDailogUtil.datePickerDialog(
+        MaterialDailogUtil.Companion.datePickerDialog(
                 context,
                 s -> {
 
@@ -83,7 +83,7 @@ public class MainViewPager {
                             CommonData.getSelectedDay() + "/" +
                             CommonData.getSelectedDayOfWeek());
 
-                    MaterialDailogUtil.showSingleChoice(
+                    MaterialDailogUtil.Companion.showSingleChoice(
                             context,
                             R.array.days_option,
                             s1 -> {

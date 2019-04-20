@@ -72,7 +72,7 @@ public class PoiUtil {
         }
 
         File xlsFile= PoiUtil.saveXlsExcel(context, membersList);
-        MaterialDailogUtil.simpleYesNoDialog(context, "공유하시겠습니까?", s -> {
+        MaterialDailogUtil.Companion.simpleYesNoDialog(context, "공유하시겠습니까?", s -> {
             if (s.equals("ok")) {
 
                 onCompleteListener.onComplete();

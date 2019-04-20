@@ -13,6 +13,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.buel.holyhelper.MainActivity;
 import com.buel.holyhelper.R;
 import com.buel.holyhelper.data.AdminMode;
@@ -39,8 +42,6 @@ import com.orhanobut.logger.LoggerHelper;
 
 import org.apache.poi.ss.formula.functions.T;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import me.toptas.fancyshowcase.FancyShowCaseView;
 import me.toptas.fancyshowcase.listener.OnViewInflateListener;
 
@@ -194,7 +195,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     //FancyShowCaseView fancy 가이드를 보여줍니다.
     public void setGuideDailogAndOpenFabset(String ment, String title, FloatingActionButton targetfab) {
-        MaterialDailogUtil.simpleDoneDialog(
+        MaterialDailogUtil.Companion.simpleDoneDialog(
                 BaseActivity.this,
                 title,
                 ment,
@@ -291,15 +292,15 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         }*/
 
         if (value)
-            MaterialDailogUtil.showProgressDialog(true);
+            MaterialDailogUtil.Companion.showProgressDialog(true);
         else
-            MaterialDailogUtil.showProgressDialog(false);
+            MaterialDailogUtil.Companion.showProgressDialog(false);
     }
 
     public void setProgressDialog(String str) {
         if (str == null)
             str = "잠시만 기다려 주세요.";
-        MaterialDailogUtil.progressDialog(
+        MaterialDailogUtil.Companion.progressDialog(
                 BaseActivity.this,
                 "",
                 str,
@@ -307,7 +308,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void deleteProgressDialog() {
-        MaterialDailogUtil.deleteProgressDialog();
+        MaterialDailogUtil.Companion.deleteProgressDialog();
     }
 
     public void setAllFabVisibled(Boolean visibled) {
@@ -370,7 +371,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void setAlnalyticeMode() {
-        MaterialDailogUtil.simpleListDialog(
+        MaterialDailogUtil.Companion.simpleListDialog(
                 BaseActivity.this,
                 R.array.anal_mode,
                 s -> {
@@ -417,7 +418,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         int id = view.getId();
         if (id == R.id.switch_fab) {
-            LoggerHelper.d("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!switch_fab");
+            //LoggerHelper.d("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!switch_fab");
             isFabOpen = !isFabOpen;
         } else if (id == R.id.fab_4th_btn) {
             set4thFabBtn();
@@ -492,7 +493,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     public void goBackHistory(Class<T> hitoryClass) {
         if (CommonData.isTutoMode()) {
-            MaterialDailogUtil.simpleYesNoDialog(BaseActivity.this, "튜토리얼을 완료해주세요!", new MaterialDailogUtil.OnDialogSelectListner() {
+            MaterialDailogUtil.Companion.simpleYesNoDialog(BaseActivity.this, "튜토리얼을 완료해주세요!", new MaterialDailogUtil.OnDialogSelectListner() {
                 @Override
                 public void onSelect(String s) {
                 }
@@ -505,7 +506,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     public void goBackHistory() {
         if (CommonData.isTutoMode()) {
-            MaterialDailogUtil.simpleDoneDialog(BaseActivity.this, "튜토리얼을 완료해주세요!.", new MaterialDailogUtil.OnDialogSelectListner() {
+            MaterialDailogUtil.Companion.simpleDoneDialog(BaseActivity.this, "튜토리얼을 완료해주세요!.", new MaterialDailogUtil.OnDialogSelectListner() {
                 @Override
                 public void onSelect(String s) {
 
@@ -533,7 +534,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void goLogout(String title) {
-        MaterialDailogUtil.simpleDoneDialog(BaseActivity.this, title, new MaterialDailogUtil.OnDialogSelectListner() {
+        MaterialDailogUtil.Companion.simpleDoneDialog(BaseActivity.this, title, new MaterialDailogUtil.OnDialogSelectListner() {
             @Override
             public void onSelect(String s) {
 
@@ -550,7 +551,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void goLogout() {
-        MaterialDailogUtil.simpleDoneDialog(BaseActivity.this, "진입경로가 잘못되었습니다.앱을 재실행 해야합니다.", new MaterialDailogUtil.OnDialogSelectListner() {
+        MaterialDailogUtil.Companion.simpleDoneDialog(BaseActivity.this, "진입경로가 잘못되었습니다.앱을 재실행 해야합니다.", new MaterialDailogUtil.OnDialogSelectListner() {
             @Override
             public void onSelect(String s) {
 

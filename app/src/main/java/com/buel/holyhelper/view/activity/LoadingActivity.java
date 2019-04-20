@@ -162,7 +162,7 @@ public class LoadingActivity extends BaseActivity {
         LoggerHelper.i("device_version > app_ver : " + device_version + " // " + app_ver);
         if (device_version < app_ver) {
             LoggerHelper.i("displayMessage app_upgrade");
-            MaterialDailogUtil.simpleDoneDialog(
+            MaterialDailogUtil.Companion.simpleDoneDialog(
                     LoadingActivity.this,
                     "업그레이드가 필요합니다.",
                     "확인버튼을 클릭하여 업그레이드를 실행하여주세요. \n업데이트가 되지 않으면 삭제후 다시 설치해주세요.",

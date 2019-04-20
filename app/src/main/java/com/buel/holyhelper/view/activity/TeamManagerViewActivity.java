@@ -166,7 +166,7 @@ public class TeamManagerViewActivity extends BaseActivity implements View.OnClic
                                     }
                                 } catch (Exception e) {
                                 }
-                                MaterialDailogUtil.simpleDoneDialog(TeamManagerViewActivity.this,
+                                MaterialDailogUtil.Companion.simpleDoneDialog(TeamManagerViewActivity.this,
                                         "#4 단계, 최초 회원 등록을 진행합니다.", new MaterialDailogUtil.OnDialogSelectListner() {
                                             @Override
                                             public void onSelect(String s) {
@@ -237,7 +237,7 @@ public class TeamManagerViewActivity extends BaseActivity implements View.OnClic
                 if (!CommonData.getUserModel().userType.equals(UserType.SUPER_ADMIN.toString())) {
                     String title = "권한이 없습니다.";
                     String ment = CommonData.getUserModel().userType + " 유저는 해당 권한이없습니다. 관리자에게 문의하세요.";
-                    MaterialDailogUtil.simpleDoneDialog(TeamManagerViewActivity.this, title, ment, new MaterialDailogUtil.OnDialogSelectListner() {
+                    MaterialDailogUtil.Companion.simpleDoneDialog(TeamManagerViewActivity.this, title, ment, new MaterialDailogUtil.OnDialogSelectListner() {
                         @Override
                         public void onSelect(String s) {
                             goGroupRecycler();

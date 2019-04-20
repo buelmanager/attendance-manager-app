@@ -144,7 +144,7 @@ public class DetailBriefingFragment extends AbstBriefingFragment {
             @Override
             public void onClick(View v) {
                 if (selectedAttendDataModel != null) {
-                    MaterialDailogUtil.shareKakaoMessage(context, type1 + " 통계 ", selectedAttendDataModel.getPopMent(), selectedAttendDataModel.getTxtypeMent());
+                    MaterialDailogUtil.Companion.shareKakaoMessage(context, type1 + " 통계 ", selectedAttendDataModel.getPopMent(), selectedAttendDataModel.getTxtypeMent());
                 }else{
                     Toast.makeText(context, "출석 정보가 없습니다.", Toast.LENGTH_SHORT).show();
                 }
