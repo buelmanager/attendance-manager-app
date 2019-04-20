@@ -5,16 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.buel.holyhelper.R
-import com.buel.holyhelper.data.AdminMode
-import com.buel.holyhelper.data.CommonData
-import com.buel.holyhelper.data.CommonString
-import com.buel.holyhelper.data.FDDatabaseHelper
-import com.buel.holyhelper.data.ViewMode
+import com.buel.holyhelper.data.*
 import com.buel.holyhelper.management.AttendMemberManager
 import com.buel.holyhelper.management.MemberManager
 import com.buel.holyhelper.management.firestore.FireStoreAttendManager
@@ -30,15 +24,13 @@ import com.commonLib.Common
 import com.commonLib.MaterialDailogUtil
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.orhanobut.logger.LoggerHelper
-
 import java.text.DecimalFormat
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
 
 class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.OnCompleteListener, View.OnClickListener {
-    internal var recyclerView: RecyclerView
-    internal var holderAdapter: MemberRecyclerViewAdapter
+    lateinit internal var recyclerView: RecyclerView
+    lateinit internal var holderAdapter: MemberRecyclerViewAdapter
     private var isIntoMode: ViewMode? = null
     private val isModifyMode = false
 
@@ -219,7 +211,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
     private fun setRecyclerView() {
         membersArrayList = null
         try {
-            membersArrayList = data
+            membersArrayList = this.data as ArrayList<HolyModel.memberModel>
         } catch (e: Exception) {
 
             super.setTopOkBtnBackground(R.drawable.ic_m_settings_24dp)
@@ -291,20 +283,22 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         if (CommonData.getViewMode() != ViewMode.ATTENDANCE) return
         MaterialDailogUtil.datePickerDialog(
                 this@MemberRecyclerViewActivity,
-                { s ->
-                    MaterialDailogUtil.showSingleChoice(
-                            this@MemberRecyclerViewActivity,
-                            R.array.days_option,
-                            { s1 ->
+                object : MaterialDailogUtil.OnDialogSelectListner {
+                    override fun onSelect(s: String) {
+                        MaterialDailogUtil.showSingleChoice(
+                                this@MemberRecyclerViewActivity,
+                                R.array.days_option,
+                                object : MaterialDailogUtil.OnDialogSelectListner {
+                                    override fun onSelect(s1: String) {
+                                        CommonData.setSelectedDays(Integer.parseInt(s1))
+                                        LoggerHelper.d(CommonData.getSelectedDays())
+                                        val title = CommonData.getCurrentFullDayAndDaysStr() + " 출석"
 
-                                CommonData.setSelectedDays(Integer.parseInt(s1))
-
-                                LoggerHelper.d(CommonData.getSelectedDays())
-                                val title = CommonData.getCurrentFullDayAndDaysStr() + " 출석"
-
-                                setTitle(title)
-                                getAttandData()
-                            })
+                                        setTitle(title)
+                                        getAttandData()
+                                    }
+                                })
+                    }
                 }
         )
     }
@@ -326,19 +320,18 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         attendMap = HashMap()
 
 
-        FDDatabaseHelper.getAttendDayData(attendModel, { stringAttendModelHashMap ->
+        FDDatabaseHelper.getAttendDayData(attendModel,
+                DataTypeListener.OnCompleteListener<HashMap<String, String>> { stringAttendModelHashMap: HashMap<String, String>? ->
+                    LoggerHelper.d("stringAttendModelHashMap : " + stringAttendModelHashMap!!)
 
-            LoggerHelper.d("stringAttendModelHashMap : " + stringAttendModelHashMap!!)
-
-            if (stringAttendModelHashMap != null) {
-                attendMap = stringAttendModelHashMap
-            }
-            setCountAttend()
-            holderAdapter.notifyDataSetChanged()
-            holderAdapter.setAttendMap(attendMap)
-            recyclerView.refreshDrawableState()
-        })
-
+                    if (stringAttendModelHashMap != null) {
+                        attendMap = stringAttendModelHashMap
+                    }
+                    setCountAttend()
+                    holderAdapter.notifyDataSetChanged()
+                    holderAdapter.setAttendMap(attendMap)
+                    recyclerView.refreshDrawableState()
+                })
     }
 
     private fun setCountAttend() {
@@ -350,7 +343,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
             mCurAttendMembers!!.clear()
             mCurAttendMembers = null
         }
-        mCurAttendMembers = ArrayList<memberModel>()
+        mCurAttendMembers = ArrayList<HolyModel.memberModel>()
 
         if (okExcutiveList != null) {
             okExcutiveList!!.clear()
@@ -538,7 +531,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         LoggerHelper.d("refresh")
         FDDatabaseHelper.getAllcorpsMembers(SimpleListener.OnCompleteListener {
             try {
-                membersArrayList = data
+                membersArrayList = this.data as ArrayList<HolyModel.memberModel>
                 LoggerHelper.d("refresh remembers size : " + membersArrayList!!.size)
                 holderAdapter.setItemArrayList(membersArrayList)
                 recyclerView.refreshDrawableState()
@@ -598,9 +591,11 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
                     this@MemberRecyclerViewActivity,
                     strHelper,
                     CommonString.INFO_HELPER_TITLE,
-                    { s ->
-                        CommonData.setIsFstEnter(false)
-                        LoggerHelper.d("CommonData.getIsFstEnter() : " + CommonData.getIsFstEnter())
+                    object : MaterialDailogUtil.OnDialogSelectListner {
+                        override fun onSelect(s: String) {
+                            CommonData.setIsFstEnter(false)
+                            LoggerHelper.d("CommonData.getIsFstEnter() : " + CommonData.getIsFstEnter())
+                        }
                     })
         }
     }
@@ -610,7 +605,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         if (CommonData.getViewMode() == ViewMode.ADMIN) {
             CommonData.setAdminMode(AdminMode.NORMAL)
             goSetAddMember()
-            CommonData.setHistoryClass(MemberRecyclerViewActivity::class.java as Class<*>)
+            //CommonData.setHistoryClass(MemberRecyclerViewActivity::class.java as Class<*>)
         } else if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
             setDataAndTime()
         } else if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
@@ -651,12 +646,14 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
                     this,
                     sendMsg2!!,
                     "통계 보기",
-                    { s ->
-
-                        if (s == "share") {
-                            AppUtil.sendSharedData(applicationContext, sendMsg)
+                    object : MaterialDailogUtil.OnDialogSelectListner {
+                        override fun onSelect(s: String) {
+                            if (s == "share") {
+                                AppUtil.sendSharedData(applicationContext, sendMsg)
+                            }
                         }
                     })
+
         } else if (v.id == R.id.top_bar_btn_ok) {            //수정하기 버튼
 
             if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
@@ -665,9 +662,13 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
                         sendMsg2!!,
                         "서버에 저장 하시겠습니까?",
                         true,
-                        { s ->
-                            isAttendModifyed = false
-                            checkAllAttend(s)
+                        object : MaterialDailogUtil.OnDialogSelectListner {
+                            override fun onSelect(s: String) {
+
+                                isAttendModifyed = false
+                                checkAllAttend(s)
+
+                            }
                         })
             }
         }
@@ -683,7 +684,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
             CommonData.setAdminMode(AdminMode.MODIFY)
             CommonData.setSelectedMember(members)
             goSetAddMember()
-            CommonData.setHistoryClass(MemberRecyclerViewActivity::class.java as Class<*>)
+            //CommonData.setHistoryClass(MemberRecyclerViewActivity::class.java as Class<*>)
         } else if (v.id == R.id.recycler_view_item_btn_delete) {           //삭제버튼
             if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
                 //checkAttend(memberModel, value);
@@ -713,7 +714,6 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
     }
 
     companion object {
-
         private val TAG = "MemberRecyclerViewActivity"
     }
 }

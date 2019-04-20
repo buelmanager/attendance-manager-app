@@ -2,31 +2,23 @@ package com.buel.holyhelper.view.recyclerView.memberShipRecyclerView
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.buel.holyhelper.R
-import com.buel.holyhelper.data.AdminMode
-import com.buel.holyhelper.data.CommonData
-import com.buel.holyhelper.data.CommonString
-import com.buel.holyhelper.data.FDDatabaseHelper
-import com.buel.holyhelper.data.UserType
-import com.buel.holyhelper.data.ViewMode
+import com.buel.holyhelper.data.*
 import com.buel.holyhelper.model.UserModel
+import com.buel.holyhelper.view.DataTypeListener
 import com.buel.holyhelper.view.SimpleListener
 import com.buel.holyhelper.view.activity.BaseActivity
 import com.commonLib.MaterialDailogUtil
 import com.orhanobut.logger.LoggerHelper
-
-import java.util.ArrayList
+import java.util.*
 
 class MemberShipRecyclerViewActivity : BaseActivity(), View.OnClickListener {
-    internal var recyclerView: RecyclerView
+    lateinit internal var recyclerView: RecyclerView
     internal var holderAdapter: RecyclerView.Adapter<MemberShipRecyclerViewHolder>? = null
     internal var userModels = ArrayList<UserModel>()
     internal var userType: String? = null
@@ -38,10 +30,12 @@ class MemberShipRecyclerViewActivity : BaseActivity(), View.OnClickListener {
         val intent = intent
         userType = intent.extras!!.getString("type")
 
-        FDDatabaseHelper.getSubAdminList(UserType.SUB_ADMIN.toString(), { userModelList ->
-            userModels = userModelList
-            setRecyclerVeiw()
-        })
+        FDDatabaseHelper.getSubAdminList(UserType.SUB_ADMIN.toString(),
+                DataTypeListener.OnCompleteListener<ArrayList<UserModel>>
+                { userModelList ->
+                    userModels = userModelList
+                    setRecyclerVeiw()
+                })
     }
 
     private fun setRecyclerVeiw() {
@@ -104,16 +98,19 @@ class MemberShipRecyclerViewActivity : BaseActivity(), View.OnClickListener {
                 this@MemberShipRecyclerViewActivity,
                 strHelper,
                 CommonString.INFO_HELPER_TITLE,
-                { s ->
-                    CommonData.setIsFstEnter(false)
-                    LoggerHelper.d("CommonData.getIsFstEnter() : " + CommonData.getIsFstEnter())
+                object : MaterialDailogUtil.OnDialogSelectListner {
+                    override fun onSelect(s: String) {
+                        CommonData.setIsFstEnter(false)
+                        LoggerHelper.d("CommonData.getIsFstEnter() : " + CommonData.getIsFstEnter())
+                    }
                 })
+
     }
 
     override fun setActionButton() {
         CommonData.setViewMode(ViewMode.ADMIN)
         goSetGroup()
-        CommonData.setHistoryClass(MemberShipRecyclerViewActivity::class.java as Class<*>)
+        //CommonData.setHistoryClass(MemberShipRecyclerViewActivity::class.java as Class<*>)
     }
 
     override fun setFstFabBtn() {
