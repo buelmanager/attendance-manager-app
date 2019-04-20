@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+
 import com.buel.holyhelper.R
 import com.buel.holyhelper.data.AdminMode
 import com.buel.holyhelper.data.CommonData
@@ -21,9 +24,6 @@ import com.commonLib.MaterialDailogUtil
 import com.orhanobut.logger.LoggerHelper
 
 import java.util.ArrayList
-
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 class MemberShipRecyclerViewActivity : BaseActivity(), View.OnClickListener {
     internal var recyclerView: RecyclerView
