@@ -1,6 +1,8 @@
 package com.buel.holyhelper.utils;
 
 
+import androidx.annotation.NonNull;
+
 import com.buel.holyhelper.data.CommonData;
 import com.buel.holyhelper.data.CommonString;
 import com.buel.holyhelper.model.AttendDataModel;
@@ -20,8 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import androidx.annotation.NonNull;
 
 
 public class AttendDataManager {
@@ -51,6 +51,13 @@ public class AttendDataManager {
     private List<String> noAttendList3 = new ArrayList<>();
     private List<String> noAttendList4 = new ArrayList<>();
     private List<String> noAttendList5 = new ArrayList<>();
+
+    private List<String> tempNewList1 = new ArrayList<>();
+    private List<String> tempNewList2 = new ArrayList<>();
+    private List<String> tempNewList3 = new ArrayList<>();
+    private List<String> tempNewList4 = new ArrayList<>();
+    private List<String> tempNewList5 = new ArrayList<>();
+
 
     private List<String> reasonAttendList1 = new ArrayList<>();
     private List<String> reasonAttendList2 = new ArrayList<>();
@@ -173,7 +180,7 @@ public class AttendDataManager {
                             selectDayOfWeek + "-" +
                             selectDays;
 
-            LoggerHelper.d("mapkey : " + mapkey);
+            //LoggerHelper.d("mapkey : " + mapkey);
 
             if (dateModelHashMap.get(mapkey) == null) {
                 okDateMaps.put(xAxisStr, 0);
@@ -204,39 +211,45 @@ public class AttendDataManager {
                         AttendDataModel tempAttendDataModel = null;
 
                         //현재 weekAttendDataListMap의 해당 일에 데이터가 있다면 그 데이터를 가지고 오고
-                        LoggerHelper.d("eleAttendModel.date : " + eleAttendModel.date);
+                        //LoggerHelper.d("eleAttendModel.date : " + eleAttendModel.date);
 
                         int curWeekIndex = (int) Math.floor(Integer.valueOf(eleAttendModel.date) / 7) + 1;
-                        LoggerHelper.d("curWeekIndex : " + curWeekIndex);
+                        //LoggerHelper.d("curWeekIndex : " + curWeekIndex);
 
                         List<String> tempOkList = null;
                         List<String> tempNoList = null;
                         List<String> tempReasonList = null;
+                        List<String> tempNewList = null;
                         List<String> tempExcutiveAttendList = null;
 
                         if (curWeekIndex == 1) {
                             tempOkList = okAttendList1;
                             tempNoList = noAttendList1;
                             tempReasonList = reasonAttendList1;
+                            tempNewList = tempNewList1;
                             tempExcutiveAttendList = okExcutiveAttendList1;
                         } else if (curWeekIndex == 2) {
                             tempOkList = okAttendList2;
                             tempNoList = noAttendList2;
                             tempReasonList = reasonAttendList2;
+                            tempNewList = tempNewList2;
                             tempExcutiveAttendList = okExcutiveAttendList2;
                         } else if (curWeekIndex == 3) {
                             tempOkList = okAttendList3;
                             tempNoList = noAttendList3;
                             tempReasonList = reasonAttendList3;
+                            tempNewList = tempNewList3;
                             tempExcutiveAttendList = okExcutiveAttendList3;
                         } else if (curWeekIndex == 4) {
                             tempOkList = okAttendList4;
                             tempNoList = noAttendList4;
+                            tempNewList = tempNewList4;
                             tempReasonList = reasonAttendList4;
                             tempExcutiveAttendList = okExcutiveAttendList4;
                         } else if (curWeekIndex == 5) {
                             tempOkList = okAttendList5;
                             tempNoList = noAttendList5;
+                            tempNewList = tempNewList5;
                             tempReasonList = reasonAttendList5;
                             tempExcutiveAttendList = okExcutiveAttendList5;
                         }
@@ -265,7 +278,6 @@ public class AttendDataManager {
                             if (eleAttendModel.attend.equals("true")) {
                                 okDateMaps.put(eleAttendModel.date, okCnt + 1);
                                 noDateMaps.put(eleAttendModel.date, noCnt);
-
                                 if (xAxisNum > 0) {
 
                                     try {
@@ -277,7 +289,14 @@ public class AttendDataManager {
                                     } catch (Exception e) {
                                         tempOkList.add(eleAttendModel.memberName);
                                     }
+                                }
+                                LoggerHelper.e("eleAttendModel.isNew : " + eleAttendModel.isNew);
 
+                                if(eleAttendModel.isNew != null) {
+                                    LoggerHelper.e("eleAttendModel.isNew : " + eleAttendModel.isNew);
+                                    if (eleAttendModel.isNew.equals("새신자")) {
+                                        tempNewList.add(eleAttendModel.memberName);
+                                    }
                                 }
                             } else {
                                 noDateMaps.put(eleAttendModel.date, noCnt + 1);
@@ -290,18 +309,18 @@ public class AttendDataManager {
                                         tempReasonList.add(eleAttendModel.memberName + " : " + eleAttendModel.noAttendReason);
                                 }
                             }
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             noDateMaps.put(eleAttendModel.date, noCnt + 1);
                             okDateMaps.put(eleAttendModel.date, okCnt);
 
                             if (xAxisNum > 0) {
-
                                 tempNoList.add(eleAttendModel.memberName);
                                 if (eleAttendModel.noAttendReason != null && !Common.trim(eleAttendModel.noAttendReason).equals(""))
                                     tempReasonList.add(eleAttendModel.memberName + " : " + eleAttendModel.noAttendReason);
                             }
                         }
 
+                        tempAttendDataModel.setNewList(tempNewList);
                         tempAttendDataModel.setReasonList(tempReasonList);
                         tempAttendDataModel.setOkAttendList(tempOkList);
                         tempAttendDataModel.setNoAttendList(tempNoList);
@@ -428,6 +447,9 @@ public class AttendDataManager {
                 "* 성도/회원출석 명단<br>" +
                 attendDataModel.getOkAttendList() + "<br><br>" +
 
+                "*새신자 출석 명단<br> " +
+                attendDataModel.getNewList() + "<br><br>" +
+
                 "* 결석 명단 <br>" +
                 attendDataModel.getNoAttendList() + "<br><br> " +
                 "* 결석 사유 <br>" +
@@ -441,6 +463,9 @@ public class AttendDataManager {
                 attendDataModel.getOkExcutiveAttendList() + "\n\n" +
                 "* 성도/회원출석 명단 \n" +
                 attendDataModel.getOkAttendList() + "\n\n" +
+                "* 새신자 출석 명단 \n" +
+                attendDataModel.getNewList() + "\n\n" +
+
                 "* 결석 명단 \n" +
                 attendDataModel.getNoAttendList() + "\n\n" +
                 "* 결석 사유 \n" +
@@ -453,7 +478,7 @@ public class AttendDataManager {
 
     private HashMap getSortList(HashMap<String, Integer> dateMaps) {
 
-        LoggerHelper.i("GroupBriefingFragment getSortList");
+        //LoggerHelper.i("GroupBriefingFragment getSortList");
 
         HashMap<String, String> mentMap = new HashMap<>();
         ArrayList<String> tempDateList = new ArrayList<>();
@@ -487,7 +512,7 @@ public class AttendDataManager {
             mentMap.put("fst", tempCntList.get(0));
             mentMap.put("last_date", tempDateList.get(evgCnt - 1));
             mentMap.put("last", tempCntList.get(evgCnt - 1));
-            LoggerHelper.d("mentMap : " + mentMap);
+            //LoggerHelper.d("mentMap : " + mentMap);
             evgNum = sumNum / evgCnt;
             mentMap.put("evgNum", String.valueOf(evgNum));
         } catch (Exception e) {
@@ -510,7 +535,7 @@ public class AttendDataManager {
             dCnt++;
         }
 
-        LoggerHelper.d("generateDataBar", "sumOkCnt : " + sumOkCnt);
+        //LoggerHelper.d("generateDataBar", "sumOkCnt : " + sumOkCnt);
         return getBarData(okEntries, Common.VORDIPLOM_COLORS, selectMonth + " 월 출석");
     }
 

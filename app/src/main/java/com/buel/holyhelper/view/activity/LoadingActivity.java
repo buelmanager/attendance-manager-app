@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.buel.holyhelper.R;
 import com.buel.holyhelper.data.CommonData;
 import com.buel.holyhelper.data.FirebaseRemoteHelper;
@@ -22,7 +24,6 @@ import com.orhanobut.logger.LoggerHelper;
 
 import java.util.Calendar;
 
-import androidx.appcompat.app.AlertDialog;
 import io.fabric.sdk.android.Fabric;
 
 public class LoadingActivity extends BaseActivity {
@@ -159,6 +160,7 @@ public class LoadingActivity extends BaseActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         LoggerHelper.i("device_version > app_ver : " + device_version + " // " + app_ver);
         if (device_version < app_ver) {
             LoggerHelper.i("displayMessage app_upgrade");
@@ -182,7 +184,9 @@ public class LoadingActivity extends BaseActivity {
         LoggerHelper.d("app_notice : " + app_notice);
         if (app_notice != null) CommonData.setAppNotice(app_notice);
 
-        if (isCaps) {
+        //@@@
+        isCaps = false;
+        if (isCaps ) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(splash_message).setPositiveButton("확인", new DialogInterface.OnClickListener() {
                 @Override

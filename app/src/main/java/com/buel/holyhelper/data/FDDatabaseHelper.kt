@@ -770,7 +770,7 @@ object FDDatabaseHelper {
 
     fun getAttendDayData(
             dataModel: AttendModel,
-            onListener: DataTypeListener.OnCompleteListener<HashMap<String, String>>) {
+            onListener: DataTypeListener.OnCompleteListener<HashMap<String, AttendModel>>) {
 
         FDDatabaseHelper.showProgress(true)
 
@@ -779,7 +779,7 @@ object FDDatabaseHelper {
         FireStoreAttendManager.getAttendDayData(dataModel, DataTypeListener.OnCompleteListener {
             stringStringHashMap ->
             FDDatabaseHelper.showProgress(false)
-            onListener.onComplete(stringStringHashMap as HashMap<String, String>?)
+            onListener.onComplete(stringStringHashMap as HashMap<String, AttendModel>?)
         })
     }
 

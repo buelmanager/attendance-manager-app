@@ -26,6 +26,7 @@ public class AttendModel {
                 ", date='" + date + '\'' +
                 ", fdate='" + fdate + '\'' +
                 ", year='" + year + '\'' +
+                ", isNew='" + isNew + '\'' +
                 ", month='" + month + '\'' +
                 ", reason='" + reason + '\'' +
                 ", noAttendReason='" + noAttendReason + '\'' +
@@ -48,6 +49,7 @@ public class AttendModel {
     public String year;
     public String month;
     public String reason;
+    public String isNew;
     public String noAttendReason;
 
     public Map<String, Object> convertMap() {
@@ -64,6 +66,7 @@ public class AttendModel {
         map.put("time", time);
         map.put("noAttendReason", noAttendReason);
         map.put("fdate", fdate);
+        map.put("isNew", isNew);
         map.put("date", date);
         map.put("day", day);
         map.put("year", year);

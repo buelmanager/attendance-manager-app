@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.buel.holyhelper.R;
 import com.buel.holyhelper.data.AdminMode;
 import com.buel.holyhelper.data.CommonData;
@@ -16,6 +19,7 @@ import com.buel.holyhelper.data.ViewMode;
 import com.buel.holyhelper.management.Management;
 import com.buel.holyhelper.management.MemberManager;
 import com.buel.holyhelper.management.PointManager;
+import com.buel.holyhelper.model.AttendModel;
 import com.buel.holyhelper.model.HolyModel;
 import com.buel.holyhelper.utils.AppUtil;
 import com.buel.holyhelper.view.activity.MemberManagerViewActivity;
@@ -26,13 +30,9 @@ import com.commonLib.MaterialDailogUtil;
 import com.orhanobut.logger.LoggerHelper;
 import com.ramotion.foldingcell.FoldingCell;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by blue7 on 2018-06-07.
@@ -41,9 +41,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MemberRecyclerViewAdapter
         extends RecyclerView.Adapter<MemberRecyclerViewHolder> {
 
-    Map<String, String> attendMap;
+    Map<String, AttendModel> attendMap;
 
-    public Map<String, String> getAttendMap() {
+    public Map<String, AttendModel> getAttendMap() {
         return attendMap;
     }
 
@@ -67,14 +67,14 @@ public class MemberRecyclerViewAdapter
             registerUnfold(position);
     }
 
-    public void setAttendMap(Map<String, String> attendMap) {
+    public void setAttendMap(Map<String, AttendModel> attendMap) {
         this.attendMap = attendMap;
     }
 
     List<HolyModel.memberModel> itemArrayList;
     MemberRecyclerViewListener.OnCompleteListener memberRecyclerViewListener;
 
-    public MemberRecyclerViewAdapter(ArrayList<HolyModel.memberModel> itemArrayList, Context context, MemberRecyclerViewListener.OnCompleteListener memberRecyclerViewListener) {
+    public MemberRecyclerViewAdapter(List<HolyModel.memberModel> itemArrayList, Context context, MemberRecyclerViewListener.OnCompleteListener memberRecyclerViewListener) {
         this.memberRecyclerViewListener = memberRecyclerViewListener;
         this.itemArrayList = itemArrayList;
         mContext = context;
@@ -349,7 +349,7 @@ public class MemberRecyclerViewAdapter
             //AppUtil.setBackColor(mContext, holder.btn_item_delete, R.color.darkGray);
             if (attendMap != null) {
                 if (attendMap.get(members.name) != null) {
-                    if (attendMap.get(members.name).equals("true")) {
+                    if (attendMap.get(members.name).attend.equals("true")) {
                         //AppUtil.setBackColor(mContext, holder.btn_item_delete, R.color.blue400);
                         holder.switchIcon1.setIconEnabled(true);
 
@@ -420,7 +420,19 @@ public class MemberRecyclerViewAdapter
                     LoggerHelper.d("memberModel.noAttendReason : " + members.noAttendReason);
 
                     members.attend = "false";
-                    attendMap.put(members.name, "false");
+
+                    AttendModel attendModel = new AttendModel();
+                    attendModel.memberName = members.name;
+                    attendModel.attend = members.attend;
+                    attendModel.groupUID = members.groupUID;
+                    attendModel.teamUID = members.teamUID;
+                    attendModel.corpsUID = members.corpsUID;
+                    attendModel.isExecutives = members.isExecutives;
+                    attendModel.noAttendReason = members.noAttendReason;
+                    attendModel.isNew = members.isNew;
+                    attendModel.memberName = members.name;
+
+                    attendMap.put(members.name, attendModel);
                     itemArrayList.set(position, members);
 
                     memberRecyclerViewListener.onComplete(members, "false", v);
@@ -455,7 +467,7 @@ public class MemberRecyclerViewAdapter
 
             members.noAttendReason = "";
             try {
-                if (attendMap.get(members.name).equals("true")) {
+                if (attendMap.get(members.name).attend.equals("true")) {
                     members.attend = "false";
                 } else {
                     members.attend = "true";
@@ -463,7 +475,19 @@ public class MemberRecyclerViewAdapter
             } catch (Exception e) {
                 members.attend = "true";
             }
-            attendMap.put(members.name, members.attend);
+
+            AttendModel attendModel = new AttendModel();
+            attendModel.memberName = members.name;
+            attendModel.attend = members.attend;
+            attendModel.groupUID = members.groupUID;
+            attendModel.teamUID = members.teamUID;
+            attendModel.corpsUID = members.corpsUID;
+            attendModel.isExecutives = members.isExecutives;
+            attendModel.noAttendReason = members.noAttendReason;
+            attendModel.isNew = members.isNew;
+            attendModel.memberName = members.name;
+
+            attendMap.put(members.name, attendModel);
             itemArrayList.set(position, members);
             memberRecyclerViewListener.onComplete(members, members.attend, v);
         } else {

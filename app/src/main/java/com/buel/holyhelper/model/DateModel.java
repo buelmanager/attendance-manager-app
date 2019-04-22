@@ -8,6 +8,14 @@ import java.util.HashMap;
 
 public class DateModel {
     public HashMap<String , AttendModel> member;
+    public String day;
+    public String time;
+    public String date;
+    public String fdate;
+    public String timestamp;
+    public String year;
+    public String month;
+    public String teamUID;
 
     @Override
     public String toString() {

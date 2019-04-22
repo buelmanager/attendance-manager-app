@@ -55,7 +55,7 @@ public class MakeBarChartView {
                 String date = XaxisValues[(int) e.getX()];
                 int cnt = (int) e.getY();
 
-                LoggerHelper.d("Activity", "e.getX : " + e.getX() + ", date : " + date + ", cnt: " + cnt);
+                //LoggerHelper.d("Activity", "e.getX : " + e.getX() + ", date : " + date + ", cnt: " + cnt);
 
                 ChartListenerModel chartListenerModel = new ChartListenerModel();
                 chartListenerModel.xIndex = (int) e.getX();

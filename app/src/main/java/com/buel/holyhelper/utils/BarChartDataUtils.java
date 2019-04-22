@@ -172,7 +172,7 @@ public class BarChartDataUtils {
 
     private static HashMap getSortList(HashMap<String, Integer> dateMaps) {
 
-        LoggerHelper.i("TeamBriefingRecyclerFragment getSortList");
+       // LoggerHelper.i("TeamBriefingRecyclerFragment getSortList");
         HashMap<String, String> mentMap = new HashMap<>();
         ArrayList<String> tempDateList = new ArrayList<>();
         ArrayList<String> tempCntList = new ArrayList<>();
@@ -203,7 +203,7 @@ public class BarChartDataUtils {
             mentMap.put("fst", tempCntList.get(0));
             mentMap.put("last_date", tempDateList.get(evgCnt - 1));
             mentMap.put("last", tempCntList.get(evgCnt - 1));
-            LoggerHelper.d("mentMap : " + mentMap);
+            //LoggerHelper.d("mentMap : " + mentMap);
             evgNum = sumNum / evgCnt;
             mentMap.put("evgNum", String.valueOf(evgNum));
         } catch (Exception e) {

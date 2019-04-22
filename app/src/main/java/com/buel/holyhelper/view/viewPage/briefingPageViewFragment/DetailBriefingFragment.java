@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.widget.NestedScrollView;
+
 import com.buel.holyhelper.R;
 import com.buel.holyhelper.data.CommonData;
 import com.buel.holyhelper.data.CommonString;
@@ -28,8 +30,6 @@ import com.commonLib.SuperToastUtil;
 import com.orhanobut.logger.LoggerHelper;
 
 import java.util.HashMap;
-
-import androidx.core.widget.NestedScrollView;
 
 /**
  * Created by blue7 on 2018-05-16.
@@ -65,8 +65,8 @@ public class DetailBriefingFragment extends AbstBriefingFragment {
         scrollView = rootView.findViewById(R.id.corps_step1_view_page_fragment_sv);
         tvTitle = rootView.findViewById(R.id.corps_step1_view_page_tv_title);
 
-        LoggerHelper.d("CommonData.getGroupUid() : " + CommonData.getGroupUid());
-        LoggerHelper.d("CommonData.getGroupUid() : " + CommonData.getTeamUid());
+        //LoggerHelper.d("CommonData.getGroupUid() : " + CommonData.getGroupUid());
+        //LoggerHelper.d("CommonData.getGroupUid() : " + CommonData.getTeamUid());
 
         if (CommonData.getGroupUid() != null &&
                 CommonData.getTeamUid() != null) {
@@ -130,8 +130,6 @@ public class DetailBriefingFragment extends AbstBriefingFragment {
 
         View chartView = chart.getConvertView();
         linearLayout.addView(chartView);
-
-
 
         convertView5 = LayoutInflater.from(context).inflate(R.layout.viewpager_content, null);
         contentTv = (TextView) convertView5.findViewById(R.id.view_pager_tv_content);

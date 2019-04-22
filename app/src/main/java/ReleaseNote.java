@@ -1,6 +1,12 @@
 public class ReleaseNote {
 
     /**
+     * 출석 관련 수정
+     */
+
+
+
+    /**
      * //debug
      * keytool -list -v -keystore debug.keystore -alias androiddebugkey -storepass android -keypass android
      *
@@ -142,47 +148,29 @@ public class ReleaseNote {
 
 /*
 <strong> * 필독 ! *</strong><br><br>
+<strong>정식 서비스를 입니다.</strong><br><br>
+기존 베타 서버에서의 데이터의 백업이 필요하신 교회는 연락주세요. <br><br>
+메인화면 오른쪽 상단의 옵션버튼에 개발자에게 건의하기를 통해 보내주세요. <br><br>
 
-<strong>현재는 정식베타 버전입니다.</strong><br>
-<strong>정식버전의 기능은 완료하였고<br>
-작은 버그 및 계속적인 기능추가중입니다.</strong><br><br>
-
-수시로 업데이트가될 예정이니<br>
-앱스토어에서 공지있으실때는<br>
-다운받으시면 됩니다.<br><br><br>
-
+카카오톡 : blue7772 <br>
+메일 : buelmanager@gmail.com<br>
+전화 : 010-6557-7258<br>
+<br><br>
 
 * 기능추가 완료!<br><br>
-
 1. 엑셀을 통한 성도업로드 기능 추가<br>
 2. 서버에 회원명부 엑셀로 다운 추가<br>
 3. 출석데이터 카톡 등 타앱으로 공유추가 <br>
 4. 운영관리자를 통한 다중관리 기능추가<br><br><br>
 
-
 * 이후 추가 기능(빅데이터분석에 초점)<br><br>
-
-    1. 빅데이터를 통한 새신자 분석 예정<br>
-  - 전도 지역분포/성별분포/연력대분석<br>
-  - 전도자 순위<br>
-  - 새신자 정착률<br><br>
-
+1. 빅데이터를 통한 새신자 분석 예정<br>
+- 전도 지역분포/성별분포/연력대분석<br>
+- 전도자 순위<br>
+- 새신자 정착률<br><br>
 2. 교회 데이터 분석<br>
-  - 출석/결석/전도율을 통해 현재<br>
-    필요한 교회 시스템을 예측하는<br>
-    데이터 분석 기능
+- 출석/결석/전도율을 통해 현재<br>
+필요한 교회 시스템을 예측하는<br>
+데이터 분석 기능
 
 */
-
-/*<ImageView
-    android:id="@+id/weather_item_iv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            tools:src="@drawable/ic_crab_50px" />*/
-
-/*GlideApp.with(holder.itemView.context)
-        .load(repo.imageUrl)
-        .listener(createLoggerListener("original"))
-        .override(200, 200)
-        .into(weather_item_iv)*/

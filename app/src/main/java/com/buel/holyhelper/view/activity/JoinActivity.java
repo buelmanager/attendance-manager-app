@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+
 import com.buel.holyhelper.R;
 import com.buel.holyhelper.data.AdminMode;
 import com.buel.holyhelper.data.CommonData;
@@ -43,8 +45,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.core.app.ActivityCompat;
 
 public class JoinActivity extends BaseActivity implements View.OnClickListener {
 

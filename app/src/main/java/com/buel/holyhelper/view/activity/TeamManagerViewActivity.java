@@ -159,11 +159,16 @@ public class TeamManagerViewActivity extends BaseActivity implements View.OnClic
 
                             if (CommonData.isTutoMode()) {
                                 try {
+
+
                                     ArrayList<HolyModel.groupModel.teamModel> teams
                                             = (ArrayList<HolyModel.groupModel.teamModel>) SortMapUtil.getSortTeamList();
                                     for (HolyModel.groupModel.teamModel eleteam : teams) {
                                         CommonData.setTeamModel(eleteam);
                                     }
+
+
+
                                 } catch (Exception e) {
                                 }
                                 MaterialDailogUtil.Companion.simpleDoneDialog(TeamManagerViewActivity.this,
@@ -222,7 +227,7 @@ public class TeamManagerViewActivity extends BaseActivity implements View.OnClic
         LoggerHelper.d("getCompareData start teams.size " + teams.size());
         for (HolyModel.groupModel.teamModel eleTeam : teams) {
             LoggerHelper.d("eleTeam.name : " + eleTeam.name + " // strComare : " + strComare);
-            if (SortMapUtil.getInteger(eleTeam.name) == SortMapUtil.getInteger(strComare)) {
+            if (SortMapUtil.getInteger(eleTeam.name) == SortMapUtil.getInteger(strComare) && eleTeam.groupUid.equals(CommonData.getGroupModel().uid) ) {
                 return true;
             }
         }

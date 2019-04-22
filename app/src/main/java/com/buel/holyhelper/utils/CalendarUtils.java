@@ -1,7 +1,5 @@
 package com.buel.holyhelper.utils;
 
-import com.orhanobut.logger.LoggerHelper;
-
 import java.util.Calendar;
 
 /**
@@ -52,7 +50,7 @@ public class CalendarUtils {
     }
 
     public static String getDaysTime(Integer dayNum) {
-        LoggerHelper.d("dayNum : " + dayNum);
+        //LoggerHelper.d("dayNum : " + dayNum);
         String day = "";
         switch (dayNum) {
             case 0:

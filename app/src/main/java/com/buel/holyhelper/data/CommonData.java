@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class CommonData {
 
-    private static Map<String,HolyModel.groupModel.teamModel> teamMap;
+    private static Map<String, HolyModel.groupModel.teamModel> teamMap;
 
     public static Map<String, HolyModel.groupModel> getGroupMap() {
         return groupMap;
@@ -35,7 +35,7 @@ public class CommonData {
         CommonData.groupMap = groupMap;
     }
 
-    private static Map<String,HolyModel.groupModel> groupMap;
+    private static Map<String, HolyModel.groupModel> groupMap;
 
     public static Map<String, HolyModel.groupModel.teamModel> getTeamMap() {
         return teamMap;
@@ -52,7 +52,7 @@ public class CommonData {
     }
 
     public static void setMembersMap(Map<String, HolyModel.memberModel> membersMap) {
-        if (membersMap!=null)LoggerHelper.d("setMembersMap 를 세팅합니다. " + membersMap.toString());
+        if (membersMap != null) LoggerHelper.d("setMembersMap 를 세팅합니다. " + membersMap.toString());
         else LoggerHelper.d("setMembersMap 를 세팅합니다. :: null ");
 
         CommonData.membersMap = membersMap;
@@ -283,7 +283,8 @@ public class CommonData {
     }
 
     public static void setHolyModelList(List<HolyModel> holyModelList) {
-        if (holyModelList!=null)LoggerHelper.d("setHolyModelList 를 세팅합니다. " + holyModelList.toString());
+        if (holyModelList != null)
+            LoggerHelper.d("setHolyModelList 를 세팅합니다. " + holyModelList.toString());
         else LoggerHelper.d("setHolyModelList 를 세팅합니다. :: null ");
 
         CommonData.holyModelList = holyModelList;
@@ -297,7 +298,8 @@ public class CommonData {
 
     //@@@@
     public static void setMemberShipType(UserType memberShipType) {
-        if (memberShipType!=null)LoggerHelper.d("setMemberShipType 를 세팅합니다. " + memberShipType.toString());
+        if (memberShipType != null)
+            LoggerHelper.d("setMemberShipType 를 세팅합니다. " + memberShipType.toString());
         else LoggerHelper.d("setMemberShipType 를 세팅합니다. :: null ");
 
         CommonData.memberShipType = memberShipType;
@@ -407,7 +409,7 @@ public class CommonData {
 
     public static void setAdminMode(AdminMode adminMode) {
 
-        LoggerHelper.d("setAdminMode", "AdminMode : " + adminMode   + " 으로 변경됩니다.");
+        LoggerHelper.d("setAdminMode", "AdminMode : " + adminMode + " 으로 변경됩니다.");
         CommonData.adminMode = adminMode;
     }
 
@@ -486,7 +488,8 @@ public class CommonData {
 
     public static void setMemberModel(HolyModel.memberModel memberModel) {
 
-        if (memberModel!=null)LoggerHelper.d("setMemberModel 를 세팅합니다. " + memberModel.toString());
+        if (memberModel != null)
+            LoggerHelper.d("setMemberModel 를 세팅합니다. " + memberModel.toString());
         else LoggerHelper.d("setMemberModel 를 세팅합니다. :: null ");
 
         CommonData.memberModel = memberModel;
@@ -500,7 +503,8 @@ public class CommonData {
     }
 
     public static void setSelectedGroup(HolyModel.groupModel selectedGroup) {
-        if (selectedGroup!=null)LoggerHelper.d("setSelectedGroup 를 세팅합니다. " + selectedGroup.toString());
+        if (selectedGroup != null)
+            LoggerHelper.d("setSelectedGroup 를 세팅합니다. " + selectedGroup.toString());
         else LoggerHelper.d("setSelectedGroup 를 세팅합니다. :: null ");
 
         CommonData.setSelectedTeam(null);
@@ -513,7 +517,7 @@ public class CommonData {
 
     public static void setSelectedTeam(HolyModel.groupModel.teamModel selectedTeam) {
 
-        if (selectedTeam!=null)
+        if (selectedTeam != null)
             LoggerHelper.d("setSelectedTeam 를 세팅합니다. " + selectedTeam.toString());
         else
             LoggerHelper.d("setSelectedTeam 를 세팅합니다 >> null 입니다.");
@@ -526,7 +530,8 @@ public class CommonData {
 
     public static void setSelectedMember(HolyModel.memberModel selectedMember) {
 
-        if (selectedMember!=null)LoggerHelper.d("setSelectedMember 를 세팅합니다. " + selectedMember.toString());
+        if (selectedMember != null)
+            LoggerHelper.d("setSelectedMember 를 세팅합니다. " + selectedMember.toString());
         else LoggerHelper.d("setSelectedMember 를 세팅합니다. :: null ");
 
         CommonData.selectedMember = selectedMember;
@@ -539,7 +544,7 @@ public class CommonData {
     }
 
     public static void setTeamModel(HolyModel.groupModel.teamModel teamModel) {
-        if (teamModel!=null)LoggerHelper.d("setTeamModel 를 세팅합니다. " + teamModel.toString());
+        if (teamModel != null) LoggerHelper.d("setTeamModel 를 세팅합니다. " + teamModel.toString());
         else LoggerHelper.d("setTeamModel 를 세팅합니다. :: null ");
 
         if (teamModel != null) {
@@ -568,7 +573,7 @@ public class CommonData {
 
     public static void setGroupModel(HolyModel.groupModel groupModel) {
 
-        if (groupModel!=null)LoggerHelper.d("setGroupModel 를 세팅합니다. " + groupModel.toString());
+        if (groupModel != null) LoggerHelper.d("setGroupModel 를 세팅합니다. " + groupModel.toString());
         else LoggerHelper.d("setGroupModel 를 세팅합니다. :: null ");
 
         if (groupModel != null) {
@@ -624,7 +629,7 @@ public class CommonData {
 
     public static void setHolyModel(HolyModel holyModel) {
 
-        if (holyModel!=null)LoggerHelper.d("setHolyModel 를 세팅합니다. " + holyModel.toString());
+        if (holyModel != null) LoggerHelper.d("setHolyModel 를 세팅합니다. " + holyModel.toString());
         else LoggerHelper.d("setHolyModel 를 세팅합니다. :: null ");
 
         CommonData.holyModel = holyModel;
@@ -724,7 +729,8 @@ public class CommonData {
         LoggerHelper.d("setAttendDateMaps 를 세팅합니다. " + attendDateMaps);
 
 
-        if (attendDateMaps!=null)LoggerHelper.d("setAttendDateMaps 를 세팅합니다. " + attendDateMaps.toString());
+        if (attendDateMaps != null)
+            LoggerHelper.d("setAttendDateMaps 를 세팅합니다. " + attendDateMaps.toString());
         else LoggerHelper.d("setAttendDateMaps 를 세팅합니다. :: null ");
 
         CommonData.attendDateMaps = attendDateMaps;
@@ -746,15 +752,21 @@ public class CommonData {
         CommonData.attendMemberMap = attendMemberMap;
     }
 
-    public static String getGroupName(String uid){
+    public static String getGroupName(String uid) {
         return CommonData.getGroupMap().get(uid).name;
     }
 
-    public static String getTeamName(String uid){
+    public static String getTeamName(String uid) {
 
-        LoggerHelper.d(CommonData.getTeamMap());
-        return CommonData.getTeamMap().get(uid).name;
+        String tempName = "";
+
+        if (CommonData.getTeamMap().get(uid) != null){
+            tempName = CommonData.getTeamMap().get(uid).name;
+        }
+
+        return tempName;
     }
+
     /**
      * 현재 설정된 0000년00월(요일) 형태로 리턴
      *
@@ -762,8 +774,8 @@ public class CommonData {
      */
     public static String getCurrentFullDateStr() {
         return CommonData.getSelectedYear() + "년 " + CommonData.getSelectedMonth() + "월 " +
-                "(" + CalendarUtils.getDateDay(Integer.valueOf(CommonData.getSelectedDayOfWeek())) + " : "  +
-                CalendarUtils.getDaysTime(Integer.valueOf(CommonData.getSelectedDays()))+ ")";
+                "(" + CalendarUtils.getDateDay(Integer.valueOf(CommonData.getSelectedDayOfWeek())) + " : " +
+                CalendarUtils.getDaysTime(Integer.valueOf(CommonData.getSelectedDays())) + ")";
     }
 
     /**

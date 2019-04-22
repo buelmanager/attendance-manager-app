@@ -32,6 +32,16 @@ public class AttendDataModel {
     private BarData barData;
     private String[] xAxisArr;
 
+    private List<String> newList = new ArrayList<>();
+
+    public List<String> getNewList() {
+        return newList;
+    }
+
+    public void setNewList(List<String> newList) {
+        this.newList = newList;
+    }
+
     private List<String> reasonList = new ArrayList<>();
     private List<String> okExcutiveAttendList = new ArrayList<>();
     private List<String> okAttendList = new ArrayList<>();

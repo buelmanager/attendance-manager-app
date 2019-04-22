@@ -41,10 +41,11 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
     private var isAttendModifyed = false
 
     private var fabActionBtn: FloatingActionButton? = null
-    private var membersArrayList: ArrayList<HolyModel.memberModel>? = null
+    private var membersArrayList: List<HolyModel.memberModel>? = null
 
-    internal var attendMap: HashMap<String, String>? = HashMap()
+    internal var attendMap: HashMap<String, AttendModel>? = HashMap()
 
+    private var newList: ArrayList<String>? = null
     private var okExcutiveList: MutableList<String>? = null
     private var okList: MutableList<String>? = null
     private var noList: MutableList<String>? = null
@@ -58,7 +59,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
     private var attendBatchList: MutableList<AttendModel>? = null
 
-    fun getMemberData(): ArrayList<HolyModel.memberModel> {
+    fun getMemberData(): List<HolyModel.memberModel> {
         var members = ArrayList<HolyModel.memberModel>()
 
         var membersMap = CommonData.getMembersMap()
@@ -72,7 +73,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
             var membersmap: MutableCollection<HolyModel.memberModel> = membersMap.values
             members = membersmap.filter {
-                it.groupUID + it.teamUID  ==  CommonData.getGroupModel().uid + CommonData.getTeamModel().uid
+                it.groupUID + it.teamUID == CommonData.getGroupModel().uid + CommonData.getTeamModel().uid
             } as ArrayList<HolyModel.memberModel>
         } else if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
             LoggerHelper.d("MemberRecyclerViewActivity", "ViewMode.SEARCH_MEMBER 데이터를 수집합니다.")
@@ -90,7 +91,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
             }
         }
 
-        return members
+        return members.sortedBy { it.name }
     }
 
     @SuppressLint("LongLogTag")
@@ -277,7 +278,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
 
         FDDatabaseHelper.getAttendDayData(attendModel,
-                DataTypeListener.OnCompleteListener<HashMap<String, String>> { stringAttendModelHashMap: HashMap<String, String>? ->
+                DataTypeListener.OnCompleteListener<HashMap<String, AttendModel>> { stringAttendModelHashMap: HashMap<String, AttendModel>? ->
                     LoggerHelper.d("stringAttendModelHashMap : " + stringAttendModelHashMap!!)
 
                     if (stringAttendModelHashMap != null) {
@@ -299,8 +300,14 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
             mCurAttendMembers!!.clear()
             mCurAttendMembers = null
         }
+
         mCurAttendMembers = ArrayList<HolyModel.memberModel>()
 
+        if (newList != null) {
+            newList!!.clear()
+            newList = null
+        }
+        newList = ArrayList()
         if (okExcutiveList != null) {
             okExcutiveList!!.clear()
             okExcutiveList = null
@@ -326,60 +333,99 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         }
         noList = ArrayList()
 
-        val membersMap = CommonData.getMembersMap() //CommonData.getHolyModel().memberModel;
-
-        val members = ArrayList<HolyModel.memberModel>()
-        var cnt = 0
-        for (key in membersMap.keys) {
-            cnt++
-            val elemMembers = membersMap[key]
-            elemMembers!!.uid = key
-            if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
-                if (elemMembers.groupUID != null && elemMembers.teamUID != null) {
-                    if (elemMembers.groupUID == CommonData.getGroupModel().uid) {
-                        if (elemMembers.teamUID == CommonData.getTeamModel().uid) {
-                            members.add(elemMembers)
-                            mCurAttendMembers!!.add(elemMembers)
-                            if (attendMap != null) {
-                                if (attendMap!![elemMembers.name] != null) {
-                                    if (attendMap!![elemMembers.name] == "true") {
-                                        elemMembers.attend = "true"
-                                        mCurAttendMembers!!.add(elemMembers)
-                                        try {
-                                            if (elemMembers.isExecutives == "임원")
-                                                okExcutiveList!!.add(elemMembers.name)
-                                            else
-                                                okList!!.add(elemMembers.name)
-                                        } catch (e: Exception) {
-                                            okList!!.add(elemMembers.name)
-                                        }
-
-                                    } else {
-                                        elemMembers.attend = "false"
-                                        mCurAttendMembers!!.add(elemMembers)
-                                        noList!!.add(elemMembers.name)
-                                        if (elemMembers.noAttendReason != null && Common.trim(elemMembers.noAttendReason) != "")
-                                            noReasonList!!.add(elemMembers.name + " : " + elemMembers.noAttendReason)
-                                    }
-                                } else {
-                                    noList!!.add(elemMembers.name)
-                                    //checkAttend(elemMembers, "no");
-                                }
-                            }
+        membersArrayList?.filter {
+            (it.groupUID != null && it.teamUID != null) &&
+                    (it.groupUID == CommonData.getGroupModel().uid) &&
+                    (it.teamUID == CommonData.getTeamModel().uid)
+        }?.forEach {
+            //mCurAttendMembers!!.add(it)
+            if (attendMap != null) {
+                if (attendMap!![it.name] != null) {
+                    if (attendMap!![it.name]?.attend == "true") {
+                        it.attend = "true"
+                        mCurAttendMembers!!.add(it)
+                        try {
+                            if (it.isExecutives == "임원")
+                                okExcutiveList!!.add(it.name)
+                            else
+                                okList!!.add(it.name)
+                        } catch (e: Exception) {
+                            okList!!.add(it.name)
                         }
+
+                        if (it.isNew == "새신자") newList!!.add(it.name)
+
+                    } else {
+                        it.attend = "false"
+                        mCurAttendMembers!!.add(it)
+                        noList!!.add(it.name)
+                        LoggerHelper.d("it.noAttendReason : " + it.noAttendReason)
+                        if (it.noAttendReason != null && Common.trim(it.noAttendReason) != "")
+                            noReasonList!!.add(it.name + " : " + it.noAttendReason)
                     }
+                } else {
+                    noList!!.add(it.name)
                 }
             }
         }
 
-        totalAttendCnt = members.size
-        val totalMember = totalAttendCnt
+/*
+
+         val membersMap = CommonData.getMembersMap() //CommonData.getHolyModel().memberModel;
+
+         val members = ArrayList<HolyModel.memberModel>()
+         var cnt = 0
+         for (key in membersMap.keys) {
+             cnt++
+             val elemMembers = membersMap[key]
+             elemMembers!!.uid = key
+             if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
+                 if (elemMembers.groupUID != null && elemMembers.teamUID != null) {
+                     if (elemMembers.groupUID == CommonData.getGroupModel().uid) {
+                         if (elemMembers.teamUID == CommonData.getTeamModel().uid) {
+                             members.add(elemMembers)
+                             //mCurAttendMembers!!.add(elemMembers)
+                             if (attendMap != null) {
+                                 if (attendMap!![elemMembers.name] != null) {
+                                     if (attendMap!![elemMembers.name]?.attend == "true") {
+                                         elemMembers.attend = "true"
+                                         mCurAttendMembers!!.add(elemMembers)
+                                         try {
+                                             if (elemMembers.isExecutives == "임원")
+                                                 okExcutiveList!!.add(elemMembers.name)
+                                             else
+                                                 okList!!.add(elemMembers.name)
+                                         } catch (e: Exception) {
+                                             okList!!.add(elemMembers.name)
+                                         }
+
+                                         if(elemMembers.isNew == "새신자") newList!!.add(elemMembers.name)
+
+                                     } else {
+                                         elemMembers.attend = "false"
+                                         mCurAttendMembers!!.add(elemMembers)
+                                         noList!!.add(elemMembers.name)
+                                         if (elemMembers.noAttendReason != null && Common.trim(elemMembers.noAttendReason) != "")
+                                             noReasonList!!.add(elemMembers.name + " : " + elemMembers.noAttendReason)
+                                     }
+                                 } else {
+                                     noList!!.add(elemMembers.name)
+                                 }
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+*/
+
+        totalAttendCnt = mCurAttendMembers!!.size
         okAttendCnt = okList!!.size + okExcutiveList!!.size
         val okCnt = okAttendCnt
         noAttendCnt = noList!!.size
         val noCnt = noAttendCnt
 
-        LoggerHelper.d("totalMember : $totalMember")
+        LoggerHelper.d("totalMember : $totalAttendCnt")
         LoggerHelper.d("okCnt : $okCnt")
         LoggerHelper.d("noCnt : $noCnt")
 
@@ -402,29 +448,33 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
         val strDate = CommonData.getCurrentFullDayAndDaysStr() + " 출석"
 
-        sendMsg = (title + "\n" + strDate + "\n" + "\n" + "총 원 : " + totalMember + "명\n" +
+        sendMsg = title + "\n" + strDate + "\n" + "\n" + "총 원 : " + totalAttendCnt + "명\n" +
                 "출 석 : " + okCnt + "명 / 결 석 : " + noCnt + "명\n" + "\n" +
                 "* 출석률 : " + okRate + " % 입니다." + "\n" + "\n" +
                 "* 임원출석 명단" + "\n" + okExcutiveList!!.toString() + "\n" + "\n" +
                 "* 성도/회원출석 명단" + "\n" + okList!!.toString() + "\n" + "\n" +
-                "* 결석 명단" + "\n" + noList!!.toString() + "\n\n"
-                + "* 결석 사유 \n" +
-                noReasonList!!.toString())
+                "* 새신자 출석 \n\n" +
+                noReasonList!!.toString() +
+                "* 결석 명단" + "\n" + noList!!.toString() + "\n\n" +
+                "* 결석 사유 \n" +
+                noReasonList!!.toString()
 
-        sendMsg2 = (title + "<br>" + strDate + "<br>" + "<br>" + "<strong>총 원 : " + totalMember + "명<br>" +
+        sendMsg2 = title + "<br>" + strDate + "<br>" + "<br>" + "<strong>총 원 : " + totalAttendCnt + "명<br>" +
                 "출 석 : " + okCnt + "명 / 결 석 : " + noCnt + "명<br>" + "<br></strong>" +
                 "<strong>* 출석률 : </strong>" + okRate + " % 입니다." + "<br>" + "<br>" +
                 "<strong>* 임원출석 명단</strong>" + "<br>" + okExcutiveList!!.toString() + "<br>" + "<br>" +
                 "<strong>* 성도/회원출석 명단</strong>" + "<br>" + okList!!.toString() + "<br>" + "<br>" +
-                "<strong>* 결석 명단</strong>" + "<br>" + noList!!.toString() + "<br><br>"
-                + "* 결석 사유<br>" +
-                noReasonList!!.toString())
+                "<strong>* 새신자 출석</strong>" + "<br>" + newList!!.toString() + "<br>" + "<br>" +
+                "<strong>* 결석 명단</strong>" + "<br>" + noList!!.toString() + "<br><br>" +
+                "* 결석 사유<br>" +
+                noReasonList!!.toString()
 
         setAttendDesc()
     }
 
     fun checkAllAttend(s: String) {
 
+        LoggerHelper.d(mCurAttendMembers)
         curCnt = 0
         val membersList = mCurAttendMembers
 
@@ -438,6 +488,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         attendBatchList = ArrayList()
 
         for (eleMember in membersList) {
+            if (eleMember.attend == null) eleMember.attend = ""
             checkAttend(eleMember, eleMember.attend)
         }
     }
@@ -453,16 +504,17 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         attendModel.time = CommonData.getSelectedDays().toString()
         attendModel.fdate = attendModel.year + "-" + attendModel.month + "-" + attendModel.date + "-" + attendModel.day + "-" + attendModel.time
         attendModel.attend = attend
-        attendModel.corpsUID = CommonData.getCorpsUid()
-        attendModel.groupUID = CommonData.getGroupUid()
-        attendModel.teamUID = CommonData.getTeamUid()
+        attendModel.corpsUID = members.corpsUID
+        attendModel.groupUID = members.groupUID
+        attendModel.teamUID = members.teamUID
         attendModel.memberUID = members.uid
         attendModel.memberName = members.name
+        attendModel.isNew = members.isNew
         attendModel.memberPosition = members.position
         attendModel.noAttendReason = members.noAttendReason
         attendModel.isExecutives = members.isExecutives
         val attendMemberManager = AttendMemberManager()
-        attendMap!![attendModel.memberName] = attendModel.attend
+        attendMap!![attendModel.memberName] = attendModel
         attendBatchList!!.add(attendModel)
         curCnt++
         if (curCnt == maxMember) {
@@ -633,6 +685,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
     override fun onComplete(members: HolyModel.memberModel, value: String, v: View) {
 
         LoggerHelper.d(v.id)
+        setCountAttend()
 
         if (v.id == R.id.recycler_view_item_rl_main) {                     //아이템 버튼
 
@@ -643,7 +696,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         } else if (v.id == R.id.recycler_view_item_btn_delete) {           //삭제버튼
             if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
                 //checkAttend(memberModel, value);
-                setCountAttend()
+
                 findViewById<View>(R.id.top_bar_btn_ok).visibility = View.VISIBLE
                 isAttendModifyed = true
             } else {
@@ -653,7 +706,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         } else if (v.id == R.id.button1) {           //삭제버튼
             if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
                 //checkAttend(memberModel, value);
-                setCountAttend()
+
                 findViewById<View>(R.id.top_bar_btn_ok).visibility = View.VISIBLE
                 isAttendModifyed = true
             }
@@ -661,7 +714,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
             if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
                 LoggerHelper.d("선택버튼 버튼이 클릭되었습니다.!!!!")
                 LoggerHelper.d("memberModel : " + members.noAttendReason)
-                setCountAttend()
+
                 isAttendModifyed = true
                 //checkAttend(memberModel, value);
             }
