@@ -185,7 +185,7 @@ public class LoadingActivity extends BaseActivity {
         if (app_notice != null) CommonData.setAppNotice(app_notice);
 
         //@@@
-        isCaps = false;
+        //isCaps = false;
         if (isCaps ) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(splash_message).setPositiveButton("확인", new DialogInterface.OnClickListener() {

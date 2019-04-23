@@ -30,6 +30,7 @@ import com.commonLib.MaterialDailogUtil;
 import com.orhanobut.logger.LoggerHelper;
 import com.ramotion.foldingcell.FoldingCell;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,11 @@ public class MemberRecyclerViewAdapter
 
     public MemberRecyclerViewAdapter(List<HolyModel.memberModel> itemArrayList, Context context, MemberRecyclerViewListener.OnCompleteListener memberRecyclerViewListener) {
         this.memberRecyclerViewListener = memberRecyclerViewListener;
-        this.itemArrayList = itemArrayList;
+        if(itemArrayList != null) {
+            this.itemArrayList = itemArrayList;
+        }else {
+            this.itemArrayList = new ArrayList<>();
+        }
         mContext = context;
     }
 
@@ -433,7 +438,7 @@ public class MemberRecyclerViewAdapter
                     attendModel.memberName = members.name;
 
                     attendMap.put(members.name, attendModel);
-                    itemArrayList.set(position, members);
+                    //itemArrayList.set(position, members);
 
                     memberRecyclerViewListener.onComplete(members, "false", v);
 
@@ -488,7 +493,7 @@ public class MemberRecyclerViewAdapter
             attendModel.memberName = members.name;
 
             attendMap.put(members.name, attendModel);
-            itemArrayList.set(position, members);
+            //itemArrayList.set(position, members);
             memberRecyclerViewListener.onComplete(members, members.attend, v);
         } else {
             delete(v, members);
