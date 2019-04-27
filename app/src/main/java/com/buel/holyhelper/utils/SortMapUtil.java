@@ -171,6 +171,10 @@ public class SortMapUtil {
             if (48 <= str.charAt(i) && str.charAt(i) <= 57)
                 tempStr += str.charAt(i);
         }
+
+        if(str.length()==0){
+            return 0;
+        }
         return Integer.valueOf(tempStr);
     }
 }

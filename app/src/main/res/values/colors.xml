@@ -45,4 +45,5 @@
     <color name="black_overlay">#66000000</color>
 
     <color name="fd_cell_main_color">#FF4081</color>
+    <color name="fd_cell_main_color_slide2">#A7A5A5</color>
 </resources>

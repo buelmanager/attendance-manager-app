@@ -105,7 +105,7 @@ public class MemberRecyclerViewAdapter
 
     @Override
     public void onBindViewHolder(@NonNull MemberRecyclerViewHolder holder, final int position) {
-        LoggerHelper.d("onBindViewHolder");
+        //LoggerHelper.d("onBindViewHolder");
         setUI(holder, position);
         setMemberViewMode(holder, position);
     }
@@ -217,7 +217,7 @@ public class MemberRecyclerViewAdapter
                             @Override
                             public void onComplete(Object data) {
                                 LoggerHelper.d("아이디를 삭제하였습니다. 교적부");
-                                memberRecyclerViewListener.onComplete(members, null, v);
+                                memberRecyclerViewListener.onComplete(members, "", v);
                             }
                         });
                     }
@@ -228,9 +228,9 @@ public class MemberRecyclerViewAdapter
         viewHolder.delete_btn.setVisibility(View.INVISIBLE);
         viewHolder.modefy_btn.setVisibility(View.INVISIBLE);
         viewHolder.delete_iv.setOnClickListener(v -> MaterialDailogUtil.Companion.simpleYesNoDialog(v.getContext(), "삭제하시겠습니까?", s -> {
-            MemberManager memberManager = new MemberManager();
-            memberManager.delete(members, data -> LoggerHelper.d("아이디를 삭제하였습니다. 교적부"));
-            memberRecyclerViewListener.onComplete(members, null, v);
+            memberRecyclerViewListener.onComplete(members, "", v);
+            //MemberManager memberManager = new MemberManager();
+            //memberManager.delete(members, data -> LoggerHelper.d("아이디를 삭제하였습니다. 교적부"));
         }));
 
         viewHolder.modefy_btn.setOnClickListener(new View.OnClickListener() {
@@ -334,7 +334,7 @@ public class MemberRecyclerViewAdapter
      */
     @SuppressLint({"ResourceAsColor", "NewApi"})
     private void setMemberViewMode(@NonNull MemberRecyclerViewHolder holder, int position) {
-        LoggerHelper.d("setMemberViewMode", "CommonData.getViewMode() : " + CommonData.getViewMode());
+        //LoggerHelper.d("setMemberViewMode", "CommonData.getViewMode() : " + CommonData.getViewMode());
 
         //holder.btn_item_select.setText("");
         //holder.btn_item_delete.setText("");

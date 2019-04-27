@@ -86,11 +86,12 @@
         <ImageView
             android:id="@+id/head_image"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:scaleType="centerCrop"
             android:src="@color/browser_actions_title_color" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/head_image_left_text"
             style="@style/ContentImageBadgeText"
             android:layout_width="wrap_content"
@@ -104,6 +105,7 @@
             android:text="@string/requests_count_mock" />
 
         <TextView
+            android:visibility="gone"
             style="@style/ContentImageBadgeTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -119,9 +121,11 @@
             style="@style/ContentImageBadgeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/head_image"
-            android:layout_alignRight="@id/head_image"
-            android:layout_alignBottom="@id/head_image"
+            android:layout_alignBottom="@+id/head_image"
+
+            android:layout_marginLeft="70dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toRightOf="@+id/head_image_center_text"
             android:paddingEnd="50dp"
             android:paddingRight="20dp"
             android:paddingBottom="10dp"
@@ -142,7 +146,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/head_image"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="48dp"
+            android:layout_alignParentLeft="true"
             android:paddingBottom="10dp"
             android:text="@string/pledge_mock" />
 

@@ -131,6 +131,8 @@ public class LoadingActivity extends BaseActivity {
         String ads_banner_id = firebaseRemoteConfig.getString("ads_banner_id");
         String ads_interstitial_id = firebaseRemoteConfig.getString("ads_interstitial_id");
         String app_ads_open = firebaseRemoteConfig.getString("app_ads_open");
+
+        LoggerHelper.e("firebaseRemoteConfig.getString(app_ver) : "+ firebaseRemoteConfig.getString("app_ver"));
         int app_ver = SortMapUtil.getInteger(firebaseRemoteConfig.getString("app_ver"));
         int personal_join_point = SortMapUtil.getInteger(firebaseRemoteConfig.getString("personal_join_point"));
         int tutorial_point = SortMapUtil.getInteger(firebaseRemoteConfig.getString("tutorial_point"));

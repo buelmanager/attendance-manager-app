@@ -369,57 +369,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
             }
         }
 
-/*
-
-         val membersMap = CommonData.getMembersMap() //CommonData.getHolyModel().memberModel;
-
-         val members = ArrayList<HolyModel.memberModel>()
-         var cnt = 0
-         for (key in membersMap.keys) {
-             cnt++
-             val elemMembers = membersMap[key]
-             elemMembers!!.uid = key
-             if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
-                 if (elemMembers.groupUID != null && elemMembers.teamUID != null) {
-                     if (elemMembers.groupUID == CommonData.getGroupModel().uid) {
-                         if (elemMembers.teamUID == CommonData.getTeamModel().uid) {
-                             members.add(elemMembers)
-                             //mCurAttendMembers!!.add(elemMembers)
-                             if (attendMap != null) {
-                                 if (attendMap!![elemMembers.name] != null) {
-                                     if (attendMap!![elemMembers.name]?.attend == "true") {
-                                         elemMembers.attend = "true"
-                                         mCurAttendMembers!!.add(elemMembers)
-                                         try {
-                                             if (elemMembers.isExecutives == "임원")
-                                                 okExcutiveList!!.add(elemMembers.name)
-                                             else
-                                                 okList!!.add(elemMembers.name)
-                                         } catch (e: Exception) {
-                                             okList!!.add(elemMembers.name)
-                                         }
-
-                                         if(elemMembers.isNew == "새신자") newList!!.add(elemMembers.name)
-
-                                     } else {
-                                         elemMembers.attend = "false"
-                                         mCurAttendMembers!!.add(elemMembers)
-                                         noList!!.add(elemMembers.name)
-                                         if (elemMembers.noAttendReason != null && Common.trim(elemMembers.noAttendReason) != "")
-                                             noReasonList!!.add(elemMembers.name + " : " + elemMembers.noAttendReason)
-                                     }
-                                 } else {
-                                     noList!!.add(elemMembers.name)
-                                 }
-                             }
-                         }
-                     }
-                 }
-             }
-         }
-*/
-
-        totalAttendCnt = mCurAttendMembers!!.size
+        totalAttendCnt = membersArrayList!!.size
         okAttendCnt = okList!!.size + okExcutiveList!!.size
         val okCnt = okAttendCnt
         noAttendCnt = noList!!.size
@@ -448,26 +398,31 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
         val strDate = CommonData.getCurrentFullDayAndDaysStr() + " 출석"
 
+        val okExcutiveListStr = if (okExcutiveList!!.size > 0) okExcutiveList!!.toString() else "-"
+        val okListStr = if (okList!!.size > 0) okList!!.toString() else "-"
+        val noReasonListStr = if (noReasonList!!.size > 0) noReasonList!!.toString() else "-"
+        val newListStr = if (newList!!.size > 0) newList!!.toString() else "-"
+        val noListStr = if (noList!!.size > 0) noList!!.toString() else "-"
+
         sendMsg = title + "\n" + strDate + "\n" + "\n" + "총 원 : " + totalAttendCnt + "명\n" +
                 "출 석 : " + okCnt + "명 / 결 석 : " + noCnt + "명\n" + "\n" +
                 "* 출석률 : " + okRate + " % 입니다." + "\n" + "\n" +
-                "* 임원출석 명단" + "\n" + okExcutiveList!!.toString() + "\n" + "\n" +
-                "* 성도/회원출석 명단" + "\n" + okList!!.toString() + "\n" + "\n" +
-                "* 새신자 출석 \n\n" +
-                noReasonList!!.toString() +
-                "* 결석 명단" + "\n" + noList!!.toString() + "\n\n" +
+                "* 임원출석 명단" + "\n" + okExcutiveListStr + "\n" + "\n" +
+                "* 성도/회원출석 명단" + "\n" + okListStr + "\n" + "\n" +
+                "* 새신자 출석 \n" + newListStr + "\n\n" +
+                "* 결석 명단" + "\n" + noListStr + "\n\n" +
                 "* 결석 사유 \n" +
-                noReasonList!!.toString()
+                noReasonListStr
 
         sendMsg2 = title + "<br>" + strDate + "<br>" + "<br>" + "<strong>총 원 : " + totalAttendCnt + "명<br>" +
                 "출 석 : " + okCnt + "명 / 결 석 : " + noCnt + "명<br>" + "<br></strong>" +
                 "<strong>* 출석률 : </strong>" + okRate + " % 입니다." + "<br>" + "<br>" +
-                "<strong>* 임원출석 명단</strong>" + "<br>" + okExcutiveList!!.toString() + "<br>" + "<br>" +
-                "<strong>* 성도/회원출석 명단</strong>" + "<br>" + okList!!.toString() + "<br>" + "<br>" +
-                "<strong>* 새신자 출석</strong>" + "<br>" + newList!!.toString() + "<br>" + "<br>" +
-                "<strong>* 결석 명단</strong>" + "<br>" + noList!!.toString() + "<br><br>" +
+                "<strong>* 임원출석 명단</strong>" + "<br>" + okExcutiveListStr + "<br>" + "<br>" +
+                "<strong>* 성도/회원출석 명단</strong>" + "<br>" + okListStr + "<br>" + "<br>" +
+                "<strong>* 새신자 출석</strong>" + "<br>" + newListStr + "<br>" + "<br>" +
+                "<strong>* 결석 명단</strong>" + "<br>" + noListStr + "<br><br>" +
                 "* 결석 사유<br>" +
-                noReasonList!!.toString()
+                noReasonListStr
 
         setAttendDesc()
     }
@@ -648,7 +603,6 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         } else if (v.id == R.id.top_bar_tv_desc) {            //상단 타이틀
             setDataAndTime()
         } else if (v.id == R.id.top_bar_tv_detail_desc) {            //수정하기 버튼
-
             MaterialDailogUtil.CustomDailogManager(
                     this,
                     sendMsg2!!,
@@ -662,7 +616,6 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
                     })
 
         } else if (v.id == R.id.top_bar_btn_ok) {            //수정하기 버튼
-
             if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
                 MaterialDailogUtil.noticeDialog(
                         this,
@@ -681,42 +634,14 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         }
     }
 
-
     override fun onComplete(members: HolyModel.memberModel, value: String, v: View) {
-
-        LoggerHelper.d(v.id)
         setCountAttend()
-
-        if (v.id == R.id.recycler_view_item_rl_main) {                     //아이템 버튼
-
-            CommonData.setAdminMode(AdminMode.MODIFY)
-            CommonData.setSelectedMember(members)
-            goSetAddMember()
-            //CommonData.setHistoryClass(MemberRecyclerViewActivity::class.java as Class<*>)
-        } else if (v.id == R.id.recycler_view_item_btn_delete) {           //삭제버튼
-            if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
-                //checkAttend(memberModel, value);
-
+        val memberManager = MemberManager()
+        when (v.id) {
+            R.id.delete_iv -> memberManager.delete(members) { data -> refresh() }
+            R.id.button1 -> {
                 findViewById<View>(R.id.top_bar_btn_ok).visibility = View.VISIBLE
                 isAttendModifyed = true
-            } else {
-                val memberManager = MemberManager()
-                memberManager.delete(members) { data -> refresh() }
-            }
-        } else if (v.id == R.id.button1) {           //삭제버튼
-            if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
-                //checkAttend(memberModel, value);
-
-                findViewById<View>(R.id.top_bar_btn_ok).visibility = View.VISIBLE
-                isAttendModifyed = true
-            }
-        } else if (v.id == R.id.recycler_view_item_btn_select) {           //선택버튼
-            if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
-                LoggerHelper.d("선택버튼 버튼이 클릭되었습니다.!!!!")
-                LoggerHelper.d("memberModel : " + members.noAttendReason)
-
-                isAttendModifyed = true
-                //checkAttend(memberModel, value);
             }
         }
     }

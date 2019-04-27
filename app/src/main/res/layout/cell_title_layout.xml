@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -76,70 +76,70 @@
 
             <View
 
-                android:visibility="gone"
-                android:layout_alignParentRight="true"
                 android:id="@+id/attend_back_veiw"
                 android:layout_width="110dp"
                 android:layout_height="70dp"
+                android:layout_alignParentRight="true"
                 android:background="@layout/xml_border"
-                ></View>
+                android:visibility="gone"></View>
 
             <TextView
-                android:visibility="gone"
-                android:layout_alignLeft="@+id/btn_item_select"
                 android:id="@+id/btn_item_select_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/btn_item_select"
                 android:layout_marginLeft="8dp"
                 android:text="@string/noReason"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:visibility="gone" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/button1_text"
-                android:layout_marginLeft="14dp"
-                android:layout_alignLeft="@+id/button1"
-                android:text="@string/attend2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/button1"
+                android:layout_marginLeft="14dp"
+                android:text="@string/attend2"
+                android:visibility="gone" />
 
             <ImageView
-                android:visibility="gone"
-                android:tooltipText="@string/noReason"
                 android:id="@+id/btn_item_select"
                 android:layout_width="40dp"
                 android:layout_height="50dp"
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="16dp"
                 android:layout_toLeftOf="@+id/button1"
-                android:src="@drawable/ic_sms" />
+                android:src="@drawable/ic_sms"
+                android:tooltipText="@string/noReason"
+                android:visibility="gone" />
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/btn_item_delete"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="8dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_delete_24dp" />
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_delete_24dp"
+                android:visibility="gone" />
 
             <LinearLayout
-                android:visibility="invisible"
+                android:id="@+id/button1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="12dp"
-                android:id="@+id/button1"
-                android:orientation="vertical"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
                 android:background="?selectableItemBackgroundBorderless"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="invisible">
+
                 <com.github.zagum.switchicon.SwitchIconView
-                    android:foregroundGravity="center_vertical"
                     android:id="@+id/switchIcon1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:foregroundGravity="center_vertical"
                     android:padding="8dp"
                     app:si_animation_duration="500"
                     app:si_disabled_alpha=".5"
@@ -147,7 +147,7 @@
                     app:si_enabled="false"
                     app:si_no_dash="true"
                     app:si_tint_color="@color/material_500_blue"
-                    app:srcCompat="@drawable/approved"/>
+                    app:srcCompat="@drawable/approved" />
             </LinearLayout>
 
             <ImageView
@@ -180,8 +180,8 @@
                 android:layout_height="1dp"
                 android:layout_below="@id/title_from_address"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
                 android:layout_marginRight="8dp"
+                android:layout_marginBottom="5dp"
                 android:layout_toLeftOf="@+id/btn_item_select"
                 android:layout_toRightOf="@+id/title_from_to_dots"
                 android:src="@color/contentDividerLine" />
@@ -200,65 +200,82 @@
                 android:textSize="16sp" />
 
 
-            <TextView
-                android:text="@string/pledge_badge"
-                android:id="@+id/title_requests_count"
-                style="@style/TitleBadgeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true" />
-
-            <TextView
-                style="@style/TitleBadgeTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/title_requests_count"
-                android:layout_alignStart="@id/title_requests_count"
-                android:layout_alignLeft="@id/title_requests_count"
-                android:text="@string/requests_count_badge" />
-
-            <TextView
-                android:layout_marginLeft="40dp"
-                android:text="@string/pledge_badge"
-                android:id="@+id/title_weight"
-                style="@style/TitleBadgeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/title_pledge"
-                android:layout_alignParentBottom="true"  />
-
-            <TextView
-                style="@style/TitleBadgeTitle"
-                android:layout_width="61dp"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/title_weight"
-                android:layout_alignStart="@+id/title_weight"
-                android:text="@string/weight_badge" />
-
-            <TextView
-                android:layout_marginLeft="40dp"
-                android:text="@string/pledge_badge"
-                android:id="@+id/title_pledge"
-                style="@style/TitleBadgeText"
+            <LinearLayout
+                android:id="@+id/txtll1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/title_requests_count" />
+                android:orientation="vertical">
 
-            <TextView
-                style="@style/TitleBadgeTitle"
+                <TextView
+                    style="@style/TitleBadgeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/title_requests_count"
+                    android:layout_alignStart="@+id/title_requests_count"
+                    android:text="@string/requests_count_badge" />
+
+                <TextView
+                    android:id="@+id/title_requests_count"
+                    style="@style/TitleBadgeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentBottom="true"
+                    android:text="@string/pledge_badge" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="32dp"
+                android:layout_toRightOf="@+id/txtll2"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/title_weight"
+                    style="@style/TitleBadgeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/title_pledge"
+                    android:text="@string/pledge_badge" />
+
+                <TextView
+                    style="@style/TitleBadgeTitle"
+                    android:layout_width="61dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weight_badge" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/txtll2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@id/title_pledge"
-                android:layout_alignStart="@id/title_pledge"
-                android:layout_alignLeft="@id/title_pledge"
-                android:text="@string/pledge_badge" />
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="32dp"
+                android:layout_toRightOf="@+id/txtll1"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/title_pledge"
+                    style="@style/TitleBadgeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/title_requests_count"
+                    android:text="@string/pledge_badge" />
+
+                <TextView
+                    style="@style/TitleBadgeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pledge_badge" />
+            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
+
     <View
         android:layout_width="match_parent"
-        android:layout_height="8dp"/>
+        android:layout_height="8dp" />
 </LinearLayout>

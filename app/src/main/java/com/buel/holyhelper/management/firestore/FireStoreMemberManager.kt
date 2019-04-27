@@ -29,21 +29,21 @@ object FireStoreMemberManager {
 
         userRef.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                Log.d(TAG, "task.isSuccessful: " + task.isSuccessful)
+                //Log.d(TAG, "task.isSuccessful: " + task.isSuccessful)
 
                 var memberMap = HashMap<String?, HolyModel.memberModel>()
                 var memberModel: HolyModel.memberModel
 
-                Log.d(TAG, "task.isSuccessful: " + task.result!!.size())
+                //Log.d(TAG, "task.isSuccessful: " + task.result!!.size())
 
                 for (document in task.result!!) {
                     memberModel = document.toObject(HolyModel.memberModel::class.java)
                     memberMap[document.id] = memberModel
 
                     memberModel.uid = document.id
-                    Log.d(TAG, "memberModel : " + memberModel.uid)
-                    Log.d(TAG, "memberModel : " + memberModel.name)
-                    Log.d(TAG, "===============================================")
+                    //Log.d(TAG, "memberModel : " + memberModel.uid)
+                    //Log.d(TAG, "memberModel : " + memberModel.name)
+                    //Log.d(TAG, "===============================================")
                 }
                 Log.d(TAG, "memberMap size : " + memberMap.size)
                 listener.onComplete(memberMap)
@@ -77,9 +77,7 @@ object FireStoreMemberManager {
 
     @SuppressLint("LongLogTag")
     @JvmStatic fun insert(dataModel: HolyModel.memberModel, listener: DataTypeListener.OnCompleteListener<Boolean>) {
-
         Log.d(TAG, "insert")
-
         val userRef =
                 firestore.collection(FDDatabaseHelper.CORPS_TABLE)
                         .document(dataModel.corpsUID)
