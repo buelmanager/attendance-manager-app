@@ -343,7 +343,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
                 if (attendMap!![it.name] != null) {
                     if (attendMap!![it.name]?.attend == "true") {
                         it.attend = "true"
-                        mCurAttendMembers!!.add(it)
+                        //mCurAttendMembers!!.add(it)
                         try {
                             if (it.isExecutives == "임원")
                                 okExcutiveList!!.add(it.name)
@@ -357,7 +357,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
                     } else {
                         it.attend = "false"
-                        mCurAttendMembers!!.add(it)
+                        //mCurAttendMembers!!.add(it)
                         noList!!.add(it.name)
                         LoggerHelper.d("it.noAttendReason : " + it.noAttendReason)
                         if (it.noAttendReason != null && Common.trim(it.noAttendReason) != "")
@@ -367,6 +367,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
                     noList!!.add(it.name)
                 }
             }
+            mCurAttendMembers!!.add(it)
         }
 
         totalAttendCnt = membersArrayList!!.size
