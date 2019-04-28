@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">HolyHelper</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -9,7 +9,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.buel.holyhelper.R
+import com.buel.holyhelper.data.CommonString
 import com.buel.holyhelper.utils.isPermissionGranted
+import com.commonLib.MaterialDailogUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -18,6 +20,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import kotlinx.android.synthetic.main.activity_car_maps.*
 
 class CarMapsActivity : BaseActivity(), OnMapReadyCallback,
         GoogleMap.OnMarkerClickListener {
@@ -43,6 +46,22 @@ class CarMapsActivity : BaseActivity(), OnMapReadyCallback,
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
+        val tempList = ArrayList<String>()
+        tempList.add("car_1")
+        tempList.add("car_2")
+        tempList.add("car_3")
+        tempList.add("car_4")
+        tempList.add("car_5")
+        tempList.add("car_6")
+        search_car.setOnClickListener {
+            MaterialDailogUtil.showSingleChoice(this@CarMapsActivity, CommonString.CORP_NICK + " 을/를 선택하세요.",
+                    tempList, object : MaterialDailogUtil.OnDialogSelectListner {
+                override fun onSelect(s: String) {
+
+
+                }
+            })
+        }
 
     }
 

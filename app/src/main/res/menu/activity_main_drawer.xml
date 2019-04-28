@@ -21,7 +21,7 @@
                     android:title="@string/notice" />
 
                 <item
-                    android:id="@+id/car_manager"
+                    android:id="@+id/car_manager_item"
                     android:icon="@drawable/ic_notice"
                     android:title="@string/car_manager" />
                 <item

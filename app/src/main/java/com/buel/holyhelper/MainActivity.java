@@ -421,7 +421,7 @@ public class MainActivity extends BaseActivity
                 CommonData.setViewMode(ViewMode.ADMIN);
                 setSelectView();
             }
-        } else if (id == R.id.car_manager) {
+        } else if (id == R.id.car_manager_item) {
             CommonData.setAdminMode(AdminMode.NORMAL);
             goCarManager();
         } else if (id == R.id.nav_attendance) {

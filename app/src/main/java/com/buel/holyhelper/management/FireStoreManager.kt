@@ -6,9 +6,9 @@ import android.annotation.SuppressLint
 import android.util.Log
 import com.buel.holyhelper.data.CommonData
 import com.buel.holyhelper.management.firestore.FireStoreUserManager
+import com.buel.holyhelper.management.firestore.FireStoreWriteManager
 import com.buel.holyhelper.model.UserModel
 import com.buel.holyhelper.view.DataTypeListener
-import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 
 
@@ -78,10 +78,14 @@ object FireStoreManager {
      * @param noprice
      */
     @JvmStatic fun sendUpdateSimpleDoc(userModel: UserModel, noprice: String, onDataTypeListener :DataTypeListener.OnCompleteListener<Any>) {
-        FirebaseDatabase.getInstance().reference
+
+        FireStoreWriteManager.insert(FireStoreWriteManager.firestore.collection(noprice).document(), userModel, DataTypeListener.OnCompleteListener {
+            onDataTypeListener.onComplete(true)
+        })
+        /*FirebaseDatabase.getInstance().reference
                 .child(noprice)
                 .push()
                 .setValue(userModel)
-                .addOnCompleteListener { onDataTypeListener.onComplete(true) }
+                .addOnCompleteListener { onDataTypeListener.onComplete(true) }*/
     }
 }
