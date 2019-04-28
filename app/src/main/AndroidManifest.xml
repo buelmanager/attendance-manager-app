@@ -22,6 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".view.activity.CarLocationManager"></activity>
 
         <meta-data
             android:name="applovin.sdk.key"
@@ -61,8 +62,9 @@
         <activity
             android:name=".view.recyclerView.foldcellRecyclerView.FoldCellRecyclerViewActivity"
             android:launchMode="singleTop" />
-        <activity android:name=".view.recyclerView.groupRecyclerListView.RecyclerViewActivity"
-            android:launchMode="singleTop"/>
+        <activity
+            android:name=".view.recyclerView.groupRecyclerListView.RecyclerViewActivity"
+            android:launchMode="singleTop" />
         <activity
             android:name=".view.recyclerView.teamRecyclerListView.TeamRecyclerViewActivity"
             android:launchMode="singleTop" />
