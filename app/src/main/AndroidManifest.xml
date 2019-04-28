@@ -23,6 +23,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".view.activity.CarLocationManager"></activity>
+        <activity android:name=".view.activity.TotalAnalyActivity"></activity>
 
         <meta-data
             android:name="applovin.sdk.key"
