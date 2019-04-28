@@ -201,9 +201,9 @@ object FDDatabaseHelper {
      * @param completeListener
      */
     fun sendUserDataInsertUserModel(uid: String, userModel: UserModel, completeListener: DataTypeListener.OnCompleteListener<Boolean>) {
-        FireStoreManager.sendUserDataInsertUserModel(userModel, completeListener::onComplete as DataTypeListener.OnCompleteListener<Boolean>)
+        //FireStoreManager.sendUserDataInsertUserModel(userModel, completeListener::onComplete as DataTypeListener.OnCompleteListener<Boolean>)
         FireStoreManager.sendUserDataInsertUserModel(userModel, DataTypeListener.OnCompleteListener {
-            t ->
+            t ->completeListener.onComplete(t)
         })
     }
 
@@ -457,7 +457,21 @@ object FDDatabaseHelper {
                     }
                 }
     }
+    fun getAllCorpsStoreData( onDataTypeListener: DataTypeListener.OnCompleteListener<QuerySnapshot>){
+        FDDatabaseHelper.showProgress(true)
 
+        firestore.collection(CORPS_TABLE)
+
+                .get().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        onDataTypeListener.onComplete(task.result)
+                    } else {
+                        LoggerHelper.e(task.result!!.toString())
+                    }
+
+                    FDDatabaseHelper.showProgress(false)
+                }
+    }
     /**
      * @param :          전체 corps 가지고 온다.
      * @param onFDDListener
@@ -465,7 +479,20 @@ object FDDatabaseHelper {
     fun getAllCorpsData(
             onFDDListener: FDDatabaseHelper.onFDDCallbackListener) {
 
-        FDDatabaseHelper.showProgress(true)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         FirebaseDatabase.getInstance().reference
                 .child(CORPS_TABLE)
                 .addListenerForSingleValueEvent(object : ValueEventListener {

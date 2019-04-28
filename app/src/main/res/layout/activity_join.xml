@@ -79,9 +79,8 @@
                 android:id="@+id/joinActivity_edittext_corps_uid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:focusableInTouchMode="false"
-                android:hint="교회 선택하기"
+
+                android:hint="교회 코드를 넣어주세요."
                 android:textSize="@dimen/font_default_size" />
                 android:longClickable="false" />
         </com.google.android.material.textfield.TextInputLayout>

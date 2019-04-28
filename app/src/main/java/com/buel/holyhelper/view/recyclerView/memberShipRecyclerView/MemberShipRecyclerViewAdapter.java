@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.buel.holyhelper.R;
 import com.buel.holyhelper.data.AdminMode;
 import com.buel.holyhelper.data.CommonData;
@@ -22,9 +25,6 @@ import com.orhanobut.logger.LoggerHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 
 /**
@@ -165,6 +165,9 @@ public class MemberShipRecyclerViewAdapter
             userModel.permission = "ok";
         }
         try {
+
+
+
             FDDatabaseHelper.INSTANCE.sendUserDataInsertUserModel(userModel.uid, userModel, task -> {
                 if (userModel.permission.equals("ok")) {
                     Toast.makeText(context, "권한이 [ " + "승락" + " ] 으로 변경되었습니다. ", Toast.LENGTH_SHORT).show();
