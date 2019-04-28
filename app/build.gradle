@@ -96,6 +96,11 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
     //implementation 'com.ramotion.foldingcell:folding-cell:1.2.3'
     implementation project(':folding-cell')
+
+    // google map api & location
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+
     //Dagger2
     def daggerVer = "2.14.1"
     //noinspection OutdatedLibrary

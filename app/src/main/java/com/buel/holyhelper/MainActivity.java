@@ -153,10 +153,7 @@ public class MainActivity extends BaseActivity
     private void setLayout() {
         LoggerHelper.i("setLayout");
         CommonData.setViewMode(ViewMode.BRIEFING);
-
         setNavigationView(MainActivity.this);
-
-
         super.setBaseFloatingActionButton();
         super.setFabBackImg(super.fabFstActBtn, R.drawable.ic_calendar);
         super.setFabSnd(ViewMode.ADMIN);
@@ -424,6 +421,9 @@ public class MainActivity extends BaseActivity
                 CommonData.setViewMode(ViewMode.ADMIN);
                 setSelectView();
             }
+        } else if (id == R.id.car_manager) {
+            CommonData.setAdminMode(AdminMode.NORMAL);
+            goCarManager();
         } else if (id == R.id.nav_attendance) {
             if (CommonData.getMemberShipType() == UserType.PERSONAL) {
                 MaterialDailogUtil.Companion.simpleInputDoneDialog(MainActivity.this, "비번을 입력하세요.", "이름", new MaterialDailogUtil.OnDialogSelectListner() {
@@ -436,7 +436,6 @@ public class MainActivity extends BaseActivity
                             SuperToastUtil.toastE(MainActivity.this, "비밀번호가 설정되어있지 않습니다. 관리자에게 문의하세요.");
                             return;
                         }
-
 
                         if (CommonData.getHolyModel().password.equals(s)) {
                             CommonData.setViewMode(ViewMode.ATTENDANCE);

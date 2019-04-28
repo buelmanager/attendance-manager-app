@@ -573,6 +573,11 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
         goStartAcitivity(intent);
     }
 
+    public void goCarManager() {
+        CommonData.setHistoryClass(null);
+        Intent intent = new Intent(getApplicationContext(), CarMapsActivity.class);
+        goStartAcitivity(intent);
+    }
 
     public void goMain() {
         CommonData.setHistoryClass(null);

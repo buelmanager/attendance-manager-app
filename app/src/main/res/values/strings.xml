@@ -41,6 +41,7 @@
     <string name="prayer_plan">작정 기도</string>
     <string name="prayer_for">중보 기도</string>
     <string name="notice">교회 공지 </string>
+    <string name="car_manager">교회 차량 </string>
     <string name="service_movie">설교 영상 </string>
     <string name="about">About</string>
     <string name="church_paper">교회 주보</string>
@@ -104,4 +105,6 @@
     <string name="content_to1_mock">46th Ave</string>
     <string name="content_to2_mock">Woodside, NY 11101</string>
     <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="title_activity_car_maps">Map</string>
 </resources>

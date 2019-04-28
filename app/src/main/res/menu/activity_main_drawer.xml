@@ -19,6 +19,11 @@
                     android:id="@+id/nav_noticea"
                     android:icon="@drawable/ic_notice"
                     android:title="@string/notice" />
+
+                <item
+                    android:id="@+id/car_manager"
+                    android:icon="@drawable/ic_notice"
+                    android:title="@string/car_manager" />
                 <item
                     android:id="@+id/nav_addmember"
                     android:icon="@drawable/ic_add_member"
