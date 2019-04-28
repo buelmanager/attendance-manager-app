@@ -8,9 +8,17 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.buel.holyhelper.R
+import com.buel.holyhelper.data.CommonData
 import com.buel.holyhelper.data.CommonString
+import com.buel.holyhelper.data.FDDatabaseHelper
+import com.buel.holyhelper.management.firestore.FireStoreWriteManager
+import com.buel.holyhelper.model.CarModel
 import com.buel.holyhelper.utils.isPermissionGranted
+import com.buel.holyhelper.view.DataTypeListener
+import com.buel.holyhelper.view.recyclerView.memberShipRecyclerView.MemberShipRecyclerViewHolder
 import com.commonLib.MaterialDailogUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -63,6 +71,18 @@ class CarMapsActivity : BaseActivity(), OnMapReadyCallback,
             })
         }
 
+        add_car.setOnClickListener {
+            var carModel = CarModel()
+            carModel.carName = add_car_txt.text.toString()
+            FireStoreWriteManager.insert(
+                    FireStoreWriteManager.firestore.collection(FDDatabaseHelper.CORPS_TABLE).document(CommonData.getHolyModel().uid)
+                            .collection(FDDatabaseHelper.CAR_TABLE).document(),carModel,
+                    DataTypeListener.OnCompleteListener {
+                        t ->
+                        if(t)popToast("저장되었습니다.")
+                    })
+        }
+
     }
 
     /**
@@ -93,6 +113,23 @@ class CarMapsActivity : BaseActivity(), OnMapReadyCallback,
 
         setUpMap()
     }
+
+    lateinit internal var recyclerView: RecyclerView
+    internal var holderAdapter: RecyclerView.Adapter<MemberShipRecyclerViewHolder>? = null
+
+    private fun setRecyclerVeiw() {
+        recyclerView = findViewById(R.id.recycler_view_main)
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
+
+
+        val carModel = CarModel()
+        /*val carModels:ArrayList<CarModel> = arrayListOf()
+        holderAdapter = MemberShipRecyclerViewAdapter(this@CarMapsActivity, carModels , this)
+        recyclerView.adapter = holderAdapter*/
+
+    }
+
 
     private fun setUpMap() {
         if (ActivityCompat.checkSelfPermission(this,

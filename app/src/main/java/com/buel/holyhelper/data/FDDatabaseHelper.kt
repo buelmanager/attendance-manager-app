@@ -49,6 +49,7 @@ object FDDatabaseHelper {
     val CORPS_TABLE = "corps"
     val GROUP_TABLE = "group"
     val TEAM_TABLE = "team"
+    val CAR_TABLE = "cars"
 
     val ADMIN_UID_FIELD = "adminUid"
 

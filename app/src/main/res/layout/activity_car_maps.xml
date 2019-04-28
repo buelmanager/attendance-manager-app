@@ -12,19 +12,57 @@
         layout="@layout/top_bar_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/search_car"
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
-
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="200dp"
         tools:context=".view.activity.CarMapsActivity" />
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/add_car_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:hint="차량번호를 넣어주세요."
+            android:textSize="@dimen/font_default_size" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:layout_weight="1"
+        android:text="add_car"
+        android:id="@+id/add_car"
+        android:layout_width="0dp"
+        android:layout_height="50dp" />
+</LinearLayout>
+
+    <Button
+        android:text="search_car"
+        android:id="@+id/search_car"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
 
 
 </LinearLayout>
