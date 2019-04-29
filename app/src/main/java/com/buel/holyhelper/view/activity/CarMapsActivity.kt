@@ -120,7 +120,7 @@ class CarMapsActivity : BaseActivity(), OnMapReadyCallback,
     private fun setRecyclerVeiw() {
         recyclerView = findViewById(R.id.recycler_view_main)
         val layoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = layoutManager
+        //recyclerView.layoutManager = layoutManager
 
 
         val carModel = CarModel()
