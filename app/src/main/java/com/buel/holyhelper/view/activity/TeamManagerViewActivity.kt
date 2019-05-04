@@ -134,7 +134,7 @@ class TeamManagerViewActivity : BaseActivity(), View.OnClickListener {
         else
             teamModel.etc = CommonData.getGroupModel().name
 
-        if (CommonData.getViewMode() == AdminMode.NORMAL) {
+        if (CommonData.getAdminMode() == AdminMode.NORMAL) {
 
             teamManager.insert(teamModel) {
                 Log.d(TAG, "onComplete: teamManager insert complete!!!")
