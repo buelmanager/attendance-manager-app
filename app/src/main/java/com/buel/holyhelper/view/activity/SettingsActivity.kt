@@ -247,12 +247,12 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
         val maxCnt = membersList.size
 
-        if (maxCnt > 100) {
+       /* if (maxCnt > 100) {
             Toast.makeText(this@SettingsActivity,
                     "서버안정화로 현재 한번에 100명 이하로 제한합니다. 등록이 필요시 개발자에게 문의하세요.",
                     Toast.LENGTH_SHORT).show()
             return
-        }
+        }*/
     }
 
 
@@ -418,10 +418,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
         missList = ArrayList()
         val maxCnt = membersList.size
 
-        if (maxCnt > 100) {
+        /*if (maxCnt > 100) {
             Toast.makeText(this@SettingsActivity, "서버안정화로 현재 한번에 100명 이하로 제한합니다. 등록이 필요시 개발자에게 문의하세요.", Toast.LENGTH_SHORT).show()
             return
-        }
+        }*/
 
         var tempMemberList: ArrayList<HolyModel.memberModel> = ArrayList()
 

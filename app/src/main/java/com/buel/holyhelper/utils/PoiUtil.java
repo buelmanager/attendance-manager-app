@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Environment;
 import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
+
 import com.buel.holyhelper.BuildConfig;
 import com.buel.holyhelper.data.CommonData;
 import com.buel.holyhelper.model.HolyModel;
@@ -33,8 +35,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import androidx.core.content.FileProvider;
 
 public class PoiUtil {
 
@@ -251,16 +251,20 @@ public class PoiUtil {
 
                                 if (true) {
                                     //LoggerHelper.d(" curCell.getCellType() : " +  curCell.getCellType()) ;
-                                    if(curCell.getCellType() == CellType.NUMERIC){
-                                        value = (String.valueOf((int)curCell.getNumericCellValue()));
-                                    }else{
-                                        value = curCell.getStringCellValue();
-                                    }
 
-                                    if(value ==null){
+                                    try {
+                                        if (curCell.getCellType() == CellType.NUMERIC) {
+                                            value = (String.valueOf((int) curCell.getNumericCellValue()));
+                                        } else {
+                                            value = curCell.getStringCellValue();
+                                        }
+                                    }catch (Exception e){
                                         value = "";
                                     }
 
+                                    if (value == null) {
+                                        value = "";
+                                    }
                                     //LoggerHelper.d("cellIndex : " + cellIndex + " //    value    :  " + value);
                                     // 현재 column index에 따라서 vo에 입력
                                     switch (cellIndex) {
