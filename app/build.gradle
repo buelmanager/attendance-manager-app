@@ -20,8 +20,8 @@ android {
         applicationId "com.buel.holyhelper"
         minSdkVersion 18
         targetSdkVersion 28
-        versionCode 59
-        versionName "1.0.059"
+        versionCode 61
+        versionName "1.0.061"
         multiDexEnabled true
         publishNonDefault true
         archivesBaseName = "holyhelper_" + versionName + "_" + new Date().format("yyyyMMdd")
