@@ -5,7 +5,7 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.buel.holyhelper.R;
+import com.buel.holyhelpers.R;
 import com.chartView.ChartItem;
 import com.chartView.ChartUtils;
 import com.github.mikephil.charting.charts.BarChart;

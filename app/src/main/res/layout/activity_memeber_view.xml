@@ -148,9 +148,15 @@
                         android:hint="@string/phone"
                         android:inputType="number" />
                 </com.google.android.material.textfield.TextInputLayout>
-
                 <Button
                     android:id="@+id/member_activity_view_btn_call"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/ic_call" />
+                <Button
+                    android:id="@+id/member_activity_view_btn_search"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_gravity="center"
@@ -167,7 +173,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:clickable="false"
-                    android:focusableInTouchMode="false"
+                    android:focusableInTouchMode="true"
                     android:hint="@string/address" />
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout

@@ -4,7 +4,7 @@ package com.chartView.notimportant;
 import android.graphics.Typeface;
 import android.os.Bundle;
 
-import com.buel.holyhelper.R;
+import com.buel.holyhelpers.R;
 
 import javax.annotation.Nullable;
 

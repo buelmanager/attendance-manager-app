@@ -11,7 +11,7 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.buel.holyhelper.R;
+import com.buel.holyhelpers.R;
 import com.chartView.listviewitems.BarChartItem;
 import com.chartView.listviewitems.LineChartItem;
 import com.chartView.listviewitems.PieChartItem;

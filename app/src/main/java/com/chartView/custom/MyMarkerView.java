@@ -4,7 +4,7 @@ package com.chartView.custom;
 import android.content.Context;
 import android.widget.TextView;
 
-import com.buel.holyhelper.R;
+import com.buel.holyhelpers.R;
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.Entry;

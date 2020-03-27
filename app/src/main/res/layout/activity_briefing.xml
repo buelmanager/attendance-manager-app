@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusableInTouchMode="true"
-    tools:context="com.buel.holyhelper.view.activity.BriefingActivity">
+    tools:context="com.buel.holyhelpers.view.activity.BriefingActivity">
 
     <RelativeLayout
         android:id="@+id/activity_top"

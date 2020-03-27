@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.buel.holyhelper">
+    package="com.buel.holyhelpers">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".view.activity.TotalAnalyActivity"></activity>
+        <activity android:name="com.buel.holyhelpers.view.activity.TotalAnalyActivity"></activity>
 
         <meta-data
             android:name="applovin.sdk.key"
@@ -36,7 +36,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".view.activity.LoadingActivity"
+            android:name="com.buel.holyhelpers.view.activity.LoadingActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,63 +50,63 @@
         <activity
             android:name="com.applovin.adview.AppLovinConfirmationActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name=".MainActivity" />
+        <activity android:name="com.buel.holyhelpers.MainActivity" />
         <activity
-            android:name=".view.activity.LoginActivity"
+            android:name="com.buel.holyhelpers.view.activity.LoginActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.activity.JoinActivity"
+            android:name="com.buel.holyhelpers.view.activity.JoinActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.activity.SetCorpsActivity"
+            android:name="com.buel.holyhelpers.view.activity.SetCorpsActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.recyclerView.foldcellRecyclerView.FoldCellRecyclerViewActivity"
+            android:name="com.buel.holyhelpers.view.recyclerView.foldcellRecyclerView.FoldCellRecyclerViewActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.recyclerView.groupRecyclerListView.RecyclerViewActivity"
+            android:name="com.buel.holyhelpers.view.recyclerView.groupRecyclerListView.RecyclerViewActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.recyclerView.teamRecyclerListView.TeamRecyclerViewActivity"
+            android:name="com.buel.holyhelpers.view.recyclerView.teamRecyclerListView.TeamRecyclerViewActivity"
             android:launchMode="singleTop" />
-        <activity android:name=".view.recyclerView.memberRecyclerListView.MemberRecyclerViewActivity" />
+        <activity android:name="com.buel.holyhelpers.view.recyclerView.memberRecyclerListView.MemberRecyclerViewActivity" />
         <activity
-            android:name=".view.recyclerView.briefingRecyclerView.BriefingRecyclerViewActivity"
-            android:launchMode="singleTop" />
-        <activity
-            android:name=".view.activity.MemberManagerViewActivity"
+            android:name="com.buel.holyhelpers.view.recyclerView.briefingRecyclerView.BriefingRecyclerViewActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.activity.GroupManagerViewActivity"
+            android:name="com.buel.holyhelpers.view.activity.MemberManagerViewActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.activity.TeamManagerViewActivity"
+            android:name="com.buel.holyhelpers.view.activity.GroupManagerViewActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.activity.CorpsManagerViewActivity"
+            android:name="com.buel.holyhelpers.view.activity.TeamManagerViewActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.activity.BriefingActivity"
+            android:name="com.buel.holyhelpers.view.activity.CorpsManagerViewActivity"
+            android:launchMode="singleTop" />
+        <activity
+            android:name="com.buel.holyhelpers.view.activity.BriefingActivity"
             android:launchMode="singleTop" />
         <activity
             android:name="com.chartView.ListViewMultiChartActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.recyclerView.barChartRecyclerView.BarChartRecyclerViewActivity"
+            android:name="com.buel.holyhelpers.view.recyclerView.barChartRecyclerView.BarChartRecyclerViewActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.activity.SelectViewActivity"
+            android:name="com.buel.holyhelpers.view.activity.SelectViewActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.activity.BaseActivity"
+            android:name="com.buel.holyhelpers.view.activity.BaseActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.activity.EmptyActivity"
+            android:name="com.buel.holyhelpers.view.activity.EmptyActivity"
             android:launchMode="singleTop" />
         <activity
-            android:name=".view.activity.SettingsActivity"
+            android:name="com.buel.holyhelpers.view.activity.SettingsActivity"
             android:launchMode="singleTop" />
-        <activity android:name=".view.recyclerView.memberShipRecyclerView.MemberShipRecyclerViewActivity" />
+        <activity android:name="com.buel.holyhelpers.view.recyclerView.memberShipRecyclerView.MemberShipRecyclerViewActivity" />
         <!--
          <activity android:name="com.vungle.publisher.VideoFullScreenAdActivity"
              android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
@@ -116,15 +116,15 @@
              android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
              android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
         -->
-        <activity android:name=".view.WebViewActivity" />
+        <activity android:name="com.buel.holyhelpers.view.WebViewActivity" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="3ce5f3d039f97b38e745e8ec8c8b8c167f47076e" />
 
-        <activity android:name=".view.activity.AddExcelData" />
+        <activity android:name="com.buel.holyhelpers.view.activity.AddExcelData" />
         <activity
-            android:name=".view.activity.TutorialViewActivity"
+            android:name="com.buel.holyhelpers.view.activity.TutorialViewActivity"
             android:launchMode="singleTop" />
 
         <provider
@@ -138,8 +138,8 @@
                 tools:replace="android:resource" />
         </provider>
 
-        <activity android:name=".view.activity.DaumWebViewActivity" />
-        <activity android:name=".view.activity.AgreementActivity" />
+        <activity android:name="com.buel.holyhelpers.view.activity.DaumWebViewActivity" />
+        <activity android:name="com.buel.holyhelpers.view.activity.AgreementActivity" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notificatioin_icon"
@@ -151,7 +151,7 @@
             android:name="com.google.firebase.messaging.default_notificatioin_color"
             android:resource="@color/colorAccent" />
 
-        <service android:name=".fcm.MyFirebaseMessagingService">
+        <service android:name="com.buel.holyhelpers.fcm.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

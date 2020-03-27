@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.buel.holyhelper.MainActivity"
+    tools:context="com.buel.holyhelpers.MainActivity"
     android:layout_below="@+id/mainActivity_tablayout"
     tools:showIn="@layout/app_bar_main">
 <!--

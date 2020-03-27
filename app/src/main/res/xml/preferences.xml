@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.buel.holyhelper.view.fragment.SelectDialogPreference
+    <com.buel.holyhelpers.view.fragment.SelectDialogPreference
         android:dialogIcon="@mipmap/ic_launcher"
         android:dialogMessage="preference_dialog_message"
         android:dialogTitle="preference_dialog_title"
@@ -10,7 +10,7 @@
         android:summary="material_dialog_pref_summary"
         android:title="title" />
 
-    <com.buel.holyhelper.view.fragment.SelectDialogPreference
+    <com.buel.holyhelpers.view.fragment.SelectDialogPreference
         android:dialogIcon="@mipmap/ic_launcher"
         android:dialogMessage="preference_dialog_message"
         android:dialogTitle="preference_dialog_title"
@@ -20,7 +20,7 @@
         android:summary="material_dialog_pref_summary"
         android:title="material_dialog_pref_title" />
 
-    <com.buel.holyhelper.view.fragment.SelectDialogPreference
+    <com.buel.holyhelpers.view.fragment.SelectDialogPreference
         android:dialogIcon="@mipmap/ic_launcher"
         android:dialogMessage="preference_dialog_message"
         android:dialogTitle="preference_dialog_title"
@@ -30,7 +30,7 @@
         android:summary="material_dialog_pref_summary"
         android:title="material_dialog_pref_title" />
 
-    <com.buel.holyhelper.view.fragment.SelectDialogPreference
+    <com.buel.holyhelpers.view.fragment.SelectDialogPreference
         android:dialogIcon="@mipmap/ic_launcher"
         android:dialogMessage="preference_dialog_message"
         android:dialogTitle="preference_dialog_title"
