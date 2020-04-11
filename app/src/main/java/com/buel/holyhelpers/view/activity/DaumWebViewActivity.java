@@ -9,6 +9,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.buel.holyhelpers.R;
+import com.buel.holyhelpers.data.CommonData;
 import com.buel.holyhelpers.data.CommonString;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,7 +45,8 @@ public class DaumWebViewActivity extends AppCompatActivity {
         // web client 를 chrome 으로 설정
         daum_webView.setWebChromeClient(new WebChromeClient());
         // webview url load. php 파일 주소
-        daum_webView.loadUrl(CommonString.DAUM_ADDRESS_URL);
+        //daum_webView.loadUrl(CommonString.DAUM_ADDRESS_URL);
+        daum_webView.loadUrl(CommonData.getDaumAddUrl());
     }
     public static final int DAUM_SEARCH_RESULT = 101;
     private class AndroidBridge {

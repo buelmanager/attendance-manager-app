@@ -43,9 +43,6 @@ public class CorpsManagerViewActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_corps_manager_view);
 
-
-//Intent i = new Intent(MemberManagerViewActivity.this, DaumWebViewActivity.class);
-//                startActivityForResult(i, DAUM_SEARCH_RESULT);
         etPassword = findViewById(R.id.corps_manager_activity_view_et_password);
         tvTitle = findViewById(R.id.recycler_view_main_tv_desc);
         etName = findViewById(R.id.corps_manager_activity_view_et_name);
@@ -235,8 +232,8 @@ public class CorpsManagerViewActivity
                 break;
 
             case R.id.corps_manager_activity_view_et_address:
-                //Intent i = new Intent(CorpsManagerViewActivity.this, DaumWebViewActivity.class);
-                //startActivityForResult(i, DaumWebViewActivity.DAUM_SEARCH_RESULT);
+                Intent i = new Intent(CorpsManagerViewActivity.this, DaumWebViewActivity.class);
+                startActivityForResult(i, DaumWebViewActivity.DAUM_SEARCH_RESULT);
                 break;
             case R.id.top_bar_btn_back:
                 goBackHistory();

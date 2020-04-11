@@ -545,6 +545,3 @@ public class MainActivity extends BaseActivity
         AdmobUtils.setBottomBannerAds(MainActivity.this);
     }
 }
-
-
-

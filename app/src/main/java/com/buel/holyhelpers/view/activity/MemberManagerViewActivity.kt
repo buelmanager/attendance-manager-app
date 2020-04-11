@@ -9,10 +9,12 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.provider.ContactsContract.CommonDataKinds
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.buel.holyhelpers.R
 import com.buel.holyhelpers.data.AdminMode
@@ -45,7 +47,6 @@ import kotlinx.android.synthetic.main.activity_memeber_view.*
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.util.*
-import android.provider.ContactsContract.CommonDataKinds
 
 class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
 
@@ -424,6 +425,10 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.member_activity_view_et_add -> {
+
+                val i = Intent(this@MemberManagerViewActivity, DaumWebViewActivity::class.java)
+                startActivityForResult(i, DaumWebViewActivity.DAUM_SEARCH_RESULT)
+
             }
             R.id.member_activity_view_et_position, R.id.member_activity_view_btn_position -> simpleListDialog(
                     this@MemberManagerViewActivity,

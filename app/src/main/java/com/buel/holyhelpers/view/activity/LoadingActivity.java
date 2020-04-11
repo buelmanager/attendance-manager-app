@@ -138,6 +138,9 @@ public class LoadingActivity extends BaseActivity {
         int tutorial_point = SortMapUtil.getInteger(firebaseRemoteConfig.getString("tutorial_point"));
         int video_ads_point = SortMapUtil.getInteger(firebaseRemoteConfig.getString("video_ads_point"));
 
+        String app_daum_address = (firebaseRemoteConfig.getString("app_daum_address"));
+
+        CommonData.setDaumAddUrl(app_daum_address);
         try {
             CommonData.setIsAdsOpen(app_ads_open);
             CommonData.setVideoAdsPoint(video_ads_point);

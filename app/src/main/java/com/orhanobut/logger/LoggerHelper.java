@@ -11,6 +11,7 @@ import com.commonLib.Common;
 public class LoggerHelper {
 
     public static String TAG_2019_04_07 = "2019_04_07";
+    public static String TAG="";
     public LoggerHelper() {
         super();
     }
@@ -18,7 +19,7 @@ public class LoggerHelper {
     private static FormatStrategy formatStrategy;
     private static Boolean isDebug = false;
 
-    public static void setLogger(String tag, boolean bool) {
+    public static void setLogger(String tag, boolean debug) {
         if (formatStrategy != null) return;
         formatStrategy = PrettyFormatStrategy.newBuilder()
                 .methodCount(7)
@@ -26,12 +27,16 @@ public class LoggerHelper {
                 .tag(tag)   // (Optional) Global tag for every log. Default PRETTY_LOGGER
                 .build();
 
-        isDebug = bool;
+        TAG = tag;
+
+        isDebug = debug;
         Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy));
     }
 
 
     public static void i(String title, String s) {
+
+        Logger.addLogAdapter(new AndroidLogAdapter());
         Log.i(Common.PACKAGE_NAME, "");
         Log.i(Common.PACKAGE_NAME, "┌────── [ " + title + " ] ──────┐");
         Logger.i(s);

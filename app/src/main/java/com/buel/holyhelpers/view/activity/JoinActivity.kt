@@ -45,12 +45,8 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
     private var adminUID: String? = null
     private var corpsName: String? = null
     private var tempHolyModelList: MutableList<HolyModel>? = null
-
     private var selectedUserType: UserType? = null
-
-
     private var isClickedSetSerial = false
-
     internal var nameStr: String = ""
     internal var tellStr: String = ""
 

@@ -86,6 +86,7 @@ public class Logger {
   }
 
   public static void addLogAdapter(@NonNull LogAdapter adapter) {
+
     printer.addAdapter(checkNotNull(adapter));
   }
 

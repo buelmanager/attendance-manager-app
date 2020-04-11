@@ -200,9 +200,19 @@ public class CommonData {
         CommonData.isAdsOpen = isAdsOpen;
     }
 
+    private static String daum_address_url;
+    public static String getDaumAddUrl(){
+        return daum_address_url;
+    }
+
+    public static void setDaumAddUrl(String url){
+        daum_address_url = url;
+    }
+
     //회원관리 관련
     private static int corpsCnt;
     private static String corpsUid;
+
     private static String groupUid;
     private static String teamUid;
     private static String memberUid;
