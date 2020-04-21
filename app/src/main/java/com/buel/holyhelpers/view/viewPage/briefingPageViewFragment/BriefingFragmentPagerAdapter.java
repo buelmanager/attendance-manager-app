@@ -20,7 +20,6 @@ public class BriefingFragmentPagerAdapter extends FragmentPagerAdapter {
         mContext = context;
     }
 
-
     @Override
     public int getItemPosition(Object object) {
         return POSITION_NONE;

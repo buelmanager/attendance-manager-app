@@ -116,6 +116,9 @@ class AttendDataManager {
         this.selectDayOfWeek = selectDayOfWeek
         this.onCompleteListener = onCompleteListener
 
+        LoggerHelper.s("okDateMaps  " , okDateMaps.toString())
+        LoggerHelper.s("noDateMaps  " , noDateMaps.toString())
+        LoggerHelper.s("attendModel  " , attendModel.toString())
         okDateMaps = HashMap()
         noDateMaps = HashMap()
         attendModel = AttendModel()
@@ -376,9 +379,9 @@ class AttendDataManager {
         }
         okRate = java.lang.Double.parseDouble(DecimalFormat("##.#").format(okRate))
 
-        val title = "[" + CommonData.getGroupModel().name + " " +
-                SortMapUtil.getInteger(CommonData.getTeamModel().name) + " : " +
-                CommonData.getTeamModel().etc + "] " +
+        val title = "[" + CommonData.groupModel.name + " " +
+                SortMapUtil.getInteger(CommonData.teamModel.name) + " : " +
+                CommonData.teamModel.etc + "] " +
 
                 selectMonth + "월" +
                 selectDay + "일 " +
@@ -417,9 +420,9 @@ class AttendDataManager {
 
         okRate = java.lang.Double.parseDouble(DecimalFormat("##.#").format(okRate))
 
-        val title = "[" + CommonData.getGroupModel().name + " " +
-                SortMapUtil.getInteger(CommonData.getTeamModel().name) + " : " +
-                CommonData.getTeamModel().etc + "] " +
+        val title = "[" + CommonData.groupModel.name + " " +
+                SortMapUtil.getInteger(CommonData.teamModel.name) + " : " +
+                CommonData.teamModel.etc + "] " +
                 selectMonth + "월" +
                 selectDay + "일 " +
                 "(" + CalendarUtils.getDateDay(Integer.valueOf(selectDayOfWeek)) + ") " +

@@ -33,7 +33,7 @@ class FoldCellRecyclerViewActivity : BaseActivity(), View.OnClickListener {
 
         recycler_view_main_iv_close.setOnClickListener(this)
 
-        if (CommonData.getHolyModel() == null) {
+        if (CommonData.holyModel == null) {
             Toast.makeText(this, "교회/단체 정보를 입력해주세요.", Toast.LENGTH_SHORT).show()
             goSelect()
             return
@@ -60,7 +60,7 @@ class FoldCellRecyclerViewActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun getData(): ArrayList<HolyModel.memberModel> {
-        val tempMap = CommonData.getMembersMap() as HashMap<String, HolyModel.memberModel>
+        val tempMap = CommonData.membersMap as HashMap<String, HolyModel.memberModel>
         return tempMap.memberaCovertList() as ArrayList<HolyModel.memberModel>
     }
 

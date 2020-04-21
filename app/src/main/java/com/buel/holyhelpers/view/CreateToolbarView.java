@@ -62,9 +62,10 @@ public class CreateToolbarView {
             else
                 teamName = " : " + CommonData.getTeamModel().etc;
 
+
             toolbar.setTitle(Html.fromHtml("<Strong>[ " +
                             CommonData.getGroupModel().name + " ] </Strong>  /  [ " +
-                            SortMapUtil.getInteger(CommonData.getTeamModel().name) + teamName + " ]"
+                            SortMapUtil.getInteger((CommonData.getTeamModel().name)) + teamName + " ]"
                     )
             );
         }

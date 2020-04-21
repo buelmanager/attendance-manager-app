@@ -138,7 +138,7 @@ public class SelectViewActivity extends BaseActivity implements View.OnClickList
                             "<strong>" + " 전화 " + "</strong>" + cphone + "<br>" +
                             "<strong>" + " 주소 " + "</strong>" + caddress + "<br>"));
         } else {
-            CommonData.setTeamModel(null);
+            CommonData.setCurTeamModel(null);
             CommonData.setMemberModel(null);
             return;
         }
@@ -157,7 +157,7 @@ public class SelectViewActivity extends BaseActivity implements View.OnClickList
                     "<strong>" + CommonString.DEFINITION_NAME_LEADER + "</strong> " + gLeader + "<br>" +
                             "<strong>" + CommonString.DEFINITION_NAME_DEFAULT + "</strong> " + gEtc));
         } else {
-            CommonData.setTeamModel(null);
+            CommonData.setCurTeamModel(null);
             CommonData.setMemberModel(null);
             return;
         }
@@ -180,7 +180,7 @@ public class SelectViewActivity extends BaseActivity implements View.OnClickList
 
 
         } else {
-            CommonData.setTeamModel(null);
+            CommonData.setCurTeamModel(null);
             CommonData.setMemberModel(null);
             return;
         }
@@ -261,7 +261,7 @@ public class SelectViewActivity extends BaseActivity implements View.OnClickList
             CommonData.setStrSearch(strName);
             //goMemberRecycler();
             goManageMentPage();
-            CommonData.setHistoryClass((Class) SelectViewActivity.this.getClass());
+            CommonData.historyClass = (Class) SelectViewActivity.this.getClass();
         } else {
             LoggerHelper.d("[ " + v.getId() + " ] 없는 ID 입니다.");
         }

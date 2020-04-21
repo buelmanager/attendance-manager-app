@@ -121,8 +121,8 @@ public class RecyclerViewAdapter
                     @Override
                     public void onComplete(Object data) {
                         SharedPreferenceUtil.initModelData();
-                        CommonData.setGroupModel(null);
-                        CommonData.setTeamModel(null);
+                        CommonData.setCurGroupModel(null);
+                        CommonData.setCurTeamModel(null);
                         if (onClickListener != null) onClickListener.onClick(v);
                     }
                 });
@@ -134,8 +134,8 @@ public class RecyclerViewAdapter
         if (CommonData.getViewMode() == ViewMode.ADMIN) {
             LoggerHelper.d("MemberShipRecyclerViewAdapter", "btn_item_select");
             HolyModel.groupModel groupModel = itemArrayList.get(position);
-            CommonData.setTeamModel(null);
-            CommonData.setGroupModel(groupModel);
+            CommonData.setCurTeamModel(null);
+            CommonData.setCurGroupModel(groupModel);
             notifyDataSetChanged();
             onClickListener.onClick(v);
         }

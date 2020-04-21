@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/recycler_view_item_rl_main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/shadow_11540">
+    android:layout_height="wrap_content">
+    <!--android:background="@drawable/shadow_11540"-->
+
 
     <LinearLayout
 

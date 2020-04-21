@@ -29,9 +29,9 @@ class TeamManagerViewActivity : BaseActivity(), View.OnClickListener {
             var teams = ArrayList<HolyModel.groupModel.teamModel>()
 
             try {
-                var membersmap: MutableCollection<HolyModel.groupModel.teamModel> = CommonData.getTeamMap().values
+                var membersmap: MutableCollection<HolyModel.groupModel.teamModel?> = CommonData.teamMap.values as MutableCollection<HolyModel.groupModel.teamModel?>
                 teams = membersmap
-                        .filter { it.groupUid == CommonData.getGroupModel().uid }
+                        .filter { it!!.groupUid == CommonData.groupModel.uid }
                         as ArrayList<HolyModel.groupModel.teamModel>
                 LoggerHelper.d(teams)
 
@@ -59,17 +59,17 @@ class TeamManagerViewActivity : BaseActivity(), View.OnClickListener {
         setFocusEditText(etEtc)
         setTopLayout(this)
 
-        if (CommonData.getAdminMode() == AdminMode.MODIFY) {
+        if (CommonData.adminMode == AdminMode.MODIFY) {
             super.setTopTitleDesc("편집")
 
-            etName.setText(getInteger(CommonData.getSelectedTeam().name).toString())
-            etLeader.setText(CommonData.getSelectedTeam().leader)
-            etEtc.setText(CommonData.getSelectedTeam().etc)
+            etName.setText(getInteger(CommonData.selectedTeam.name).toString())
+            etLeader.setText(CommonData.selectedTeam.leader)
+            etEtc.setText(CommonData.selectedTeam.etc)
 
             val textViewGuide = findViewById<TextView>(R.id.manager_tv_title)
             textViewGuide.text = "* 아래의 내용을 수정할 수 있습니다."
 
-        } else if (CommonData.getViewMode() == ViewMode.ADMIN) {
+        } else if (CommonData.viewMode == ViewMode.ADMIN) {
             super.setTopTitleDesc(CommonString.TEAM_NICK + " 생성")
         }
     }
@@ -81,11 +81,11 @@ class TeamManagerViewActivity : BaseActivity(), View.OnClickListener {
     private fun sendServer() {
 
         LoggerHelper.e("sendServer 1")
-        LoggerHelper.e("CommonData.getHolyModel() : " + CommonData.getHolyModel())
-        LoggerHelper.e("CommonData.getGroupModel() : " + CommonData.getGroupModel())
+        LoggerHelper.e("CommonData.getHolyModel() : " + CommonData.holyModel)
+        LoggerHelper.e("CommonData.getGroupModel() : " + CommonData.groupModel)
 
         isSaving = true
-        if (CommonData.getHolyModel() == null || CommonData.getGroupModel() == null) {
+        if (CommonData.holyModel == null || CommonData.groupModel == null) {
             isSaving = false
             return
         }
@@ -127,24 +127,24 @@ class TeamManagerViewActivity : BaseActivity(), View.OnClickListener {
         val teamModel = HolyModel.groupModel.teamModel()
         teamModel.name = etName.text.toString()
         teamModel.leader = etLeader.text.toString()
-        teamModel.groupUid = CommonData.getGroupModel().uid
+        teamModel.groupUid = CommonData.groupModel.uid
 
         if (etEtc.text.length > 0)
             teamModel.etc = etEtc.text.toString()
         else
-            teamModel.etc = CommonData.getGroupModel().name
+            teamModel.etc = CommonData.groupModel.name
 
-        if (CommonData.getAdminMode() == AdminMode.NORMAL) {
+        if (CommonData.adminMode == AdminMode.NORMAL) {
 
             teamManager.insert(teamModel) {
                 Log.d(TAG, "onComplete: teamManager insert complete!!!")
 
                 FDDatabaseHelper.getTeamDataToStore(DataTypeListener.OnCompleteListener {
-                    if (CommonData.isTutoMode()) {
+                    if (CommonData.isTutoMode) {
                         try {
                             val teams: ArrayList<HolyModel.groupModel.teamModel> = data //SortMapUtil.getSortTeamList() as ArrayList<HolyModel.groupModel.teamModel>
                             for (eleteam in teams) {
-                                CommonData.setTeamModel(eleteam)
+                                CommonData.teamModel = eleteam
                             }
                         } catch (e: Exception) {
                         }
@@ -161,8 +161,8 @@ class TeamManagerViewActivity : BaseActivity(), View.OnClickListener {
                     }
                 })
             }
-        } else if (CommonData.getAdminMode() == AdminMode.MODIFY) {
-            teamModel.uid = CommonData.getSelectedTeam().uid
+        } else if (CommonData.adminMode == AdminMode.MODIFY) {
+            teamModel.uid = CommonData.selectedTeam.uid
             teamManager.modify(teamModel) {
                 Log.d(TAG, "onComplete: teamManager modify complete!!!")
 
@@ -175,8 +175,8 @@ class TeamManagerViewActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun getCompareData(strComare: String, teams: ArrayList<HolyModel.groupModel.teamModel>): Boolean {
-        if (CommonData.getAdminMode() == AdminMode.MODIFY) {
-            if (CommonData.getSelectedTeam().name == strComare) {
+        if (CommonData.adminMode == AdminMode.MODIFY) {
+            if (CommonData.selectedTeam.name == strComare) {
                 return false
             }
         }
@@ -184,7 +184,7 @@ class TeamManagerViewActivity : BaseActivity(), View.OnClickListener {
         LoggerHelper.d("getCompareData start teams.size " + teams.size)
         for (eleTeam in teams) {
             LoggerHelper.d("eleTeam.name : " + eleTeam.name + " // strComare : " + strComare)
-            if (SortMapUtil.getInteger(eleTeam.name) === SortMapUtil.getInteger(strComare) && eleTeam.groupUid == CommonData.getGroupModel().uid) {
+            if (SortMapUtil.getInteger(eleTeam.name) === SortMapUtil.getInteger(strComare) && eleTeam.groupUid == CommonData.groupModel.uid) {
                 return true
             }
         }
@@ -195,9 +195,9 @@ class TeamManagerViewActivity : BaseActivity(), View.OnClickListener {
         when (view.id) {
             R.id.top_bar_btn_ok -> {
 
-                if (CommonData.getUserModel().userType != UserType.SUPER_ADMIN.toString()) {
+                if (CommonData.userModel.userType != UserType.SUPER_ADMIN.toString()) {
                     val title = "권한이 없습니다."
-                    val ment = CommonData.getUserModel().userType!! + " 유저는 해당 권한이없습니다. 관리자에게 문의하세요."
+                    val ment = CommonData.userModel.userType!! + " 유저는 해당 권한이없습니다. 관리자에게 문의하세요."
                     MaterialDailogUtil.simpleDoneDialog(this@TeamManagerViewActivity, title, ment, object : MaterialDailogUtil.OnDialogSelectListner {
                         override fun onSelect(s: String) {
                             goGroupRecycler()

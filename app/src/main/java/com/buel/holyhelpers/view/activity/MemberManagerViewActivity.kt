@@ -59,13 +59,13 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_memeber_view)
         val titleView = findViewById<TextView>(R.id.member_manager_view_main_tv_desc)
-        if (CommonData.getHolyModel() == null) {
+        if (CommonData.holyModel == null) {
             Toast.makeText(this, CommonString.INFO_TITLE_CONTROL_CORP, Toast.LENGTH_SHORT).show()
             goSelect()
             return
         }
         //그룹 리스트가 없는경우, 그룹선택이 안되어 있는경우
-        if (CommonData.getHolyModel().group == null || CommonData.getGroupModel() == null) {
+        if (CommonData.holyModel.group == null || CommonData.groupModel == null) {
             Toast.makeText(this, CommonString.INFO_TITLE_CONTROL_GROUP, Toast.LENGTH_SHORT).show()
             goSelect()
             return
@@ -90,10 +90,10 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
         setFocusEditText(member_activity_view_et_new)
         setFocusEditText(member_activity_view_et_isexecutives)
         setFocusEditText(member_activity_view_et_birth)
-        CommonData.setSelectedGroup(CommonData.getGroupModel())
-        CommonData.setSelectedTeam(CommonData.getTeamModel())
-        if (CommonData.getAdminMode() == AdminMode.MODIFY) {
-            val member = CommonData.getSelectedMember()
+        CommonData.selectedGroup = CommonData.groupModel
+        CommonData.selectedTeam = CommonData.teamModel
+        if (CommonData.adminMode == AdminMode.MODIFY) {
+            val member:memberModel = CommonData.selectedMember!!
             member_activity_view_et_name.setText(member.name)
             member_activity_view_et_phone.setText(member.phone)
             member_activity_view_et_add.setText(member.address)
@@ -107,14 +107,14 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
             } catch (e: Exception) {
                 member_activity_view_et_team.setText(member.teamName)
             }
-            if (member.groupUID != CommonData.getGroupModel().uid) {
-                val group = getGroupModelFromMap(CommonData.getHolyModel().group, member.groupUID.toString())
+            if (member.groupUID != CommonData.groupModel.uid) {
+                val group = getGroupModelFromMap(CommonData.holyModel.group, member.groupUID.toString())
                 if (group.name == null) {
                     popToast("해당부서가 없습니다. 같은 이름으로 생성해주세요.")
                     goSelect()
                     return
                 }
-                CommonData.setSelectedGroup(group)
+                CommonData.selectedGroup = group
                 if (member.teamName != null && member.teamUID != null) member_activity_view_et_team.setText(member.teamName)
                 popToast(group.name + " 으로 부서를 설정하였습니다.")
             }
@@ -138,13 +138,13 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
                         .apply(RequestOptions().circleCrop())
                         .into(member_activity_view_imageivew_profile)
             }
-        } else if (CommonData.getAdminMode() == AdminMode.NORMAL) {
+        } else if (CommonData.adminMode == AdminMode.NORMAL) {
             member_activity_view_et_isexecutives.setText("회원/성도")
-            if (CommonData.getGroupModel() != null) member_activity_view_et_group.setText(CommonData.getGroupModel().name)
-            if (CommonData.getTeamModel() != null) {
-                LoggerHelper.d("CommonData.getTeamModel() : " + CommonData.getTeamModel())
-                LoggerHelper.d("CommonData.getTeamModel() toString  : " + CommonData.getTeamModel().toString())
-                member_activity_view_et_team.setText(SortMapUtil.getInteger(CommonData.getTeamModel().name).toString() + "  " + CommonData.getTeamModel().etc)
+            if (CommonData.groupModel != null) member_activity_view_et_group.setText(CommonData.groupModel.name)
+            if (CommonData.teamModel != null) {
+                LoggerHelper.d("CommonData.getTeamModel() : " + CommonData.teamModel)
+                LoggerHelper.d("CommonData.getTeamModel() toString  : " + CommonData.teamModel.toString())
+                member_activity_view_et_team.setText(SortMapUtil.getInteger(CommonData.teamModel.name).toString() + "  " + CommonData.teamModel.etc)
             }
             member_activity_view_btn_call.visibility = View.INVISIBLE
         }
@@ -190,7 +190,7 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
             isSaving = false
             return
         }
-        if (CommonData.getSelectedGroup() == null || CommonData.getSelectedTeam() == null) {
+        if (CommonData.selectedGroup == null || CommonData.selectedTeam == null) {
             SuperToastUtil.toast(this, "선택된 " + CommonString.GROUP_NICK + " 또는 " + CommonString.TEAM_NICK + "이/가 없습니다.")
             isSaving = false
             return
@@ -208,28 +208,28 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
         memberModel.gender = member_activity_view_et_gender!!.text.toString()
         memberModel.leader = member_activity_view_et_leader!!.text.toString()
         memberModel.position = member_activity_view_et_position!!.text.toString()
-        memberModel.corpsUID = CommonData.getCorpsUid()
-        memberModel.corpsName = CommonData.getHolyModel().name
-        memberModel.groupName = CommonData.getSelectedGroup().name
-        memberModel.teamName = CommonData.getSelectedTeam().name
-        memberModel.groupUID = CommonData.getSelectedGroup().uid
-        memberModel.teamUID = CommonData.getSelectedTeam().uid
+        memberModel.corpsUID = CommonData.corpsUid
+        memberModel.corpsName = CommonData.holyModel.name
+        memberModel.groupName = CommonData.selectedGroup!!.name
+        memberModel.teamName = CommonData.selectedTeam!!.name
+        memberModel.groupUID = CommonData.selectedGroup!!.uid
+        memberModel.teamUID = CommonData.selectedTeam!!.uid
         memberModel.isNew = member_activity_view_et_new!!.text.toString()
         memberModel.isExecutives = member_activity_view_et_isexecutives!!.text.toString()
         memberModel.birth = member_activity_view_et_birth!!.text.toString()
-        if (CommonData.getAdminMode() == AdminMode.MODIFY) {
+        if (CommonData.adminMode == AdminMode.MODIFY) {
             if (mImageUri == null) {
                 memberModel.userPhotoUri = oldImageUri
             }
         }
         LoggerHelper.d("MemberManagerViewAcitivity", memberModel.toString())
-        LoggerHelper.d("MemberManagerViewAcitivity", "CommonData.getViewMode() = " + CommonData.getViewMode())
+        LoggerHelper.d("MemberManagerViewAcitivity", "CommonData.getViewMode() = " + CommonData.viewMode)
         if (isFstMember) {
             memberModel.memberRegistDate = Common.currentTimestamp()
         }
         setSendToServer(memberManager, memberModel, SimpleListener.OnCompleteListener {
             if (mImageUri == null) {
-                if (CommonData.isTutoMode()) {
+                if (CommonData.isTutoMode) {
                     simpleDoneDialog(this@MemberManagerViewActivity,
                             "#5 단계, 축하합니다. 이제 출석체크하러 갑니다!", object : OnDialogSelectListner {
                         override fun onSelect(s: String) {
@@ -252,7 +252,7 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
                         Log.d(TAG, "MODIFY onComplete: memberManager insert complete!!!")
                         getAllcorpsMembers(SimpleListener.OnCompleteListener {
                             showProgressDialog(false)
-                            if (CommonData.isTutoMode()) {
+                            if (CommonData.isTutoMode) {
                                 simpleDoneDialog(this@MemberManagerViewActivity,
                                         "#5 단계, 축하합니다. 이제 출석체크하러 갑니다!", object : OnDialogSelectListner {
                                     override fun onSelect(s: String) {
@@ -273,8 +273,8 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
     private var uploadmember: memberModel? = null
     @SuppressLint("LongLogTag")
     private fun setSendToServer(memberManager: MemberManager, memberModel: memberModel, onCompleteListener: SimpleListener.OnCompleteListener) {
-        if (CommonData.getAdminMode() == AdminMode.MODIFY) {
-            memberModel.uid = CommonData.getSelectedMember().uid
+        if (CommonData.adminMode == AdminMode.MODIFY) {
+            memberModel.uid = CommonData.selectedMember!!.uid
             memberManager.modify(memberModel) { data ->
                 Log.d(TAG, "MODIFY onComplete: memberManager insert complete!!!")
                 getAllcorpsMembers(SimpleListener.OnCompleteListener {
@@ -284,7 +284,7 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
                     onCompleteListener.onComplete()
                 })
             }
-        } else if (CommonData.getAdminMode() == AdminMode.NORMAL) {
+        } else if (CommonData.adminMode == AdminMode.NORMAL) {
             memberManager.insert(memberModel) { data ->
                 Log.d(TAG, "ADMIN onComplete: memberManager insert complete!!!")
                 getAllcorpsMembers(SimpleListener.OnCompleteListener {
@@ -306,10 +306,10 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
         get() {
             val members = ArrayList<memberModel>()
             try {
-                LoggerHelper.d("CommonData.getMembersMap() size : +  " + CommonData.getMembersMap().size)
+                LoggerHelper.d("CommonData.getMembersMap() size : +  " + CommonData.membersMap.size)
                 //for (Map.Entry<String, HolyModel.memberModel> elem : CommonData.getHolyModel().memberModel.entrySet()) {
-                for ((key, eleGroup) in CommonData.getMembersMap()) {
-                    eleGroup.uid = key
+                for ((key, eleGroup) in CommonData.membersMap) {
+                    eleGroup!!.uid = key
                     members.add(eleGroup)
                 }
             } catch (e: Exception) {
@@ -327,7 +327,7 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
     fun getCompareData(
             strComare: String,
             members: ArrayList<memberModel>): Boolean {
-        if (CommonData.getAdminMode() == AdminMode.MODIFY && CommonData.getSelectedMember().name == strComare) { //if (CommonData.getSelectedGroup().name.equals(strComare)) {
+        if (CommonData.adminMode == AdminMode.MODIFY && CommonData.selectedMember!!.name == strComare) { //if (CommonData.getSelectedGroup().name.equals(strComare)) {
             return false
             //}
         }
@@ -338,9 +338,9 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
         //단체에서
         for (eleMember in members) { //그룹이 같고
             LoggerHelper.d(" eleMember.groupUID : " + eleMember.groupUID)
-            LoggerHelper.d(" CommonData.getGroupModel().uid : " + CommonData.getGroupModel().uid)
+            LoggerHelper.d(" CommonData.getGroupModel().uid : " + CommonData.groupModel.uid)
             if (eleMember.groupUID != null) {
-                if (eleMember.groupUID == CommonData.getGroupModel().uid) { //이름이 같은것을 검색
+                if (eleMember.groupUID == CommonData.groupModel.uid) { //이름이 같은것을 검색
                     if (eleMember.name == strComare) {
                         return true
                     }
@@ -426,8 +426,8 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
         when (v.id) {
             R.id.member_activity_view_et_add -> {
 
-                val i = Intent(this@MemberManagerViewActivity, DaumWebViewActivity::class.java)
-                startActivityForResult(i, DaumWebViewActivity.DAUM_SEARCH_RESULT)
+                //val i = Intent(this@MemberManagerViewActivity, DaumWebViewActivity::class.java)
+                //startActivityForResult(i, DaumWebViewActivity.DAUM_SEARCH_RESULT)
 
             }
             R.id.member_activity_view_et_position, R.id.member_activity_view_btn_position -> simpleListDialog(
@@ -490,8 +490,8 @@ class MemberManagerViewActivity : BaseActivity(), View.OnClickListener {
                 Common.hideKeyboard(v.context as Activity)
                 getTeamDialog(v.context,
                         SimpleListener.OnCompleteListener {
-                            LoggerHelper.d("CommonData.getSelectedTeam().name : " + CommonData.getSelectedTeam().name)
-                            member_activity_view_et_team!!.setText(CommonData.getSelectedTeam().name + "  " + CommonData.getSelectedTeam().etc + "  ")
+                            LoggerHelper.d("CommonData.getSelectedTeam().name : " + CommonData.selectedTeam!!.name)
+                            member_activity_view_et_team!!.setText(CommonData.selectedTeam!!.name + "  " + CommonData.selectedTeam!!.etc + "  ")
                         })
             }
             R.id.top_bar_btn_ok -> {

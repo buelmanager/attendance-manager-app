@@ -11,6 +11,7 @@ import android.webkit.WebView;
 import com.buel.holyhelpers.R;
 import com.buel.holyhelpers.data.CommonData;
 import com.buel.holyhelpers.data.CommonString;
+import com.orhanobut.logger.LoggerHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -46,7 +47,9 @@ public class DaumWebViewActivity extends AppCompatActivity {
         daum_webView.setWebChromeClient(new WebChromeClient());
         // webview url load. php 파일 주소
         //daum_webView.loadUrl(CommonString.DAUM_ADDRESS_URL);
-        daum_webView.loadUrl(CommonData.getDaumAddUrl());
+
+        LoggerHelper.d("CommonData.getDaumAddUrl() " + CommonData.INSTANCE.getDaumAddUrl());
+        daum_webView.loadUrl("http://wbs.ipdisk.co.kr:8000/daum_address.php");
     }
     public static final int DAUM_SEARCH_RESULT = 101;
     private class AndroidBridge {

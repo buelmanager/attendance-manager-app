@@ -218,8 +218,8 @@ public class FoldCellRecyclerViewAdapter
                 v -> Toast.makeText(viewHolder.itemView.getContext(),
                         "개인통계현황(출석/전도/정착률) 다음 시즌 준비중입니다.", Toast.LENGTH_SHORT).show());
 
-        AppUtil.setBackColor(viewHolder.itemView.getContext(), viewHolder.modify_iv, R.color.white);
-        AppUtil.setBackColor(viewHolder.itemView.getContext(), viewHolder.delete_iv, R.color.material_500_red);
+        AppUtil.INSTANCE.setBackColor(viewHolder.itemView.getContext(), viewHolder.modify_iv, R.color.white);
+        AppUtil.INSTANCE.setBackColor(viewHolder.itemView.getContext(), viewHolder.delete_iv, R.color.material_500_red);
 
         viewHolder.call_rl.setOnClickListener(new View.OnClickListener() {
             @Override

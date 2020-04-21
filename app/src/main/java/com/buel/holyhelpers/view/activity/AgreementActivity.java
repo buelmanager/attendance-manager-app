@@ -34,7 +34,7 @@ public class AgreementActivity extends BaseActivity implements View.OnClickListe
                  @Override
                  public void onSelect(String s) {
                      goJoin();
-                     CommonData.setHistoryClass((Class)LoginActivity.class);
+                     CommonData.historyClass = (Class)LoginActivity.class;
                  }
              });
         }

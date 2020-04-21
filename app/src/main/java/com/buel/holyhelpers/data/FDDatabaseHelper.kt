@@ -29,6 +29,7 @@ import com.google.gson.Gson
 import com.orhanobut.logger.LoggerHelper
 import java.io.ByteArrayOutputStream
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by 19001283 on 2018-06-01.
@@ -106,7 +107,7 @@ object FDDatabaseHelper {
         FDDatabaseHelper.showProgress(true)
 
         firestore.collection(CORPS_TABLE)
-                .document(CommonData.getAdminUid())
+                .document(CommonData.adminUid!!)
                 .collection(GROUP_TABLE)
                 .get().addOnSuccessListener { queryDocumentSnapshots ->
 
@@ -118,9 +119,9 @@ object FDDatabaseHelper {
                         tempMap[documentSnapshot.id]?.uid = documentSnapshot.id
                     }
 
-                    CommonData.getHolyModel().group = tempMap
-                    CommonData.setGroupMap(tempMap)
-                    LoggerHelper.d(CommonData.getHolyModel().group)
+                    CommonData.holyModel!!.group = tempMap
+                    CommonData.groupMap = tempMap
+                    LoggerHelper.d(CommonData.holyModel!!.group)
                     onDataListener.onComplete(queryDocumentSnapshots)
                 }.addOnFailureListener { e -> LoggerHelper.e(e.message) }
     }
@@ -131,7 +132,7 @@ object FDDatabaseHelper {
 
         //team table을 group과 같은 레벨에 넣는다.
         val colRef = firestore.collection(CORPS_TABLE)
-                .document(CommonData.getAdminUid())
+                .document(CommonData.adminUid!!)
                 .collection(TEAM_TABLE)
                 //.whereEqualTo("groupUid" , CommonData.getGroupModel().uid)
 
@@ -144,8 +145,8 @@ object FDDatabaseHelper {
                         tempMap[documentSnapshot.id] = documentSnapshot.toObject<HolyModel.groupModel.teamModel>(HolyModel.groupModel.teamModel::class.java)
                         tempMap[documentSnapshot.id]?.uid = documentSnapshot.id
                     }
-                    CommonData.getGroupModel().team = tempMap
-                    CommonData.setTeamMap(tempMap)
+                    CommonData.groupModel!!.team = tempMap
+                    CommonData.teamMap = tempMap
 
                     FDDatabaseHelper.showProgress(false)
                     onDataListener.onComplete(queryDocumentSnapshots)
@@ -158,7 +159,7 @@ object FDDatabaseHelper {
 
         //team table을 group과 같은 레벨에 넣는다.
         val colRef = firestore.collection(CORPS_TABLE)
-                .document(CommonData.getAdminUid())
+                .document(CommonData.adminUid!!)
                 .collection(TEAM_TABLE)
 
         colRef
@@ -171,7 +172,7 @@ object FDDatabaseHelper {
                         tempMap[documentSnapshot.id]?.uid = documentSnapshot.id
                     }
                     //CommonData.getGroupModel().team = tempMap
-                    CommonData.setTeamMap(tempMap)
+                    CommonData.teamMap = tempMap
 
                     FDDatabaseHelper.showProgress(false)
                     onDataListener.onComplete(queryDocumentSnapshots)
@@ -255,7 +256,7 @@ object FDDatabaseHelper {
     fun sendGroupDeleteData(dataModel: HolyModel.groupModel, listener: Management.OnCompleteListener<*>?) {
         FireStoreWriteManager.delete(
                 firestore.collection(CORPS_TABLE)
-                        .document(CommonData.getCorpsUid())
+                        .document(CommonData.corpsUid!!)
                         .collection(GROUP_TABLE)
                         .document(dataModel.uid)
         , DataTypeListener.OnCompleteListener {
@@ -269,7 +270,7 @@ object FDDatabaseHelper {
 
         FireStoreWriteManager.modify(
                 firestore.collection(CORPS_TABLE)
-                        .document(CommonData.getCorpsUid())
+                        .document(CommonData.corpsUid!!)
                         .collection(GROUP_TABLE)
                         .document(dataModel.uid),
                 map,
@@ -282,7 +283,7 @@ object FDDatabaseHelper {
 
         FireStoreWriteManager.insert(
                 firestore.collection(CORPS_TABLE)
-                        .document(CommonData.getCorpsUid())
+                        .document(CommonData.corpsUid!!)
                         .collection(GROUP_TABLE)
                         .document(),
                 dataModel, DataTypeListener.OnCompleteListener {
@@ -295,7 +296,7 @@ object FDDatabaseHelper {
 
         FireStoreWriteManager.delete(
                 firestore.collection(CORPS_TABLE)
-                        .document(CommonData.getCorpsUid())
+                        .document(CommonData.corpsUid!!)
                         .collection(TEAM_TABLE)
                         .document(dataModel.uid),
                 DataTypeListener.OnCompleteListener {
@@ -310,7 +311,7 @@ object FDDatabaseHelper {
         val map = dataModel.convertMap()
         FireStoreWriteManager.modify(
                 firestore.collection(CORPS_TABLE)
-                        .document(CommonData.getCorpsUid())
+                        .document(CommonData.corpsUid!!)
                         .collection(TEAM_TABLE)
                         .document(dataModel.uid),
                 map,
@@ -327,7 +328,7 @@ object FDDatabaseHelper {
 
         FireStoreWriteManager.insert(
                 firestore.collection(CORPS_TABLE)
-                        .document(CommonData.getCorpsUid())
+                        .document(CommonData.corpsUid!!)
                         .collection(TEAM_TABLE)
                         .document(),
                 dataModel,
@@ -479,20 +480,6 @@ object FDDatabaseHelper {
     fun getAllCorpsData(
             onFDDListener: FDDatabaseHelper.onFDDCallbackListener) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         FirebaseDatabase.getInstance().reference
                 .child(CORPS_TABLE)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -520,7 +507,7 @@ object FDDatabaseHelper {
                             c++
                         }
 
-                        val tempList = ArrayList<HolyModel?>()
+                        val tempList = ArrayList<HolyModel>()
 
                         val tm = TreeMap(tempMap)
                         val iteratorKey = tm.keys.iterator()   //키값 오름차순 정렬(기본)
@@ -528,10 +515,10 @@ object FDDatabaseHelper {
 
                         while (iteratorKey.hasNext()) {
                             val key = iteratorKey.next()
-                            tempList.add(tm[key])
+                            tempList.add(tm[key]!!)
                         }
 
-                        CommonData.setHolyModelList(tempList)
+                        CommonData.holyModelList = tempList
 
                         onFDDListener?.onFromDataComplete(CORPS_DATA_SET, dataSnapshot)
                     }
@@ -567,16 +554,18 @@ object FDDatabaseHelper {
         if (CommonData.getGroupUid() != null && CommonData.getTeamUid() != null) {
             val attendModel = AttendModel()
             attendModel.timestamp = Common.currentTimestamp()
-            attendModel.year = CommonData.getSelectedYear().toString()
-            attendModel.month = Common.addZero(CommonData.getSelectedMonth()).toString()
-            attendModel.date = Common.addZero(CommonData.getSelectedDay()).toString()
-            attendModel.day = CommonData.getSelectedDayOfWeek().toString()
-            attendModel.time = CommonData.getSelectedDays().toString()
+            attendModel.year = CommonData.selectedYear.toString()
+            attendModel.month = Common.addZero(CommonData.selectedMonth).toString()
+            attendModel.date = Common.addZero(CommonData.selectedDay).toString()
+            attendModel.day = CommonData.selectedDayOfWeek.toString()
+            attendModel.time = CommonData.selectedDays.toString()
             attendModel.groupUID = CommonData.getGroupUid()
-            attendModel.corpsUID = CommonData.getCorpsUid()
+            attendModel.corpsUID = CommonData.corpsUid
             attendModel.teamUID = CommonData.getTeamUid()
             attendModel.fdate = attendModel.year + "-" + attendModel.month + "-" + attendModel.date + "-" + attendModel.day + "-" + attendModel.time
             FDDatabaseHelper.showProgress(true)
+
+            LoggerHelper.d(attendModel.toString())
 
             FireStoreAttendManager.getAttandAllData(attendModel, SimpleListener.OnCompleteListener {
                 LoggerHelper.d("getAttandAllData")
@@ -592,9 +581,9 @@ object FDDatabaseHelper {
             try {
 
                 LoggerHelper.d("stringmembersHashMap : " + stringmembersHashMap.size)
-                CommonData.setMembersMap(stringmembersHashMap)
+                CommonData.membersMap = stringmembersHashMap
             } catch (e: Exception) {
-                CommonData.setMemberModel(null)
+                CommonData.memberModel = HolyModel.memberModel()
             }
 
             onSimpleListener.onComplete()
@@ -602,25 +591,24 @@ object FDDatabaseHelper {
     }
 
     fun getMyCorps(onSimpleListener: SimpleListener.OnCompleteListener) {
-        Log.d(TAG, "getMyCorps: 교회/단체 정보를 가지고 옵니다. ")
-        val adminUID = CommonData.getAdminUid()
+        val adminUID = CommonData.adminUid!!
 
         LoggerHelper.d("getMyCorps : adminUID : $adminUID")
         getCorpsDataToStore(adminUID, DataTypeListener.OnCompleteListener { queryDocumentSnapshots ->
-            CommonData.setCorpsCnt(queryDocumentSnapshots.size())
+            CommonData.corpsCnt = queryDocumentSnapshots.size()
 
-            LoggerHelper.d("getMyCorps : [" + CommonData.getCorpsCnt() + "] 개의 단체 정보를 가지고 왔습니다.")
+            LoggerHelper.d("getMyCorps : [" + CommonData.corpsCnt + "] 개의 단체 정보를 가지고 왔습니다.")
 
-            if (CommonData.getCorpsCnt() == 0) {
-                CommonData.setHolyModel(null)
-                CommonData.setGroupModel(null)
-                CommonData.setTeamModel(null)
-                CommonData.setMemberModel(null)
+            if (CommonData.corpsCnt == 0) {
+                CommonData.holyModel = HolyModel()
+                CommonData.setCurGroupModel(null)
+                CommonData.setCurTeamModel(null)
+                CommonData.memberModel = HolyModel.memberModel()
                 onSimpleListener.onComplete()
                 return@OnCompleteListener
             }
 
-            if (CommonData.getCorpsCnt() > 1) {
+            if (CommonData.corpsCnt > 1) {
                 LoggerHelper.d("onFromDataComplete: " + "단체의 개수가 비정상입니다.")
                 onSimpleListener.onComplete()
                 return@OnCompleteListener
@@ -630,8 +618,8 @@ object FDDatabaseHelper {
             for (item in queryDocumentSnapshots.documents) {
                 val holyModel = item.toObject(HolyModel::class.java)
                 holyModel!!.uid = item.id
-                CommonData.setHolyModel(holyModel)
-                CommonData.setCorpsUid(item.id)
+                CommonData.holyModel = holyModel
+                CommonData.corpsUid = item.id
             }
 
             LoggerHelper.d("그룹리스트를 갱신중입니다.")
@@ -650,19 +638,19 @@ object FDDatabaseHelper {
 
     fun setCurrentTeamMaps() {
         try {
-            val teams = SortMapUtil.getSortTeamList() as ArrayList<HolyModel.groupModel.teamModel>
+            val teams = SortMapUtil.sortTeamList as ArrayList<HolyModel.groupModel.teamModel>
             //LoggerHelper.d("teams.size : " + teams.size());
 
             if(teams.size == 0){
-                CommonData.setTeamModel(null)
-                CommonData.setMemberModel(null)
+                CommonData.setCurTeamModel(null)
+                CommonData.memberModel = HolyModel.memberModel()
             }
             for (eleTeam in teams) {
                 //LoggerHelper.d("eleTeam : " + eleTeam.convertMap());
-                if (CommonData.getTeamModel() != null) {
+                if (CommonData.teamModel != null) {
                     //LoggerHelper.d("teams.size():" + teams.size() + " // CommonData.getTeamUid : " + CommonData.getTeamUid() + " // " +  eleTeam.uid);
                     if (CommonData.getTeamUid() == eleTeam.uid) {
-                        CommonData.setTeamModel(eleTeam)
+                        CommonData.setCurTeamModel(eleTeam)
                         LoggerHelper.d("팀 설정 정보가 갱신됩니다.", eleTeam.convertMap())
                     }
                 } else {
@@ -676,32 +664,41 @@ object FDDatabaseHelper {
     }
 
     fun setCurrentGrops(onSimpleListener: SimpleListener.OnCompleteListener): Boolean {
-        try {
-            val groups = SortMapUtil.getSortGroupList(CommonData.getHolyModel().group) as ArrayList<HolyModel.groupModel>
+        //try {
+            LoggerHelper.d("setCurrentGrops")
+            LoggerHelper.d("CommonData.getHolyModel().group : " + CommonData.holyModel!!.group.toString())
+            LoggerHelper.d("CommonData.getHolyModel().group.values  : " + CommonData.holyModel!!.group.values )
+
+            val groups = CommonData.holyModel!!.group.values.also { list -> list.sortedBy { it.name }}
+
             LoggerHelper.d("groups.size : " + groups.size)
 
             if(groups.size == 0){
-                CommonData.setGroupModel(null)
-                CommonData.setTeamModel(null)
-                CommonData.setMemberModel(null)
+
+                CommonData.setCurGroupModel(null)
+                CommonData.setCurTeamModel(null)
+                CommonData.memberModel = HolyModel.memberModel()
+
                 onSimpleListener.onComplete()
                 showProgress(false)
                 return true
             }
 
             for (eleGroup in groups) {
-                LoggerHelper.d("CommonData.getGroupUid() : " + CommonData.getGroupUid())
-                if (CommonData.getGroupModel() != null) {
-                    //LoggerHelper.d("CommonData.getGroupUid : " + CommonData.getGroupUid() + " // " + eleGroup.uid)
+
+                LoggerHelper.d("CommonData.groupModel : " + CommonData.groupModel)
+
+                if (CommonData.groupModel != null) {
+                    LoggerHelper.d("CommonData.getGroupUid : " + CommonData.getGroupUid() + " // " + eleGroup.uid)
                     if (CommonData.getGroupUid() == eleGroup.uid) {
-                        CommonData.setGroupModel(eleGroup)
+                        CommonData.setCurGroupModel(eleGroup)
                         LoggerHelper.d("그룹 설정 정보가 갱신됩니다.", eleGroup.convertMap())
                     }
                 } else {
                     //LoggerHelper.d("설정된 그룹 내용이 없습니다.");
-                    CommonData.setGroupModel(null)
-                    CommonData.setTeamModel(null)
-                    CommonData.setMemberModel(null)
+                    CommonData.setCurGroupModel(null)
+                    CommonData.setCurTeamModel(null)
+                    CommonData.memberModel = HolyModel.memberModel()
                     onSimpleListener.onComplete()
                     showProgress(false)
                     return true
@@ -713,7 +710,7 @@ object FDDatabaseHelper {
                 setCurrentTeamMaps()
             })
 
-        } catch (e: Exception) {
+      /*  } catch (e: Exception) {
             CommonData.setGroupModel(null)
             CommonData.setTeamModel(null)
             CommonData.setMemberModel(null)
@@ -721,7 +718,7 @@ object FDDatabaseHelper {
             onSimpleListener.onComplete()
             showProgress(false)
             return true
-        }
+        }*/
 
         return false
     }
@@ -733,6 +730,8 @@ object FDDatabaseHelper {
         for ((_, value) in groupMap) {
             tempList.add(value.name)
         }
+
+        tempList.sortedBy { it }
 
         return tempList
     }
@@ -820,12 +819,12 @@ object FDDatabaseHelper {
             cMember: HolyModel.memberModel): Boolean {
 
         //if (CommonData.getHolyModel().memberModel == null) {
-        if (CommonData.getMembersMap() == null) {
+        if (CommonData.membersMap == null) {
             return false
         }
         //for (Map.Entry<String, HolyModel.memberModel> elem : CommonData.getHolyModel().memberModel.entrySet()) {
-        for ((_, tempMembers) in CommonData.getMembersMap()) {
-            if (Common.trim(tempMembers.name) == Common.trim(cMember.name)) {
+        for ((_, tempMembers) in CommonData.membersMap!!) {
+            if (Common.trim(tempMembers!!.name) == Common.trim(cMember.name)) {
                 return true
             }
         }
@@ -844,15 +843,17 @@ object FDDatabaseHelper {
                 .document(FDDatabaseHelper.ATTEND)
                 .collection(FDDatabaseHelper.CORPS_TABLE)
 
+
+
         val holyModel = HolyModel()
-        holyModel.name = CommonData.getHolyModel().name
-        holyModel.adminUid = CommonData.getHolyModel().adminUid
-        holyModel.address = CommonData.getHolyModel().address
-        holyModel.adminEmail = CommonData.getHolyModel().adminEmail
-        holyModel.addressDetail = CommonData.getHolyModel().addressDetail
-        holyModel.owner = CommonData.getHolyModel().owner
-        holyModel.phone = CommonData.getHolyModel().phone
-        holyModel.uid = CommonData.getHolyModel().uid
+        holyModel.name = CommonData.holyModel!!.name
+        holyModel.adminUid = CommonData.holyModel!!.adminUid
+        holyModel.address = CommonData.holyModel!!.address
+        holyModel.adminEmail = CommonData.holyModel!!.adminEmail
+        holyModel.addressDetail = CommonData.holyModel!!.addressDetail
+        holyModel.owner = CommonData.holyModel!!.owner
+        holyModel.phone = CommonData.holyModel!!.phone
+        holyModel.uid = CommonData.holyModel!!.uid
 
         val corpRef = attendRef.document(dataModel.corpsUID)
         batch.set(corpRef, holyModel)
@@ -862,10 +863,10 @@ object FDDatabaseHelper {
                 .document(dataModel.groupUID)
 
         val group = HolyModel.groupModel()
-        group.name = CommonData.getGroupModel().name
-        group.etc = CommonData.getGroupModel().etc
-        group.uid = CommonData.getGroupModel().uid
-        group.leader = CommonData.getGroupModel().leader
+        group.name = CommonData.groupModel!!.name
+        group.etc = CommonData.groupModel!!.etc
+        group.uid = CommonData.groupModel!!.uid
+        group.leader = CommonData.groupModel!!.leader
 
         batch.set(groupRef, group)
 
@@ -876,11 +877,11 @@ object FDDatabaseHelper {
                 .document(dataModel.fdate)
 
         val aModel = AttendModel()
-        aModel.year = CommonData.getSelectedYear().toString()
-        aModel.month = CommonData.getSelectedMonth().toString()
-        aModel.date = CommonData.getSelectedDay().toString()
-        aModel.day = CommonData.getSelectedDayOfWeek().toString()
-        aModel.time = CommonData.getSelectedDays().toString()
+        aModel.year = CommonData.selectedYear.toString()
+        aModel.month = CommonData.selectedMonth.toString()
+        aModel.date = CommonData.selectedDay.toString()
+        aModel.day = CommonData.selectedDayOfWeek.toString()
+        aModel.time = CommonData.selectedDays.toString()
         aModel.timestamp = Common.currentTimestamp().toString()
 
         batch.set(dateRef, aModel)

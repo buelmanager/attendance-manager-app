@@ -38,8 +38,8 @@ class TeamBriefingRecyclerFragment : AbstBriefingFragment() {
 
         val tvTitle = rootView.findViewById<TextView>(R.id.corps_step2_view_page_tv_title)
 
-        if (CommonData.getGroupUid() != null && CommonData.getTeamModel() != null) {
-            tvTitle.text = "* 현재 설정된 [ " + CommonData.getGroupModel().name + "] 의 각 " + CommonString.TEAM_NICK + "별 출석을 나타낸 통계입니다."
+        if (CommonData.getGroupUid() != null && CommonData.teamModel != null) {
+            tvTitle.text = "* 현재 설정된 [ " + CommonData.groupModel.name + "] 의 각 " + CommonString.TEAM_NICK + "별 출석을 나타낸 통계입니다."
             getAttandData()
         } else {
             //SuperToastUtil.toastE(getContext(), "팀을 추가해주세요.");
@@ -58,27 +58,28 @@ class TeamBriefingRecyclerFragment : AbstBriefingFragment() {
         var group: HolyModel.groupModel? = null
 
         try {
-            group = CommonData.getGroupModel()
+            group = CommonData.groupModel
         } catch (e: Exception) {
             Toast.makeText(context, CommonString.INFO_TITLE_SELECTL_GROUP, Toast.LENGTH_SHORT).show()
         }
 
-        if (CommonData.getTeamModel() == null || CommonData.getGroupModel() == null) {
+        if (CommonData.teamModel == null || CommonData.groupModel == null) {
             //SuperToastUtil.toastE(getContext(), "팀을 추가해주세요.");
             LoggerHelper.d("팀을 추가해주세요.")
             return
         }
 
         try {
-            var teammap: MutableCollection<HolyModel.groupModel.teamModel> = CommonData.getTeamMap().values
+            var teammap: MutableCollection<HolyModel.groupModel.teamModel> = CommonData.teamMap.values as MutableCollection<HolyModel.groupModel.teamModel>
+
             teams = teammap
-                    .filter { it.groupUid == CommonData.getGroupModel().uid }
+                    .filter { it.groupUid == CommonData.groupModel.uid }
                     as ArrayList<HolyModel.groupModel.teamModel>
             //LoggerHelper.d(teams)
 
             //LoggerHelper.d("teams : $teams")
 
-            groups = SortMapUtil.getSortGroupList(CommonData.getHolyModel().group) as ArrayList<HolyModel.groupModel>
+            groups = SortMapUtil.getSortGroupList(CommonData.holyModel.group) as ArrayList<HolyModel.groupModel>
             //LoggerHelper.d("groups : $groups")
         } catch (e: Exception) {
             //SuperToastUtil.toastE(getContext(), "팀을 추가해주세요.");
@@ -88,10 +89,10 @@ class TeamBriefingRecyclerFragment : AbstBriefingFragment() {
 
         var cnt = 0
 
-        if (CommonData.getAnalMode() == AnalMode.GROP_MODE) {
+        if (CommonData.analMode == AnalMode.GROP_MODE) {
             for (eleGroup in groups) {
                 val teamUID = eleGroup.uid
-                val barChartModel = BarChartDataUtils.getAttandData(null!!, true)
+                val barChartModel = BarChartDataUtils.getAttandData(null!!, true)!!
                 dataArrayList.add(barChartModel)
                 cnt++
                 if (cnt >= teams.size) {
@@ -101,7 +102,7 @@ class TeamBriefingRecyclerFragment : AbstBriefingFragment() {
         } else {
             for (eleTeam in teams) {
                 val teamUID = eleTeam.uid
-                val barChartModel = BarChartDataUtils.getAttandData(eleTeam, false)
+                val barChartModel = BarChartDataUtils.getAttandData(eleTeam, false)!!
                 dataArrayList.add(barChartModel)
                 cnt++
                 if (cnt >= teams.size) {

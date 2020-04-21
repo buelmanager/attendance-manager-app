@@ -125,13 +125,13 @@ object FireStoreAttendManager {
             dataModel: AttendModel,
             onSimpleListener: SimpleListener.OnCompleteListener) {
 
-        Log.d(TAG, "getAttandAllData")
-        Log.d(TAG, "dataModel.month : " + dataModel.month)
-        Log.d(TAG, "dataModel.groupUID : " + dataModel.groupUID)
-        Log.d(TAG, "CommonData.getCorpsUid() : " + CommonData.getCorpsUid())
+        LoggerHelper.d(TAG, "getAttandAllData")
+        LoggerHelper.d(TAG, "dataModel.month : " + dataModel.month)
+        LoggerHelper.d(TAG, "dataModel.groupUID : " + dataModel.groupUID)
+        LoggerHelper.d(TAG, "CommonData.getCorpsUid() : " + CommonData.corpsUid)
 
         var userColRef = attendRef
-                .document(CommonData.getCorpsUid())
+                .document(CommonData.corpsUid!!)
                 .collection(FDDatabaseHelper.GROUP_TABLE)
                 .document(dataModel.groupUID)
                 .collection(FDDatabaseHelper.ATTEND_DATE_TABLE)
@@ -147,7 +147,7 @@ object FireStoreAttendManager {
                 dateModelMap.put(dateModel.fdate, dateModel)
             }
 
-            CommonData.setAttendDateMaps(dateModelMap)
+            CommonData.attendDateMaps = dateModelMap
             //LoggerHelper.d("getAttandAllData : complete")
             onSimpleListener.onComplete()
         }

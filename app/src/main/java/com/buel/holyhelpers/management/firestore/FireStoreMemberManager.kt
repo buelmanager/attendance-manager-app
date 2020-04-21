@@ -21,17 +21,17 @@ object FireStoreMemberManager {
      * 반환을 UserModel 로 한다.
      */
     @SuppressLint("LongLogTag")
-    @JvmStatic fun getDocData(listener: DataTypeListener.OnCompleteListener<HashMap<String?, HolyModel.memberModel>>) {
+    @JvmStatic fun getDocData(listener: DataTypeListener.OnCompleteListener<HashMap<String?, HolyModel.memberModel?>>) {
         val userRef =
                 firestore.collection(FDDatabaseHelper.CORPS_TABLE)
-                        .document(CommonData.getCorpsUid())
+                        .document(CommonData.corpsUid!!)
                         .collection(FDDatabaseHelper.MEMBER_TABLE)
 
         userRef.get().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 //Log.d(TAG, "task.isSuccessful: " + task.isSuccessful)
 
-                var memberMap = HashMap<String?, HolyModel.memberModel>()
+                var memberMap = HashMap<String?, HolyModel.memberModel?>()
                 var memberModel: HolyModel.memberModel
 
                 //Log.d(TAG, "task.isSuccessful: " + task.result!!.size())
@@ -103,7 +103,7 @@ object FireStoreMemberManager {
         Log.d(TAG, dataModel.toString())
         val map = dataModel
         val userRef = firestore.collection(FDDatabaseHelper.CORPS_TABLE)
-                .document(CommonData.getCorpsUid())
+                .document(CommonData.corpsUid!!)
                 .collection(FDDatabaseHelper.MEMBER_TABLE)
                 .document((map["uid"] as String?)!!)
 

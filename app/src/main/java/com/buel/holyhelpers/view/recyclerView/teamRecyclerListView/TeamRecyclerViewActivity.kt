@@ -74,25 +74,25 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
         var teams = ArrayList<HolyModel.groupModel.teamModel>()
         var group: HolyModel.groupModel? = null
 
-        if (CommonData.getHolyModel() == null) {
+        if (CommonData.holyModel == null) {
             Toast.makeText(this, "교회/단체 정보를 입력해주세요.", Toast.LENGTH_SHORT).show()
             goSelect()
             return
         }
 
         try {
-            group = CommonData.getGroupModel()
+            group = CommonData.groupModel
             tvDesc.text = group!!.name
 
         } catch (e: Exception) {
             Toast.makeText(this, CommonString.INFO_TITLE_SELECTL_GROUP, Toast.LENGTH_SHORT).show()
             goSelect()
         }
-        var membersmap: MutableCollection<HolyModel.groupModel.teamModel> = CommonData.getTeamMap().values
+        var membersmap: MutableCollection<HolyModel.groupModel.teamModel> = CommonData.teamMap.values as MutableCollection<HolyModel.groupModel.teamModel>
 
         try {
             teams = membersmap
-                    .filter { it.groupUid == CommonData.getGroupModel().uid }
+                    .filter { it.groupUid == CommonData.groupModel.uid }
                     as ArrayList<HolyModel.groupModel.teamModel>
             LoggerHelper.d(teams)
         } catch (e: Exception) {
@@ -136,7 +136,7 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
         CommonData.setAdminMode(AdminMode.MODIFY)
         super.setTopOkBtnVisibled(View.VISIBLE)
         super.setTopOkBtnBackground(R.drawable.ic_clear_white_24dp)
-        setViewAdminMode(AdminMode.MODIFY, "[ " + CommonData.getGroupModel().name + " ] " + CommonString.TEAM_NICK + " 수정")
+        setViewAdminMode(AdminMode.MODIFY, "[ " + CommonData.groupModel.name + " ] " + CommonString.TEAM_NICK + " 수정")
     }
 
     private fun setAdminMode() {
@@ -164,7 +164,7 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
         if (v.id == R.id.recycler_view_item_rl_main) {
             LoggerHelper.d("MemberShipRecyclerViewActivity", "v.getId()  : 2 " + v.id)
             FDDatabaseHelper.getMyCorps(SimpleListener.OnCompleteListener {
-                CommonData.setMemberModel(null)
+                CommonData.memberModel = HolyModel.memberModel()
                 goSelect()
             })
 
@@ -173,7 +173,7 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
             FDDatabaseHelper.getTeamDataToStore(DataTypeListener.OnCompleteListener {
                 val reTeams: ArrayList<HolyModel.groupModel.teamModel>?
 
-                var map: HashMap<String, HolyModel.groupModel.teamModel> = CommonData.getGroupModel().team as HashMap<String, HolyModel.groupModel.teamModel>
+                var map: HashMap<String, HolyModel.groupModel.teamModel> = CommonData.groupModel.team as HashMap<String, HolyModel.groupModel.teamModel>
                 reTeams = map.teamCovertList() as ArrayList<HolyModel.groupModel.teamModel>
 
                 if (reTeams == null) {
@@ -193,20 +193,20 @@ class TeamRecyclerViewActivity : BaseActivity(), View.OnClickListener {
 
             })
         } else if (v.id == R.id.recycler_view_item_btn_select) {
-            if (CommonData.getAdminMode() == AdminMode.NORMAL) {
+            if (CommonData.adminMode == AdminMode.NORMAL) {
                 FDDatabaseHelper.getMyCorps(SimpleListener.OnCompleteListener {})
                 //startActivity(new Intent(TeamRecyclerViewActivity.this, SelectViewActivity.class));
                 //finish();
-            } else if (CommonData.getAdminMode() == AdminMode.MODIFY) {
+            } else if (CommonData.adminMode == AdminMode.MODIFY) {
                 goSetTeam()
                 //CommonData.setHistoryClass(TeamRecyclerViewActivity::class.java)
             }
         } else if (v.id == R.id.top_bar_btn_back) {
             goSelect()
         } else if (v.id == R.id.top_bar_btn_ok) {
-            if (CommonData.getAdminMode() == AdminMode.NORMAL)
+            if (CommonData.adminMode == AdminMode.NORMAL)
                 setModifyMode()
-            else if (CommonData.getAdminMode() == AdminMode.MODIFY)
+            else if (CommonData.adminMode == AdminMode.MODIFY)
                 setAdminMode()
         }
     }

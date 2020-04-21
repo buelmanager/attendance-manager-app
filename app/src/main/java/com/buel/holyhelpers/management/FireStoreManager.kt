@@ -32,7 +32,7 @@ object FireStoreManager {
             val userModel = t as ArrayList<UserModel>
             val tempModels = java.util.ArrayList<UserModel>()
             for (eleUserModel in userModel) {
-                if (eleUserModel.adminUID == CommonData.getAdminUid()) {
+                if (eleUserModel.adminUID == CommonData.adminUid) {
                     if (userType == eleUserModel.userType) {
                         tempModels.add(eleUserModel)
                     }

@@ -88,7 +88,7 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
      * ViewMode 에 맞게 화면을 구성한다.
      */
     private fun setViewMode() {
-        if (CommonData.getAdminMode() == AdminMode.MODIFY) {  //수정 모드
+        if (CommonData.adminMode == AdminMode.MODIFY) {  //수정 모드
             setModifyViewMode()
         } else {                                            //가입 모드
             joinStep1()
@@ -107,8 +107,8 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setModifyViewMode() {
-        val holyModel = CommonData.getHolyModel()
-        val (userName, userPhotoUri, _, userTell, _, _, _, _, _, corpsName1) = CommonData.getUserModel()
+        val holyModel = CommonData.holyModel
+        val (userName, userPhotoUri, _, userTell, _, _, _, _, _, corpsName1) = CommonData.userModel
 
         editText_name!!.isClickable = false
         editText_name!!.isFocusableInTouchMode = false
@@ -116,9 +116,9 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
         editText_tell!!.setText(userTell)
 
         corpsName = corpsName1
-        adminUID = CommonData.getAdminUid()
+        adminUID = CommonData.adminUid
 
-        LoggerHelper.d("setModifyViewMode", CommonData.getMemberShipType())
+        LoggerHelper.d("setModifyViewMode", CommonData.memberShipType)
 
         if (holyModel.uid != null) editText_uid!!.setText(holyModel.name)
 
@@ -204,7 +204,7 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
             R.id.top_bar_btn_ok ->
 
                 //수정하기 모드일때 할때
-                if (CommonData.getAdminMode() == AdminMode.MODIFY) {
+                if (CommonData.adminMode == AdminMode.MODIFY) {
                     onOkclickedModify()
                 } else {
                     onJoinClick(v)
@@ -221,14 +221,14 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
             return;
         }
 */
-        if (selectedUserType == UserType.SUPER_ADMIN || CommonData.getMemberShipType() == UserType.SUPER_ADMIN) {
+        if (selectedUserType == UserType.SUPER_ADMIN || CommonData.memberShipType == UserType.SUPER_ADMIN) {
             SuperToastUtil.toastE(this@JoinActivity, "SUPER_ADMIN 유저입니다.")
             return
         }
 
-        LoggerHelper.d("onClickedSetSerial", "CommonData.getAdminMode() : " + CommonData.getAdminMode())
+        LoggerHelper.d("onClickedSetSerial", "CommonData.getAdminMode() : " + CommonData.adminMode)
         LoggerHelper.d("onClickedSetSerial", "isClickedSetSerial : $isClickedSetSerial")
-        if (CommonData.getAdminMode() == AdminMode.MODIFY && !isClickedSetSerial && CommonData.getMemberShipType() != UserType.SUPER_ADMIN) {
+        if (CommonData.adminMode == AdminMode.MODIFY && !isClickedSetSerial && CommonData.memberShipType != UserType.SUPER_ADMIN) {
             MaterialDailogUtil.simpleYesNoDialog(this@JoinActivity, CommonString.CORP_NICK
                     + " 을/를 선택시 [운영 관리자] 권한을 다시 요청해야 합니다. 실행하시겠습니까?",
                     object : MaterialDailogUtil.OnDialogSelectListner {
@@ -246,7 +246,7 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
                 var s = s
 
                 s = s.replace(PatternDefine.PATTERN_BLANK.toRegex(), "")
-                CommonData.setStrSearch(s)
+                CommonData.strSearch = s
 
                 FDDatabaseHelper.getAllCorpsStoreData(DataTypeListener.OnCompleteListener {
                     //LoggerHelper.d(CommonData.getHolyModelList())
@@ -263,11 +263,11 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
                     var c: Int? = 0
                     for (elem in holyModels) {
 
-                        LoggerHelper.d("JoinActivity", "CommonData.getStrSearch() : " + CommonData.getStrSearch())
+                        LoggerHelper.d("JoinActivity", "CommonData.getStrSearch() : " + CommonData.strSearch)
                         LoggerHelper.d("JoinActivity", "elem.name : " + elem?.name)
 
                         if (elem?.name != null) {
-                            val compareMemberName = elem.name.indexOf(CommonData.getStrSearch())
+                            val compareMemberName = elem.name.indexOf(CommonData.strSearch)
                             if (compareMemberName != -1) {
                                 LoggerHelper.d("JoinActivity", "단체 추가합니다. => " + elem.name)
                                 tempList.add(c!!, "교회이름: " + elem.name + "\n담임목사 : " + elem.owner +
@@ -307,12 +307,12 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
      * 저장하기 버튼 클릭 : 수정하기 모드일 때
      */
     private fun onOkclickedModify() {
-        val user = CommonData.getFirebaseUser()
-        val userModel = CommonData.getUserModel()
+        val user = CommonData.firebaseUser!!
+        val userModel = CommonData.userModel!!
         userModel.userName = editText_name!!.text.toString()
         userModel.userTell = editText_tell!!.text.toString()
 
-        if (UserType.SUB_ADMIN == CommonData.getMemberShipType()) {
+        if (UserType.SUB_ADMIN == CommonData.memberShipType) {
             if (corpsName == null || adminUID == null) {
                 sToast(CommonString.INFO_TITLE_SELECT_CORP, true)
                 return
@@ -325,7 +325,7 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
             userModel.permission = "no"
         }
         userModel.userEmail = FirebaseAuth.getInstance().currentUser!!.email
-        userModel.userType = CommonData.getUserModel().userType
+        userModel.userType = CommonData.userModel.userType
 
         LoggerHelper.e(userModel.toString())
         if (mBitmap != null) {
@@ -335,8 +335,8 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
                 try {
 
                     FDDatabaseHelper.sendUserDataInsertUserModel(user.uid, userModel, DataTypeListener.OnCompleteListener { t: Boolean ->
-                        if (UserType.SUPER_ADMIN != CommonData.getMemberShipType())
-                            CommonData.setAdminUid(userModel.adminUID)
+                        if (UserType.SUPER_ADMIN != CommonData.memberShipType)
+                            CommonData.adminUid = userModel.adminUID
                         goMain()
                     })
                 } catch (e: Exception) {
@@ -347,8 +347,8 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
             try {
 
                 FDDatabaseHelper.sendUserDataInsertUserModel(user.uid, userModel, DataTypeListener.OnCompleteListener { t: Boolean ->
-                    if (UserType.SUPER_ADMIN != CommonData.getMemberShipType())
-                        CommonData.setAdminUid(userModel.adminUID)
+                    if (UserType.SUPER_ADMIN != CommonData.memberShipType)
+                        CommonData.adminUid = userModel.adminUID
                     goMain()
                 })
             } catch (e: Exception) {
@@ -404,7 +404,7 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
         if (UserType.SUPER_ADMIN == selectedUserType) {
             userModel.permission = "ok"
             userModel.adminUID = FirebaseAuth.getInstance().uid
-            CommonData.setAdminUid(userModel.adminUID)
+            CommonData.adminUid = userModel.adminUID
         } else if (UserType.SUB_ADMIN == selectedUserType) {
             if (corpsName == null || adminUID == null) {
                 sToast(CommonString.INFO_TITLE_SELECT_CORP, true)
@@ -442,15 +442,15 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
         //progressDialog.show();
         try {
             FireStoreManager.sendUserDataInsertUserModel(userModel, DataTypeListener.OnCompleteListener {
-                CommonData.setMemberShipType(selectedUserType)
-                CommonData.setUserModel(userModel)
+                CommonData.memberShipType = selectedUserType!!
+                CommonData.userModel = userModel
                 if (selectedUserType == UserType.SUB_ADMIN) {
-                    CommonData.setAdminUid(userModel.adminUID)
-                    PointManager.setPlusPoint(CommonData.getPersonalJoinPoint())
-                    Toast.makeText(this@JoinActivity, "회원가입이 완료되었습니다. '가입 포인트' " + CommonData.getPersonalJoinPoint() + " 지급됩니다.", Toast.LENGTH_SHORT).show()
+                    CommonData.adminUid = userModel.adminUID
+                    PointManager.setPlusPoint(CommonData.personalJoinPoint)
+                    Toast.makeText(this@JoinActivity, "회원가입이 완료되었습니다. '가입 포인트' " + CommonData.personalJoinPoint + " 지급됩니다.", Toast.LENGTH_SHORT).show()
                     goMain()
                 } else if (selectedUserType == UserType.SUPER_ADMIN) {
-                    CommonData.setIsTutoMode(true)
+                    CommonData.isTutoMode = true
                     goMain()
                 }
             })

@@ -61,6 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <EditText
+
+                android:longClickable="false"
                 android:hint="주소"
                 android:id="@+id/corps_manager_activity_view_et_address"
                 android:clickable="false"

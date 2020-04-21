@@ -84,7 +84,7 @@ class MemberShipRecyclerViewActivity : BaseActivity(), View.OnClickListener {
 
         var strHelper = ""
 
-        if (CommonData.getViewMode() == ViewMode.ADMIN) {
+        if (CommonData.viewMode == ViewMode.ADMIN) {
             strHelper = "<strong>† 수정/관리</strong><br> " +
                     "버튼을 클릭하여 그룹 선택하세요." + "<br><br>" +
                     "상단 설정버튼을 클릭하면 <br>그룹 수정/삭제 관리가 가능합니다." + "<br><br>" +
@@ -100,8 +100,8 @@ class MemberShipRecyclerViewActivity : BaseActivity(), View.OnClickListener {
                 CommonString.INFO_HELPER_TITLE,
                 object : MaterialDailogUtil.OnDialogSelectListner {
                     override fun onSelect(s: String) {
-                        CommonData.setIsFstEnter(false)
-                        LoggerHelper.d("CommonData.getIsFstEnter() : " + CommonData.getIsFstEnter())
+                        CommonData.isFstEnter = false
+                        LoggerHelper.d("CommonData.getIsFstEnter() : " + CommonData.isFstEnter)
                     }
                 })
 
@@ -127,7 +127,7 @@ class MemberShipRecyclerViewActivity : BaseActivity(), View.OnClickListener {
         //super.setTopOkBtnVisibled(View.VISIBLE);
         super.setTopOkBtnBackground(R.drawable.ic_clear_white_24dp)
         //setViewMode(ViewMode.MODIFY, "[ " + CommonData.getHolyModel().name + " ] 멤버쉽 리스트 수정");
-        setTitle("[ " + CommonData.getHolyModel().name + " ] 멤버쉽 리스트 수정")
+        setTitle("[ " + CommonData.holyModel!!.name + " ] 멤버쉽 리스트 수정")
         CommonData.setAdminMode(AdminMode.MODIFY)
     }
 

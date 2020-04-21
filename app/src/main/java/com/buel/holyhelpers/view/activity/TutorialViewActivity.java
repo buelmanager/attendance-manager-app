@@ -29,8 +29,8 @@ public class TutorialViewActivity extends TutorialActivity {
     }
 
     public void setTutorialPage() {
-        if (CommonData.getTutorialModelList() == null) return;
-        List<TutorialModel> drawableList = CommonData.getTutorialModelList();
+        if (CommonData.tutorialModelList == null) return;
+        List<TutorialModel> drawableList = (List<TutorialModel>) CommonData.INSTANCE.tutorialModelList;
 
         int color = AppUtil.getRandomMaterialColor();
         for (int i = 0; i < drawableList.size(); i++) {

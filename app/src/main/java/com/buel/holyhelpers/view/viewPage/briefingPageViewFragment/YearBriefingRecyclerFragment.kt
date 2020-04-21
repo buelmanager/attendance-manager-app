@@ -41,17 +41,17 @@ class YearBriefingRecyclerFragment : AbstBriefingFragment() {
 
         tvTitle = rootView.findViewById(R.id.corps_step2_view_page_tv_title)
 
-        if (CommonData.getGroupUid() != null && CommonData.getTeamModel() != null) {
+        if (CommonData.getGroupUid() != null && CommonData.teamModel != null) {
 
-            val title = "* 선택하신 [" + CommonData.getGroupModel().name + "] " + CommonString.GROUP_NICK + "의 월간 출석 통계   [ + 상세설명 ]"
+            val title = "* 선택하신 [" + CommonData.groupModel.name + "] " + CommonString.GROUP_NICK + "의 월간 출석 통계   [ + 상세설명 ]"
 
             tvTitle.text = title
 
             val message = "<br>" +
-                    "<strong>월간 출석 통계는 선택하신 [" + CommonData.getGroupModel().name + "] " + CommonString.GROUP_NICK + "의부서의 각 소그룹의 전체 출석수을 통합한 수치이고,</strong>" + "<br><br>" +
-                    "<strong> [" + CommonData.getGroupModel().name + "] 부서의 </strong>" + CommonData.getSelectedYear().toString() + "년도 각월의 출석 통계입니다." + "<br><br>" +
+                    "<strong>월간 출석 통계는 선택하신 [" + CommonData.groupModel.name + "] " + CommonString.GROUP_NICK + "의부서의 각 소그룹의 전체 출석수을 통합한 수치이고,</strong>" + "<br><br>" +
+                    "<strong> [" + CommonData.groupModel.name + "] 부서의 </strong>" + CommonData.selectedYear.toString() + "년도 각월의 출석 통계입니다." + "<br><br>" +
                     "<strong>[전월 대비] 란? </strong><BR>해당 월의 전 월과의 출석수의 차이를 표시" + "<br><br>" +
-                    "<strong>[" + (CommonData.getSelectedYear() - 1).toString() + "년 동월 대비] 란?</strong> <BR>해당 월의 작년의 같은 월과의 출석수의 차이를 표시" + "<br><br>" +
+                    "<strong>[" + (CommonData.selectedYear - 1).toString() + "년 동월 대비] 란?</strong> <BR>해당 월의 작년의 같은 월과의 출석수의 차이를 표시" + "<br><br>" +
                     "<strong>[ 돋보기 버튼] 을 클릭하면,</strong> <BR> 클릭한 월에 해당하는 상세 데이터 표시화면이로 이동합니다." + "<br>"
 
             tvTitle.setOnClickListener { view ->
@@ -75,7 +75,7 @@ class YearBriefingRecyclerFragment : AbstBriefingFragment() {
         var group: HolyModel.groupModel? = null
 
         try {
-            group = CommonData.getGroupModel()
+            group = CommonData.groupModel
         } catch (e: Exception) {
             Toast.makeText(context, "선택된 그룹 정보가 없습니다.", Toast.LENGTH_SHORT).show()
         }
@@ -83,9 +83,9 @@ class YearBriefingRecyclerFragment : AbstBriefingFragment() {
 
 
         try {
-            var teammap: MutableCollection<HolyModel.groupModel.teamModel> = CommonData.getTeamMap().values
+            var teammap: MutableCollection<HolyModel.groupModel.teamModel> = CommonData.teamMap.values as MutableCollection<HolyModel.groupModel.teamModel>
             teams = teammap
-                    .filter { it.groupUid == CommonData.getGroupModel().uid }
+                    .filter { it.groupUid == CommonData.groupModel.uid }
                     as ArrayList<HolyModel.groupModel.teamModel>
             //LoggerHelper.d(teams)
 
@@ -102,9 +102,9 @@ class YearBriefingRecyclerFragment : AbstBriefingFragment() {
 
         val cYear = cal.get(Calendar.YEAR)
         var cMonth = cal.get(Calendar.MONTH) + 1
-        val cSelectedMonth = CommonData.getSelectedMonth()
+        val cSelectedMonth = CommonData.selectedMonth
         val viewMonth = cMonth
-        if (cYear > CommonData.getSelectedYear()) {
+        if (cYear > CommonData.selectedYear) {
             cMonth = 12
         }
 
@@ -115,13 +115,13 @@ class YearBriefingRecyclerFragment : AbstBriefingFragment() {
         var evgSum = 0.0
         var monthEvg = 0.0
         for (i in -12 until viewMonth) {
-            CommonData.setSelectedMonth(i + 1)
+            CommonData.selectedMonth = i + 1
             val barChartModel: BarChartModel
             //LoggerHelper.d("CommonData.getAnalMode()  : " + CommonData.getAnalMode())
-            if (CommonData.getAnalMode() == AnalMode.GROP_MODE) {
-                barChartModel = BarChartDataUtils.getAttandData(null!!, true)
+            if (CommonData.analMode == AnalMode.GROP_MODE) {
+                barChartModel = BarChartDataUtils.getAttandData(null!!, true)!!
             } else {
-                barChartModel = BarChartDataUtils.getAttandData(CommonData.getTeamModel(), false)
+                barChartModel = BarChartDataUtils.getAttandData(CommonData.teamModel, false)!!
             }
             if (barChartModel.evg === "-" || barChartModel.evg === "") {
                 barChartModel.evg = "0"
@@ -148,7 +148,7 @@ class YearBriefingRecyclerFragment : AbstBriefingFragment() {
 
         monthEvg = evgSum / viewMonth
 
-        CommonData.setSelectedMonth(cSelectedMonth)
+        CommonData.selectedMonth = cSelectedMonth
         setPage()
 
     }

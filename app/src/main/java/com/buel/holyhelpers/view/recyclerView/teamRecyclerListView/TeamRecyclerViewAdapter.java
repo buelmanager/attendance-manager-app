@@ -80,7 +80,7 @@ public class TeamRecyclerViewAdapter
         holder.btn_item_delete.setOnClickListener(v -> onDeleteBtnClickedListener(v, position));
         holder.recyclerViewItemMain.setOnClickListener(v -> onViewItemBtnClickedListener(v, position));
         holder.btn_item_select.setOnClickListener(v -> onSelectBtnClickedListener(v, position));
-        holder.tv_item_name.setText(Html.fromHtml("<Strong>" + SortMapUtil.getInteger(team.name).toString() + "</Strong>"));
+        holder.tv_item_name.setText(Html.fromHtml("<Strong>" + SortMapUtil.getInteger(team.name) + "</Strong>"));
 
         if (team.leader == null) team.leader = "";
         if (team.etc == null) team.etc = "";
@@ -97,7 +97,7 @@ public class TeamRecyclerViewAdapter
             teamManager.delete(team, data -> {
                 notifyDataSetChanged();
                 SharedPreferenceUtil.initTeamModel();
-                CommonData.setTeamModel(null);
+                CommonData.setCurTeamModel(null);
                 if (onClickListener != null) onClickListener.onClick(v);
             });
         });
@@ -106,7 +106,7 @@ public class TeamRecyclerViewAdapter
     private void onViewItemBtnClickedListener(View v, int position) {
         if (CommonData.getViewMode() == ViewMode.ADMIN) {
             HolyModel.groupModel.teamModel teamModel = itemArrayList.get(position);
-            CommonData.setTeamModel(teamModel);
+            CommonData.setCurTeamModel(teamModel);
             notifyDataSetChanged();
             onClickListener.onClick(v);
         }

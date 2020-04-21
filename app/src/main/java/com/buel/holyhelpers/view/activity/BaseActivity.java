@@ -492,7 +492,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void goBackHistory(Class<T> hitoryClass) {
-        if (CommonData.isTutoMode()) {
+        if (CommonData.INSTANCE.isTutoMode()) {
             MaterialDailogUtil.Companion.simpleYesNoDialog(BaseActivity.this, "튜토리얼을 완료해주세요!", new MaterialDailogUtil.OnDialogSelectListner() {
                 @Override
                 public void onSelect(String s) {
@@ -505,7 +505,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void goBackHistory() {
-        if (CommonData.isTutoMode()) {
+        if (CommonData.INSTANCE.isTutoMode()) {
             MaterialDailogUtil.Companion.simpleDoneDialog(BaseActivity.this, "튜토리얼을 완료해주세요!.", new MaterialDailogUtil.OnDialogSelectListner() {
                 @Override
                 public void onSelect(String s) {
@@ -523,10 +523,10 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
      *********************************************************************************************************************************************************/
     public void goBackHistoryIntent() {
         Intent intent;
-        if (CommonData.getHistoryClass() == null) {
+        if (CommonData.historyClass == null) {
             onBackPressed();
         } else {
-            intent = new Intent(getApplicationContext(), CommonData.getHistoryClass());
+            intent = new Intent(getApplicationContext(), CommonData.historyClass);
             startActivity(intent);
             finish();
             overridePendingTransition(0, 0);
@@ -542,7 +542,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
                 // Firebase sign out
                 FirebaseAuth.getInstance().signOut();
-                GoogleSignInClient googleSignInClient = CommonData.getGoogleSignInClient();
+                GoogleSignInClient googleSignInClient = CommonData.INSTANCE.getGoogleSignInClient();
                 // Google sign out
                 googleSignInClient.signOut().addOnCompleteListener(BaseActivity.this,
                         task -> goLogin());
@@ -559,7 +559,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
                 // Firebase sign out
                 FirebaseAuth.getInstance().signOut();
-                GoogleSignInClient googleSignInClient = CommonData.getGoogleSignInClient();
+                GoogleSignInClient googleSignInClient = CommonData.INSTANCE.getGoogleSignInClient();
                 // Google sign out
                 googleSignInClient.signOut().addOnCompleteListener(BaseActivity.this,
                         task -> finish());
@@ -568,14 +568,14 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void goJoin() {
-        CommonData.setHistoryClass((Class) getApplicationContext().getClass());
+        CommonData.historyClass = (Class) getApplicationContext().getClass();
         Intent intent = new Intent(getApplicationContext(), JoinActivity.class);
         goStartAcitivity(intent);
     }
 
 
     public void goMain() {
-        CommonData.setHistoryClass(null);
+        CommonData.historyClass = null;
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         goStartAcitivity(intent);
     }
@@ -586,57 +586,57 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void goSettings() {
-        CommonData.setHistoryClass((Class) MainActivity.class);
+        CommonData.historyClass = (Class) MainActivity.class;
         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
         goStartAcitivity(intent);
     }
 
     public void goLogin() {
-        CommonData.setHistoryClass((Class) getApplicationContext().getClass());
+        CommonData.historyClass = (Class) getApplicationContext().getClass();
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         //intent.putExtra("login", "out");
         goStartAcitivity(intent);
     }
 
     public void goSelect() {
-        CommonData.setHistoryClass((Class) MainActivity.class);
+        CommonData.historyClass = (Class) MainActivity.class;
         Intent intent = new Intent(getApplicationContext(), SelectViewActivity.class);
         goStartAcitivity(intent);
     }
 
     public void goSetTeam() {
-        CommonData.setHistoryClass((Class) SelectViewActivity.class);
+        CommonData.historyClass = (Class) SelectViewActivity.class;
         Intent intent = new Intent(getApplicationContext(), TeamManagerViewActivity.class);
         goStartAcitivity(intent);
     }
 
     public void goSetGroup() {
-        CommonData.setHistoryClass((Class) SelectViewActivity.class);
+        CommonData.historyClass = (Class) SelectViewActivity.class;
         Intent intent = new Intent(getApplicationContext(), GroupManagerViewActivity.class);
         goStartAcitivity(intent);
     }
 
     public void goGroupRecycler() {
-        CommonData.setHistoryClass((Class) getApplicationContext().getClass());
+        CommonData.historyClass = (Class) getApplicationContext().getClass();
         Intent intent = new Intent(getApplicationContext(), RecyclerViewActivity.class);
 
         goStartAcitivity(intent);
     }
 
     public void goTeamRecycler() {
-        CommonData.setHistoryClass((Class) getApplicationContext().getClass());
+        CommonData.historyClass = (Class) getApplicationContext().getClass();
         Intent intent = new Intent(getApplicationContext(), TeamRecyclerViewActivity.class);
         goStartAcitivity(intent);
     }
 
     public void goMemberRecycler() {
-        CommonData.setHistoryClass((Class) getApplicationContext().getClass());
+        CommonData.historyClass = (Class) getApplicationContext().getClass();
         Intent intent = new Intent(getApplicationContext(), MemberRecyclerViewActivity.class);
         goStartAcitivity(intent);
     }
 
     public void goSetCorps() {
-        CommonData.setHistoryClass((Class) SelectViewActivity.class);
+        CommonData.historyClass = (Class) SelectViewActivity.class;
         Intent intent = new Intent(getApplicationContext(), CorpsManagerViewActivity.class);
         goStartAcitivity(intent);
     }
@@ -651,13 +651,13 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
 
     public void goManageMentPage() {
-        CommonData.setHistoryClass((Class) SelectViewActivity.class);
+        CommonData.historyClass = (Class) SelectViewActivity.class;
         Intent intent = new Intent(getApplicationContext(), FoldCellRecyclerViewActivity.class);
         goStartAcitivity(intent);
     }
 
     public void goEmpty() {
-        CommonData.setHistoryClass((Class) MainActivity.class);
+        CommonData.historyClass = (Class) MainActivity.class;
         Intent intent = new Intent(getApplicationContext(), EmptyActivity.class);
         goStartAcitivity(intent);
     }
@@ -668,7 +668,7 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void goAgreement() {
-        CommonData.setHistoryClass((Class) LoginActivity.class);
+        CommonData.historyClass = (Class) LoginActivity.class;
         Intent intent = new Intent(getApplicationContext(), AgreementActivity.class);
         goStartAcitivity(intent);
     }

@@ -18,7 +18,7 @@ public class CorpsSettingManager {
                 new SimpleListener.OnCompleteListener() {
                     @Override
                     public void onComplete() {
-                        CommonData.setTeamModel(CommonData.getSelectedTeam());
+                        CommonData.setCurTeamModel(CommonData.getSelectedTeam());
                     }
                 });
     }
@@ -29,8 +29,8 @@ public class CorpsSettingManager {
                 new SimpleListener.OnCompleteListener() {
                     @Override
                     public void onComplete() {
-                        CommonData.setGroupModel(CommonData.getSelectedGroup());
-                        CommonData.setTeamModel(null);
+                        CommonData.setCurGroupModel(CommonData.getSelectedGroup());
+                        CommonData.setCurTeamModel(null);
                         setTeam(context);
                     }
                 });
@@ -42,7 +42,7 @@ public class CorpsSettingManager {
                 new SimpleListener.OnCompleteListener() {
                     @Override
                     public void onComplete() {
-                        CommonData.setTeamModel(CommonData.getSelectedTeam());
+                        CommonData.setCurTeamModel(CommonData.getSelectedTeam());
                         if (teamOnCompleteListener != null) {
                             teamOnCompleteListener.onComplete(CommonData.getSelectedTeam());
                         }
@@ -58,8 +58,8 @@ public class CorpsSettingManager {
                 new SimpleListener.OnCompleteListener() {
                     @Override
                     public void onComplete() {
-                        CommonData.setGroupModel(CommonData.getSelectedGroup());
-                        CommonData.setTeamModel(null);
+                        CommonData.setCurGroupModel(CommonData.getSelectedGroup());
+                        CommonData.setCurTeamModel(null);
 
                         if (groupOnCompleteListener != null)
                             groupOnCompleteListener.onComplete(CommonData.getSelectedGroup());
@@ -89,7 +89,7 @@ public class CorpsSettingManager {
                 new SimpleListener.OnCompleteListener() {
                     @Override
                     public void onComplete() {
-                        CommonData.setTeamModel(null);
+                        CommonData.setCurTeamModel(null);
                         setTeam(context, onCompleteListener);
                     }
                 });

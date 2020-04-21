@@ -80,7 +80,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         //  로그인 인터페이스 리스너
         authStateListener = firebaseAuth -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
-            CommonData.setFirebaseUser(user);
+            CommonData.firebaseUser = user;
             showProgressDialog(false);
             if (user != null) {
                 //로그인 성공
@@ -93,7 +93,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         showProgressDialog(true);
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        CommonData.setGoogleSignInClient(mGoogleSignInClient);
+        CommonData.INSTANCE.setGoogleSignInClient(mGoogleSignInClient);
 
         try {
             Intent intent = getIntent();
@@ -134,7 +134,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
 
         if (uid.equals(userModel.uid)) {
-            CommonData.setUserModel(userModel);
+            CommonData.userModel = userModel;
             LoggerHelper.d(userModel.toString());
 
             //토큰을 저장한다.

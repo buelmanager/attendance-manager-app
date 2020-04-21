@@ -72,7 +72,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
                 CommonData.setAdminMode(AdminMode.MODIFY)
                 goJoin()
-                CommonData.setHistoryClass(SettingsActivity::class.java as Class<T>?)
+                CommonData.historyClass = SettingsActivity::class.java as Class<T>
             }
 
             R.id.preference_activity_ll_2 ->
@@ -96,24 +96,24 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
             R.id.preference_activity_ll_4 -> {
 
-                if (CommonData.getMemberShipType() != UserType.SUPER_ADMIN) {
+                if (CommonData.memberShipType != UserType.SUPER_ADMIN) {
                     SuperToastUtil.toastE(this@SettingsActivity, "권한이 없습니다.")
                     return
                 }
 
                 CommonData.setViewMode(ViewMode.ADD_ACOUNT_SUB_ADMIN)
                 goJoin()
-                CommonData.setHistoryClass(SettingsActivity::class.java as Class<T>?)
+                CommonData.historyClass = SettingsActivity::class.java as Class<T>
             }
 
             R.id.preference_activity_ll_5 -> {
 
-                if (CommonData.getMemberShipType() != UserType.SUPER_ADMIN) {
+                if (CommonData.memberShipType != UserType.SUPER_ADMIN) {
                     SuperToastUtil.toastE(this@SettingsActivity, "권한이 없습니다.")
                     return
                 }
 
-                if (CommonData.getHolyModel() == null) {
+                if (CommonData.holyModel == null) {
                     Toast.makeText(this, "교회/단체 설정을 먼저 해주세요.", Toast.LENGTH_SHORT).show()
                     return
                 }
@@ -127,12 +127,12 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
             R.id.preference_activity_ll_6 -> {
 
-                if (CommonData.getMemberShipType() != UserType.SUPER_ADMIN) {
+                if (CommonData.memberShipType != UserType.SUPER_ADMIN) {
                     SuperToastUtil.toastE(this@SettingsActivity, "권한이 없습니다.")
                     return
                 }
 
-                if (CommonData.getHolyModel() == null) {
+                if (CommonData.holyModel == null) {
                     Toast.makeText(this, "교회/단체 설정을 먼저 해주세요.", Toast.LENGTH_SHORT).show()
                     return
                 }
@@ -143,7 +143,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
             }
             R.id.preference_activity_ll_7 -> {
 
-                if (CommonData.getMemberShipType() != UserType.SUPER_ADMIN) {
+                if (CommonData.memberShipType != UserType.SUPER_ADMIN) {
                     SuperToastUtil.toastE(this@SettingsActivity, "권한이 없습니다.")
                     return
                 }
@@ -164,7 +164,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
                 SuperToastUtil.toastE(this@SettingsActivity, "해당 서비스는 개발자와 문의해주세요.")
                 return
 
-                if (CommonData.getMemberShipType() != UserType.SUPER_ADMIN) {
+                if (CommonData.memberShipType != UserType.SUPER_ADMIN) {
                     SuperToastUtil.toastE(this@SettingsActivity, "권한이 없습니다.")
                     return
                 }
@@ -264,17 +264,17 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
         LoggerHelper.d("setGroupCoroutineExcelData setAddGroupFromExcel ")
         membersList.sortBy { it.groupName }
 
-        val curGroupMap = CommonData.getGroupMap() ?: hashMapOf()
+        val curGroupMap = CommonData.groupMap ?: hashMapOf()
 
         val colRef = FireStoreWriteManager.firestore
                 .collection(FDDatabaseHelper.CORPS_TABLE)
-                .document(CommonData.getHolyModel().uid)
+                .document(CommonData.holyModel.uid)
                 .collection(FDDatabaseHelper.GROUP_TABLE)
 
         var tempGroupList: ArrayList<HolyModel.groupModel> = arrayListOf()
 
         for ((key, eleGroup) in memberToGroupMap) {
-            if (curGroupMap.count { it.value.name == key } <= 0) {
+            if (curGroupMap.count { it.value!!.name == key } <= 0) {
                 var gModel = HolyModel.groupModel()
                 gModel.name = key
                 tempGroupList.add(gModel)
@@ -297,13 +297,13 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
         membersList.sortBy { it.teamName }
 
-        val curGroupMap = CommonData.getGroupMap() ?: hashMapOf()
+        val curGroupMap = CommonData.groupMap ?: hashMapOf()
         val groupList = curGroupMap.map { it.value }
 
         LoggerHelper.d("curGroupMap.size : " + curGroupMap.size)
         LoggerHelper.d("curGroupMap : " + curGroupMap)
 
-        val curTeamMap = CommonData.getTeamMap() ?: hashMapOf()
+        val curTeamMap = CommonData.teamMap ?: hashMapOf()
 
         LoggerHelper.d("curTeamMap.size : " + curTeamMap.size)
         LoggerHelper.d("curTeamMap : " + curTeamMap)
@@ -313,14 +313,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
         val colRef = FireStoreWriteManager.firestore
                 .collection(FDDatabaseHelper.CORPS_TABLE)
-                .document(CommonData.getHolyModel().uid)
+                .document(CommonData.holyModel.uid)
                 .collection(FDDatabaseHelper.TEAM_TABLE)
 
         val tempTeamList = arrayListOf<HolyModel.groupModel.teamModel>()
-        val groupMap = CommonData.getGroupMap()
+        val groupMap = CommonData.groupMap
 
         for (eleMember in membersList) {
-            eleMember.groupUID = groupMap.values.find { it.name == eleMember.groupName }?.uid
+            eleMember.groupUID = groupMap.values.find { it!!.name == eleMember.groupName }?.uid
         }
 
         var memberToGroupUidMap = membersList.groupBy { it.groupUID } as HashMap
@@ -328,8 +328,8 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
         for ((groupUid, memberModels) in memberToGroupUidMap) {
             val inMemberToTeamMap = memberModels.groupBy { it.teamName } as HashMap
             for ((key, eleTeam) in inMemberToTeamMap) {
-                if (curTeamMap.count { it.value.name == key } > 0
-                        && curTeamMap.count { it.value.groupUid == groupUid } > 0
+                if (curTeamMap.count { it.value!!.name == key } > 0
+                        && curTeamMap.count { it.value!!.groupUid == groupUid } > 0
                 ) {
 
                 } else {
@@ -353,14 +353,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
         membersList.sortBy { it.name }
 
-        val curGroupMap: HashMap<String, HolyModel.groupModel> = CommonData.getGroupMap() as HashMap<String, HolyModel.groupModel>
+        val curGroupMap: HashMap<String, HolyModel.groupModel> = CommonData.groupMap as HashMap<String, HolyModel.groupModel>
                 ?: hashMapOf()
         val groups: ArrayList<HolyModel.groupModel> = curGroupMap.groupCovertList() as ArrayList<HolyModel.groupModel>
 
         LoggerHelper.d("curGroupMap.size : " + curGroupMap.size)
         LoggerHelper.d("curGroupMap : " + curGroupMap)
 
-        val curTeamMap = CommonData.getTeamMap() ?: hashMapOf()
+        val curTeamMap = CommonData.teamMap ?: hashMapOf()
 
         LoggerHelper.d("curTeamMap.size : " + curTeamMap.size)
         LoggerHelper.d("curTeamMap : " + curTeamMap)
@@ -370,14 +370,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
         val colRef = FireStoreWriteManager.firestore
                 .collection(FDDatabaseHelper.CORPS_TABLE)
-                .document(CommonData.getHolyModel().uid)
+                .document(CommonData.holyModel.uid)
                 .collection(FDDatabaseHelper.TEAM_TABLE)
 
         val tempTeamList = arrayListOf<HolyModel.groupModel.teamModel>()
         var tempTeamMap: HashMap<String, HolyModel.groupModel.teamModel> = hashMapOf()
         for (eleGroup in groups) {
             for (eleTeam in curTeamMap) {
-                tempTeamMap.put(eleGroup.name + eleTeam.value.name, eleTeam.value)
+                tempTeamMap.put(eleGroup.name + eleTeam.value!!.name, eleTeam.value!!)
             }
         }
 
@@ -431,18 +431,18 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
         var curCnt = 0
         for (eleMember in membersList) {
             if (!FDDatabaseHelper.getCompareData(eleMember)) {
-                val groupMap = CommonData.getGroupMap()
+                val groupMap = CommonData.groupMap
                 for ((key, elemTemp) in groupMap) {
-                    elemTemp.uid = key
+                    elemTemp!!.uid = key
                     val tempName = elemTemp.name
 
                     if (tempName == eleMember.groupName) {
                         eleMember.groupUID = elemTemp.uid
-                        val teamMap = CommonData.getTeamMap()
-                                .filter { it.value.groupUid == eleMember.groupUID }   //elemTemp.team ?: break
+                        val teamMap = CommonData.teamMap
+                                .filter { it.value!!.groupUid == eleMember.groupUID }   //elemTemp.team ?: break
 
                         for ((key1, elemTeamTemp) in teamMap) {
-                            elemTeamTemp.uid = key1
+                            elemTeamTemp!!.uid = key1
                             var teamTempName: String
                             var compareTeamName: String
 
@@ -482,8 +482,8 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
                     LoggerHelper.d(eleMember.name + "[" + eleMember.groupUID + "] 는 존재하지 않는 " + CommonString.GROUP_NICK + "입니다")
                     missList!!.add(eleMember.name + "[" + eleMember.groupUID + "] 는 존재하지 않는 " + CommonString.GROUP_NICK + "입니다")
                 } else {
-                    eleMember.corpsName = CommonData.getHolyModel().name
-                    eleMember.corpsUID = CommonData.getHolyModel().uid
+                    eleMember.corpsName = CommonData.holyModel.name
+                    eleMember.corpsUID = CommonData.holyModel.uid
                     curCnt++
 
                     tempMemberList.add(eleMember)
@@ -557,7 +557,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
         if (productId == CommonString.SUB_ADMIN_SUBSCRIBE_01) {
             popToast("CommonString.SUB_ADMIN_SUBSCRIBE_01 : " + "를 구매해주셔서 감사합니다.")
             //bp.consumePurchase(CommonString.SUB_ADMIN_SUBSCRIBE_01);
-            CommonData.setCurrentPremiumType(PremiupType.ADS_PREMIUM)
+            CommonData.currentPremiumType = PremiupType.ADS_PREMIUM
             // * 광고 제거는 1번 구매하면 영구적으로 사용하는 것이므로 consume하지 않지만,
             // 만약 게임 아이템 100개를 주는 것이라면 아래 메소드를 실행시켜 다음번에도 구매할 수 있도록 소비처리를 해줘야한다.
             // bp.consumePurchase(Config.Sku);
@@ -627,7 +627,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
 
             FDDatabaseHelper.getGroupDataToStore(DataTypeListener.OnCompleteListener {
                 LoggerHelper.d("FDDatabaseHelper.getGroupDataToStore  OnCompleteListener")
-                val gMap: HashMap<String, HolyModel.groupModel> = CommonData.getGroupMap()
+                val gMap: HashMap<String, HolyModel.groupModel> = CommonData.groupMap
                         as HashMap<String, HolyModel.groupModel>
                 for ((key, value) in gMap) {
 
@@ -648,7 +648,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, BillingProcessor.
             setAddTeamFromExcel()
             FDDatabaseHelper.getTeamAllDataToStore(DataTypeListener.OnCompleteListener {
                 LoggerHelper.d("FDDatabaseHelper.getTeamDataToStore  OnCompleteListener!!!!")
-                val tMap: HashMap<String, HolyModel.groupModel.teamModel> = CommonData.getTeamMap()
+                val tMap: HashMap<String, HolyModel.groupModel.teamModel> = CommonData.teamMap
                         as HashMap<String, HolyModel.groupModel.teamModel>
                 for ((key, value) in tMap) {
 

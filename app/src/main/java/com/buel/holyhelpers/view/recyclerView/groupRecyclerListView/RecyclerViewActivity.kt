@@ -57,14 +57,14 @@ class RecyclerViewActivity : BaseActivity(), View.OnClickListener {
         //super.setFabBackImg(super.fabFstBtn, R.drawable.ic_atten_check);
         super.setFabBackImg(super.fabFstActBtn, R.drawable.ic_note_add)
 
-        if (CommonData.getHolyModel() == null) {
+        if (CommonData.holyModel == null) {
             Toast.makeText(this, "교회/단체 정보를 입력해주세요.", Toast.LENGTH_SHORT).show()
             goSelect()
             return
         }
 
         try {
-            groups = SortMapUtil.getSortGroupList(CommonData.getHolyModel().group) as ArrayList<HolyModel.groupModel>
+            groups = SortMapUtil.getSortGroupList(CommonData.holyModel.group) as ArrayList<HolyModel.groupModel>
         } catch (e: Exception) {
             setTitle("부서를 추가해주세요.")
             super.setTopOkBtnVisibled(View.INVISIBLE)
@@ -130,7 +130,7 @@ class RecyclerViewActivity : BaseActivity(), View.OnClickListener {
         super.setTopOkBtnVisibled(View.VISIBLE)
         super.setTopOkBtnBackground(R.drawable.ic_clear_white_24dp)
         CommonData.setAdminMode(AdminMode.MODIFY)
-        setViewAdminMode(AdminMode.MODIFY, "[ " + CommonData.getHolyModel().name + " ] " + CommonString.GROUP_NICK + "  수정")
+        setViewAdminMode(AdminMode.MODIFY, "[ " + CommonData.holyModel.name + " ] " + CommonString.GROUP_NICK + "  수정")
     }
 
     private fun setAdminMode() {
@@ -167,8 +167,8 @@ class RecyclerViewActivity : BaseActivity(), View.OnClickListener {
         if (v.id == R.id.recycler_view_item_rl_main) {
             LoggerHelper.d("MemberShipRecyclerViewActivity", "v.getId()  : 2 " + v.id)
             FDDatabaseHelper.getMyCorps(SimpleListener.OnCompleteListener {
-                CommonData.setTeamModel(null)
-                CommonData.setMemberModel(null)
+                CommonData.teamModel = HolyModel.groupModel.teamModel()
+                CommonData.memberModel = HolyModel.memberModel()
                 SharedPreferenceUtil.initTeamModel()
 
                 goTeamRecycler()
@@ -177,7 +177,7 @@ class RecyclerViewActivity : BaseActivity(), View.OnClickListener {
             LoggerHelper.d("MemberShipRecyclerViewActivity", "v.getId()  : 1 " + v.id)
             FDDatabaseHelper.getMyCorps(SimpleListener.OnCompleteListener {
                 FDDatabaseHelper.getGroupDataToStore(DataTypeListener.OnCompleteListener {
-                    val groupMap = CommonData.getHolyModel().group as HashMap<String, HolyModel.groupModel>
+                    val groupMap = CommonData.holyModel.group as HashMap<String, HolyModel.groupModel>
                     try {
                         val groupList = groupMap.groupCovertList()              //SortMapUtil.getSortGroupList(groupMap)
                         (holderAdapter as RecyclerViewAdapter).setItemArrayList(groupList as List<HolyModel.groupModel>)
@@ -191,16 +191,16 @@ class RecyclerViewActivity : BaseActivity(), View.OnClickListener {
                 })
             })
         } else if (v.id == R.id.recycler_view_item_btn_select) {
-            if (CommonData.getAdminMode() == AdminMode.NORMAL) {
-            } else if (CommonData.getAdminMode() == AdminMode.MODIFY) {
+            if (CommonData.adminMode == AdminMode.NORMAL) {
+            } else if (CommonData.adminMode == AdminMode.MODIFY) {
                 goSetGroup()
             }
         } else if (v.id == R.id.top_bar_btn_back) {
             goSelect()
         } else if (v.id == R.id.top_bar_btn_ok) {
-            if (CommonData.getAdminMode() == AdminMode.NORMAL)
+            if (CommonData.adminMode == AdminMode.NORMAL)
                 setModifyMode()
-            else if (CommonData.getAdminMode() == AdminMode.MODIFY)
+            else if (CommonData.adminMode == AdminMode.MODIFY)
                 setAdminMode()
         }
     }

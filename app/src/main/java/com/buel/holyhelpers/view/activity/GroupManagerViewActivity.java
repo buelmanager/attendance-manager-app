@@ -140,7 +140,7 @@ public class GroupManagerViewActivity extends BaseActivity implements View.OnCli
 
                                         //여기는 uid 가 아닌 name 으로 비교한다. 아직  uid를 얻기 이전
                                         if (eleGroup.name.equals(groupModel.name)) {
-                                            CommonData.setGroupModel(eleGroup);
+                                            CommonData.setCurGroupModel(eleGroup);
                                         }
                                     }
                                 } catch (Exception e) {
@@ -199,11 +199,11 @@ public class GroupManagerViewActivity extends BaseActivity implements View.OnCli
             case R.id.top_bar_btn_ok:
 
 
-                LoggerHelper.d("CommonData.getUserModel().userType : " + CommonData.getUserModel().userType);
+                LoggerHelper.d("CommonData.getUserModel().userType : " + CommonData.userModel.userType);
                 LoggerHelper.d("UserType.SUPER_ADMIN.toString()) : " + UserType.SUPER_ADMIN.toString());
-                if (!CommonData.getUserModel().userType.equals(UserType.SUPER_ADMIN.toString())) {
+                if (!CommonData.userModel.userType.equals(UserType.SUPER_ADMIN.toString())) {
                     String title = "권한이 없습니다.";
-                    String ment = CommonData.getUserModel().userType + " 유저는 해당 권한이없습니다. 관리자에게 문의하세요.";
+                    String ment = CommonData.userModel.userType + " 유저는 해당 권한이없습니다. 관리자에게 문의하세요.";
                     MaterialDailogUtil.Companion.simpleDoneDialog(GroupManagerViewActivity.this, title, ment, new MaterialDailogUtil.OnDialogSelectListner() {
                         @Override
                         public void onSelect(String s) {

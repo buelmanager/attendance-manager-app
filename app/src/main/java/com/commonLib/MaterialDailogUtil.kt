@@ -21,6 +21,7 @@ import com.buel.holyhelpers.view.activity.GroupManagerViewActivity
 import com.orhanobut.logger.LoggerHelper
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by 19001283 on 2018-07-09.
@@ -63,24 +64,24 @@ class MaterialDailogUtil {
 
         fun getTeamDialog(context: Context, onCompleteListener: SimpleListener.OnCompleteListener): MaterialDialog? {
 
-            if (CommonData.getHolyModel() == null) {
+            if (CommonData.holyModel == null) {
                 SuperToastUtil.toastE(context, CommonString.INFO_TITLE_CONTROL_CORP)
                 return null
             }
 
-            if (CommonData.getSelectedGroup() == null) {
+            if (CommonData.selectedGroup == null) {
                 SuperToastUtil.toastE(context, CommonString.INFO_TITLE_CONTROL_GROUP)
                 return null
             }
 
-            if (CommonData.getSelectedGroup().team == null || CommonData.getSelectedGroup().team.size == 0) {
+            if (CommonData.selectedGroup.team == null || CommonData.selectedGroup.team.size == 0) {
                 SuperToastUtil.toastE(context, CommonString.INFO_TITLE_CONTROL_TEAM)
                 return null
             }
 
-            val selGroup = CommonData.getSelectedGroup()
+            val selGroup = CommonData.selectedGroup
 
-            val names = CommonData.getTeamMap().filter { it.value.groupUid == selGroup.uid }.map { it.value.name }
+            val names = CommonData.teamMap.filter { it.value!!.groupUid == selGroup.uid }.map { it.value!!.name }
 
             return MaterialDialog.Builder(context)
                     .title(CommonString.INFO_TITLE_CONTROL_TEAM)
@@ -88,18 +89,17 @@ class MaterialDailogUtil {
                     .items(names)
                     .cancelable(isCancelable)
                     .itemsCallback { dialog, view, which, text ->
-                        val teams = CommonData.getTeamMap()
+                        val teams = CommonData.teamMap
 
                         var team: HolyModel.groupModel.teamModel? = teams.values.find {
 
-                            LoggerHelper.d("CommonData.getSelectedGroup().name : " + CommonData.getSelectedGroup().uid + " / " + "it.groupUid : " + it.groupUid)
-                            LoggerHelper.d("text.toString() : " + text.toString()  + " / " + "it.name : " + it.name)
-                            it.groupUid == CommonData.getSelectedGroup().uid &&
-                                    it.name == text.toString()
+                            LoggerHelper.d("CommonData.getSelectedGroup().name : " + CommonData.selectedGroup.uid + " / " + "it.groupUid : " + it!!.groupUid)
+                            LoggerHelper.d("text.toString() : " + text.toString() + " / " + "it.name : " + it!!.name)
+                            it.groupUid == CommonData.selectedGroup.uid && it.name == text.toString()
                         }
 
-                        CommonData.setSelectedTeam(team)
-                        CommonData.setTeamModel(team)
+                        CommonData.selectedTeam = team!!
+                        CommonData.teamModel = team
 
                         onCompleteListener.onComplete()
                     }.show()
@@ -107,7 +107,7 @@ class MaterialDailogUtil {
 
         fun getGroupDialog(context: Context, onCompleteListener: SimpleListener.OnCompleteListener): MaterialDialog? {
 
-            if (CommonData.getHolyModel() == null) {
+            if (CommonData.holyModel == null) {
                 Toast.makeText(context, CommonString.INFO_TITLE_CONTROL_CORP, Toast.LENGTH_SHORT).show()
                 //CommonData.setHistoryClass(context.javaClass as Class<T>?)
                 val intent = Intent(context.applicationContext, CorpsManagerViewActivity::class.java)
@@ -115,7 +115,7 @@ class MaterialDailogUtil {
                 return null
             }
 
-            if (CommonData.getHolyModel().group == null || CommonData.getHolyModel().group.size == 0) {
+            if (CommonData.holyModel.group == null || CommonData.holyModel.group.size == 0) {
                 Toast.makeText(context, CommonString.GROUP_NICK + " 리스트가 없어 생성화면으로 이동합니다.", Toast.LENGTH_SHORT).show()
                 //CommonData.setHistoryClass(context.javaClass as Class<*>)
                 val intent = Intent(context.applicationContext, GroupManagerViewActivity::class.java)
@@ -123,8 +123,7 @@ class MaterialDailogUtil {
                 return null
             }
 
-            val names = FDDatabaseHelper.getGroupNameList(CommonData.getHolyModel().group)
-
+            val names = FDDatabaseHelper.getGroupNameList(CommonData.holyModel.group).sortBy { it } as ArrayList<String>
 
             return MaterialDialog.Builder(context)
                     .title(CommonString.GROUP_NICK + "를 선택하세요")
@@ -132,9 +131,9 @@ class MaterialDailogUtil {
                     .items(names)
                     .cancelable(isCancelable)
                     .itemsCallback { dialog, view, which, text ->
-                        val group = FDDatabaseHelper.getGroupModelNameFromMap(CommonData.getHolyModel().group, text.toString())
-                        CommonData.setGroupModel(group)
-                        CommonData.setSelectedGroup(group)
+                        val group = FDDatabaseHelper.getGroupModelNameFromMap(CommonData.holyModel.group, text.toString())
+                        CommonData.setCurGroupModel(group)
+                        CommonData.selectedGroup = group
 
                         FDDatabaseHelper.getTeamDataToStore(DataTypeListener.OnCompleteListener { onCompleteListener.onComplete() })
                     }
@@ -445,9 +444,9 @@ class MaterialDailogUtil {
 
             val datePicker = pickerView.findViewById<DatePicker>(R.id.datePicker)
 
-            if (CommonData.getSelectedYear() != -1) {
+            if (CommonData.selectedYear != -1) {
                 //datePicker.init(CommonData.getSelectedYear(),CommonData.getSelectedMonth(),CommonData.getSelectedDay());
-                datePicker.init(CommonData.getSelectedYear(), CommonData.getSelectedMonth() - 1, CommonData.getSelectedDay(), null)
+                datePicker.init(CommonData.selectedYear, CommonData.selectedMonth - 1, CommonData.selectedDay, null)
             }
 
             val dialog = MaterialDialog.Builder(context)
@@ -467,10 +466,10 @@ class MaterialDailogUtil {
 
                         val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
 
-                        CommonData.setSelectedYear(year)
-                        CommonData.setSelectedMonth(mon + 1)
-                        CommonData.setSelectedDay(day)
-                        CommonData.setSelectedDayOfWeek(dayOfWeek)
+                        CommonData.selectedYear = year
+                        CommonData.selectedMonth = mon + 1
+                        CommonData.selectedDay = day
+                        CommonData.selectedDayOfWeek = dayOfWeek
 
                         selectListner?.onSelect("days : $dayOfWeek")
                         dialog.dismiss()
@@ -565,8 +564,8 @@ class MaterialDailogUtil {
                 selectListner: OnDialogSelectListner?) {
 
             var selectIndex = 0
-            if (CommonData.getSelectedDays() != -1) {
-                selectIndex = CommonData.getSelectedDays()
+            if (CommonData.selectedDays != -1) {
+                selectIndex = CommonData.selectedDays
             }
 
             MaterialDialog.Builder(context)

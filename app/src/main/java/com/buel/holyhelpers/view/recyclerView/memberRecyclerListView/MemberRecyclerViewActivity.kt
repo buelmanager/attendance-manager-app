@@ -62,28 +62,28 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
     fun getMemberData(): List<HolyModel.memberModel> {
         var members = ArrayList<HolyModel.memberModel>()
 
-        var membersMap = CommonData.getMembersMap()
+        var membersMap = CommonData.membersMap
         //LoggerHelper.e("holyModel membersie", membersMap.size.toString())
 
         var cnt = 0
 
-        if (CommonData.getViewMode() == ViewMode.ADMIN || CommonData.getViewMode() == ViewMode.ATTENDANCE) {
+        if (CommonData.viewMode == ViewMode.ADMIN || CommonData.viewMode == ViewMode.ATTENDANCE) {
 
             LoggerHelper.d("MemberRecyclerViewActivity", "ViewMode.ADMIN/ATTENDANCE 데이터를 수집합니다.")
 
-            var membersmap: MutableCollection<HolyModel.memberModel> = membersMap.values
+            var membersmap: MutableCollection<HolyModel.memberModel?> = membersMap!!.values as MutableCollection<HolyModel.memberModel?>
             members = membersmap.filter {
-                it.groupUID + it.teamUID == CommonData.getGroupModel().uid + CommonData.getTeamModel().uid
+                it!!.groupUID + it!!.teamUID == CommonData.groupModel!!.uid + CommonData.teamModel.uid
             } as ArrayList<HolyModel.memberModel>
-        } else if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
+        } else if (CommonData.viewMode == ViewMode.SEARCH_MEMBER) {
             LoggerHelper.d("MemberRecyclerViewActivity", "ViewMode.SEARCH_MEMBER 데이터를 수집합니다.")
-            if (CommonData.getStrSearch() == "") {
+            if (CommonData.strSearch == "") {
                 members = membersMap.values as ArrayList<HolyModel.memberModel>
             } else {
                 for (key in membersMap.keys) {
                     val elemMembers = membersMap[key]
                     elemMembers!!.uid = key
-                    val compareMemberName = elemMembers.name.indexOf(CommonData.getStrSearch())
+                    val compareMemberName = elemMembers.name.indexOf(CommonData.strSearch)
                     if (compareMemberName != -1) {
                         members.add(elemMembers)
                     }
@@ -105,39 +105,39 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
         setTopLayout(this)
         super.setBaseFloatingActionButton()
 
-        if (CommonData.getHolyModel() == null) {
+        if (CommonData.holyModel == null) {
             Toast.makeText(this, CommonString.INFO_TITLE_CONTROL_CORP, Toast.LENGTH_SHORT).show()
             goSelect()
             return
         }
 
         try {
-            setTitle(CommonData.getGroupModel().name + " / " + CommonData.getTeamModel().name)
+            setTitle(CommonData.groupModel.name + " / " + CommonData.teamModel.name)
             //tvDesc.setText(CommonData.getGroupModel().name + " / " + CommonData.getTeamModel().name);
         } catch (e: Exception) {
-            if (CommonData.getViewMode() != ViewMode.SEARCH_MEMBER) {
+            if (CommonData.viewMode != ViewMode.SEARCH_MEMBER) {
                 Toast.makeText(this, CommonString.INFO_TITLE_CONTROL_TEAM_OR_GROUP, Toast.LENGTH_SHORT).show()
                 goSelect()
             }
         }
 
-        isIntoMode = CommonData.getViewMode()
+        isIntoMode = CommonData.viewMode
         fabActionBtn = super.fabFstActBtn
         //super.setFabBackImg(super.fab2ndBtn, R.drawable.ic_anal);
         super.setFabSnd(ViewMode.BRIEFING)
 
         super.setFabBackImg(super.fabFstActBtn, R.drawable.ic_add_member)
-        if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
+        if (CommonData.viewMode == ViewMode.ATTENDANCE) {
             //super.setFabBackImg(super.fabFstBtn, R.drawable.ic_select_btn);\
             super.setTopDetailDesc(View.VISIBLE, " ")
             super.setFabFst(ViewMode.ADMIN)
             super.setFabBackColor(super.fabHelper, R.color.vordiplom_color_orange)
             super.setFabBackImg(super.fabHelper, R.drawable.ic_share)
-        } else if (CommonData.getViewMode() == ViewMode.ADMIN || CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
+        } else if (CommonData.viewMode == ViewMode.ADMIN || CommonData.viewMode == ViewMode.SEARCH_MEMBER) {
             //super.setFabBackImg(super.fabFstBtn, R.drawable.ic_atten_check);
             super.setFabFst(ViewMode.ATTENDANCE)
         }
-        if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
+        if (CommonData.viewMode == ViewMode.SEARCH_MEMBER) {
             setTitle("교적 설정 및 관리")
         }
 
@@ -156,9 +156,9 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
     }
 
     override fun setFstFabBtn() {
-        if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
+        if (CommonData.viewMode == ViewMode.ATTENDANCE) {
             goSelect()
-        } else if (CommonData.getViewMode() == ViewMode.ADMIN || CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
+        } else if (CommonData.viewMode == ViewMode.ADMIN || CommonData.viewMode == ViewMode.SEARCH_MEMBER) {
             CommonData.setViewMode(ViewMode.ATTENDANCE)
             goMemberRecycler()
         }
@@ -173,7 +173,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
             super.setTopOkBtnBackground(R.drawable.ic_m_settings_24dp)
 
-            if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
+            if (CommonData.viewMode == ViewMode.SEARCH_MEMBER) {
                 //tvDesc.setText(CommonString.INFO_TITLE_DONT_SEARCH_DATA);
                 setTitle(CommonString.INFO_TITLE_DONT_SEARCH_DATA)
             } else {
@@ -214,9 +214,9 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
         holderAdapter = MemberRecyclerViewAdapter(membersArrayList, this, this)
         recyclerView.adapter = holderAdapter
-        if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
-            if (CommonData.getSelectedYear() != -1 && CommonData.getSelectedDays() != -1) {
-                val title = CommonData.getCurrentFullDayAndDaysStr() + " 출석"
+        if (CommonData.viewMode == ViewMode.ATTENDANCE) {
+            if (CommonData.selectedYear != -1 && CommonData.selectedDays != -1) {
+                val title = CommonData.currentFullDayAndDaysStr + " 출석"
                 setTitle(title)
                 getAttandData()
             } else {
@@ -225,19 +225,19 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
             super.setTopOkBtnVisibled(View.VISIBLE)
         }
 
-        if (CommonData.getViewMode() == ViewMode.ADMIN) {
+        if (CommonData.viewMode == ViewMode.ADMIN) {
             super.setFabBackImg(super.fabFstActBtn, R.drawable.ic_add_member)
             setAdminMode()
-        } else if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
+        } else if (CommonData.viewMode == ViewMode.ATTENDANCE) {
             super.setFabBackImg(super.fabFstActBtn, R.drawable.ic_calendar)
             setAttandMode()
-        } else if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
+        } else if (CommonData.viewMode == ViewMode.SEARCH_MEMBER) {
             setSearchMode()
         }
     }
 
     private fun setDataAndTime() {
-        if (CommonData.getViewMode() != ViewMode.ATTENDANCE) return
+        if (CommonData.viewMode != ViewMode.ATTENDANCE) return
         MaterialDailogUtil.datePickerDialog(
                 this@MemberRecyclerViewActivity,
                 object : MaterialDailogUtil.OnDialogSelectListner {
@@ -247,9 +247,9 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
                                 R.array.days_option,
                                 object : MaterialDailogUtil.OnDialogSelectListner {
                                     override fun onSelect(s1: String) {
-                                        CommonData.setSelectedDays(Integer.parseInt(s1))
-                                        LoggerHelper.d(CommonData.getSelectedDays())
-                                        val title = CommonData.getCurrentFullDayAndDaysStr() + " 출석"
+                                        CommonData.selectedDays = Integer.parseInt(s1)
+                                        LoggerHelper.d(CommonData.selectedDays)
+                                        val title = CommonData.currentFullDayAndDaysStr + " 출석"
 
                                         setTitle(title)
                                         getAttandData()
@@ -263,12 +263,12 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
     private fun getAttandData() {
         val attendModel = AttendModel()
         attendModel.timestamp = Common.currentTimestamp()
-        attendModel.year = CommonData.getSelectedYear().toString()
-        attendModel.month = Common.addZero(CommonData.getSelectedMonth()).toString()
-        attendModel.date = Common.addZero(CommonData.getSelectedDay()).toString()
-        attendModel.day = CommonData.getSelectedDayOfWeek().toString()
-        attendModel.time = CommonData.getSelectedDays().toString()
-        attendModel.corpsUID = CommonData.getCorpsUid()
+        attendModel.year = CommonData.selectedYear.toString()
+        attendModel.month = Common.addZero(CommonData.selectedMonth).toString()
+        attendModel.date = Common.addZero(CommonData.selectedDay).toString()
+        attendModel.day = CommonData.selectedDayOfWeek.toString()
+        attendModel.time = CommonData.selectedDays.toString()
+        attendModel.corpsUID = CommonData.corpsUid
         attendModel.groupUID = CommonData.getGroupUid()
         attendModel.teamUID = CommonData.getTeamUid()
         attendModel.fdate = attendModel.year + "-" + attendModel.month + "-" + attendModel.date + "-" + attendModel.day + "-" + attendModel.time
@@ -286,7 +286,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
                     }
                     setCountAttend()
                     holderAdapter.notifyDataSetChanged()
-                    holderAdapter.setAttendMap(attendMap)
+                    holderAdapter.attendMap = (attendMap)
                     recyclerView.refreshDrawableState()
                 })
     }
@@ -335,8 +335,8 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
         membersArrayList?.filter {
             (it.groupUID != null && it.teamUID != null) &&
-                    (it.groupUID == CommonData.getGroupModel().uid) &&
-                    (it.teamUID == CommonData.getTeamModel().uid)
+                    (it.groupUID == CommonData.groupModel.uid) &&
+                    (it.teamUID == CommonData.teamModel.uid)
         }?.forEach {
             //mCurAttendMembers!!.add(it)
             if (attendMap != null) {
@@ -393,11 +393,11 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
         okRate = java.lang.Double.parseDouble(DecimalFormat("##.#").format(okRate))
 
-        val title = "[" + CommonData.getGroupModel().name + " " +
-                SortMapUtil.getInteger(CommonData.getTeamModel().name) + " : " +
-                CommonData.getTeamModel().etc + "] "
+        val title = "[" + CommonData.groupModel.name + " " +
+                SortMapUtil.getInteger(CommonData.teamModel.name) + " : " +
+                CommonData.teamModel.etc + "] "
 
-        val strDate = CommonData.getCurrentFullDayAndDaysStr() + " 출석"
+        val strDate = CommonData.currentFullDayAndDaysStr + " 출석"
 
         val okExcutiveListStr = if (okExcutiveList!!.size > 0) okExcutiveList!!.toString() else "-"
         val okListStr = if (okList!!.size > 0) okList!!.toString() else "-"
@@ -453,11 +453,11 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
         val attendModel = AttendModel()
         attendModel.timestamp = Common.currentTimestamp()
-        attendModel.year = CommonData.getSelectedYear().toString()
-        attendModel.month = Common.addZero(CommonData.getSelectedMonth()).toString()
-        attendModel.date = Common.addZero(CommonData.getSelectedDay()).toString()
-        attendModel.day = CommonData.getSelectedDayOfWeek().toString()
-        attendModel.time = CommonData.getSelectedDays().toString()
+        attendModel.year = CommonData.selectedYear.toString()
+        attendModel.month = Common.addZero(CommonData.selectedMonth).toString()
+        attendModel.date = Common.addZero(CommonData.selectedDay).toString()
+        attendModel.day = CommonData.selectedDayOfWeek.toString()
+        attendModel.time = CommonData.selectedDays.toString()
         attendModel.fdate = attendModel.year + "-" + attendModel.month + "-" + attendModel.date + "-" + attendModel.day + "-" + attendModel.time
         attendModel.attend = attend
         attendModel.corpsUID = members.corpsUID
@@ -496,7 +496,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
             try {
                 membersArrayList = getMemberData()
                 LoggerHelper.d("refresh remembers size : " + membersArrayList!!.size)
-                holderAdapter.setItemArrayList(membersArrayList)
+                holderAdapter.itemArrayList = membersArrayList
                 recyclerView.refreshDrawableState()
                 holderAdapter.notifyDataSetChanged()
             } catch (e: Exception) {
@@ -514,21 +514,24 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
     }
 
     private fun setAttandMode() {
-        AdmobUtils.setInterstitialAds(this@MemberRecyclerViewActivity) { }
+        AdmobUtils.setInterstitialAds( this, onCompleteListener = SimpleListener.OnCompleteListener {
+
+        } )
+
         AdmobUtils.loadRewardInterstitialAd()
         //super.setTopOkBtnBackground(R.drawable.ic_atten_check);
         AppUtil.setBackColor(this@MemberRecyclerViewActivity, findViewById<View>(R.id.top_bar_btn_ok) as Button, R.color.colorAccent)
 
         super.setTopOkBtnVisibled(View.VISIBLE)
-        if (CommonData.getGroupModel() != null)
-            setViewMode(ViewMode.ATTENDANCE, CommonData.getCurrentFullDayAndDaysStr() + " 출석")
+        if (CommonData.groupModel != null)
+            setViewMode(ViewMode.ATTENDANCE, CommonData.currentFullDayAndDaysStr + " 출석")
     }
 
     private fun setAdminMode() {
         super.setTopOkBtnVisibled(View.INVISIBLE)
         super.setTopOkBtnBackground(R.drawable.ic_m_settings_24dp)
-        if (CommonData.getGroupModel() != null)
-            setViewMode(ViewMode.ADMIN, "[ " + CommonData.getGroupModel().name + " ] " + CommonString.MEMBER_NICK + " 선택 / 관리")
+        if (CommonData.groupModel != null)
+            setViewMode(ViewMode.ADMIN, "[ " + CommonData.groupModel.name + " ] " + CommonString.MEMBER_NICK + " 선택 / 관리")
     }
 
     private fun setViewMode(mode: ViewMode, title: String) {
@@ -539,15 +542,15 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
     override fun setHelperButton() {
         var strHelper = ""
-        if (CommonData.getViewMode() == ViewMode.ADMIN) {
+        if (CommonData.viewMode == ViewMode.ADMIN) {
             strHelper = CommonString.GUIDE_HELPER_MEMBER_RECUCLER_VIEW_ADMIN
-        } else if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
+        } else if (CommonData.viewMode == ViewMode.ATTENDANCE) {
             strHelper = CommonString.GUIDE_HELPER_MEMBER_RECUCLER_VIEW_ATTENDANCE
-        } else if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
+        } else if (CommonData.viewMode == ViewMode.SEARCH_MEMBER) {
             strHelper = CommonString.GUIDE_HELPER_MEMBER_RECUCLER_VIEW_ADMIN
         }
 
-        if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
+        if (CommonData.viewMode == ViewMode.ATTENDANCE) {
             AppUtil.sendSharedData(applicationContext, sendMsg)
         } else {
             MaterialDailogUtil.noticeDialog(
@@ -556,8 +559,8 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
                     CommonString.INFO_HELPER_TITLE,
                     object : MaterialDailogUtil.OnDialogSelectListner {
                         override fun onSelect(s: String) {
-                            CommonData.setIsFstEnter(false)
-                            LoggerHelper.d("CommonData.getIsFstEnter() : " + CommonData.getIsFstEnter())
+                            CommonData.isFstEnter = false
+                            LoggerHelper.d("CommonData.getIsFstEnter() : " + CommonData.isFstEnter)
                         }
                     })
         }
@@ -565,13 +568,13 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
 
     override fun setActionButton() {
         LoggerHelper.d("recycler_view_main_fab !!!!")
-        if (CommonData.getViewMode() == ViewMode.ADMIN) {
+        if (CommonData.viewMode == ViewMode.ADMIN) {
             CommonData.setAdminMode(AdminMode.NORMAL)
             goSetAddMember()
             //CommonData.setHistoryClass(MemberRecyclerViewActivity::class.java as Class<*>)
-        } else if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
+        } else if (CommonData.viewMode == ViewMode.ATTENDANCE) {
             setDataAndTime()
-        } else if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
+        } else if (CommonData.viewMode == ViewMode.SEARCH_MEMBER) {
             MemberManager.searchMember(this) { goMemberRecycler() }
         }
     }
@@ -584,9 +587,9 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
     override fun onClick(v: View) {
         super.onClick(v)
         if (v.id == R.id.top_bar_btn_back) {             //나가기 버튼
-            if (CommonData.getViewMode() == ViewMode.ADMIN) {
+            if (CommonData.viewMode == ViewMode.ADMIN) {
                 goSelect()
-            } else if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
+            } else if (CommonData.viewMode == ViewMode.ATTENDANCE) {
                 //showProgressDialog(true);
 
                 if (isAttendModifyed) {
@@ -598,7 +601,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
                 } else {
                     goMain()
                 }
-            } else if (CommonData.getViewMode() == ViewMode.SEARCH_MEMBER) {
+            } else if (CommonData.viewMode == ViewMode.SEARCH_MEMBER) {
                 goSelect()
             }
         } else if (v.id == R.id.top_bar_tv_desc) {            //상단 타이틀
@@ -617,7 +620,7 @@ class MemberRecyclerViewActivity : BaseActivity(), MemberRecyclerViewListener.On
                     })
 
         } else if (v.id == R.id.top_bar_btn_ok) {            //수정하기 버튼
-            if (CommonData.getViewMode() == ViewMode.ATTENDANCE) {
+            if (CommonData.viewMode == ViewMode.ATTENDANCE) {
                 MaterialDailogUtil.noticeDialog(
                         this,
                         sendMsg2!!,
