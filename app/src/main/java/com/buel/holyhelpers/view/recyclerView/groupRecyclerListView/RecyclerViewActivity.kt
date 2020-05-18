@@ -167,7 +167,7 @@ class RecyclerViewActivity : BaseActivity(), View.OnClickListener {
         if (v.id == R.id.recycler_view_item_rl_main) {
             LoggerHelper.d("MemberShipRecyclerViewActivity", "v.getId()  : 2 " + v.id)
             FDDatabaseHelper.getMyCorps(SimpleListener.OnCompleteListener {
-                CommonData.teamModel = HolyModel.groupModel.teamModel()
+                CommonData.setCurTeamModel(HolyModel.groupModel.teamModel())
                 CommonData.memberModel = HolyModel.memberModel()
                 SharedPreferenceUtil.initTeamModel()
 

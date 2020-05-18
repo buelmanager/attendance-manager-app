@@ -22,7 +22,7 @@ public class LoggerHelper {
     public static void setLogger(String tag, boolean debug) {
         if (formatStrategy != null) return;
         formatStrategy = PrettyFormatStrategy.newBuilder()
-                .methodCount(7)
+                .methodCount(3)
                 .showThreadInfo(false)      // (Optional) Whether to show thread info or not. Default true
                 .tag(tag)   // (Optional) Global tag for every log. Default PRETTY_LOGGER
                 .build();

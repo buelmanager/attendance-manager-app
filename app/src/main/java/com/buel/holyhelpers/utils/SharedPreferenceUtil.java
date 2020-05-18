@@ -39,6 +39,7 @@ public class SharedPreferenceUtil {
         team.uid = getDatea("teamUid" , null);
         team.name = getDatea("teamName" , null);
         team.leader = getDatea("teamLeader" , null);
+        team.etc = getDatea("teamEtc" , null);
         return  team;
     }
     public static void initModelData(){
@@ -58,6 +59,7 @@ public class SharedPreferenceUtil {
         putDatea("teamUid", null);
         putDatea("teamName", null);
         putDatea("teamLeader", null);
+        putDatea("teamEtc", null);
     }
 
     public static void putTeamModel(HolyModel.groupModel.teamModel team) {
@@ -65,6 +67,7 @@ public class SharedPreferenceUtil {
         putDatea("teamUid", team.uid);
         putDatea("teamName", team.name);
         putDatea("teamLeader", team.leader);
+        putDatea("teamEtc", team.etc);
     }
 
     public static void putGroupModel(HolyModel.groupModel group) {

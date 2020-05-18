@@ -83,6 +83,7 @@ class MaterialDailogUtil {
 
             val names = CommonData.teamMap.filter { it.value!!.groupUid == selGroup.uid }.map { it.value!!.name }
 
+            Collections.sort(names)
             return MaterialDialog.Builder(context)
                     .title(CommonString.INFO_TITLE_CONTROL_TEAM)
                     .iconRes(R.drawable.ic_info)
@@ -99,7 +100,7 @@ class MaterialDailogUtil {
                         }
 
                         CommonData.selectedTeam = team!!
-                        CommonData.teamModel = team
+                        CommonData.setCurTeamModel(team)
 
                         onCompleteListener.onComplete()
                     }.show()
@@ -123,7 +124,7 @@ class MaterialDailogUtil {
                 return null
             }
 
-            val names = FDDatabaseHelper.getGroupNameList(CommonData.holyModel.group).sortBy { it } as ArrayList<String>
+            val names:ArrayList<String> = FDDatabaseHelper.getGroupNameList(CommonData.holyModel.group)
 
             return MaterialDialog.Builder(context)
                     .title(CommonString.GROUP_NICK + "를 선택하세요")

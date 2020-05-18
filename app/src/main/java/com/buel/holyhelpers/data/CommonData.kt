@@ -51,7 +51,7 @@ object CommonData {
     var searchAddress: String? = null
 
     @JvmStatic
-    lateinit var analMode: AnalMode
+    var analMode: AnalMode = AnalMode.GROP_MODE
         private set
 
     @JvmStatic

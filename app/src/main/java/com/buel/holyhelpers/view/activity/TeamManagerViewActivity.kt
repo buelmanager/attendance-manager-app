@@ -144,7 +144,7 @@ class TeamManagerViewActivity : BaseActivity(), View.OnClickListener {
                         try {
                             val teams: ArrayList<HolyModel.groupModel.teamModel> = data //SortMapUtil.getSortTeamList() as ArrayList<HolyModel.groupModel.teamModel>
                             for (eleteam in teams) {
-                                CommonData.teamModel = eleteam
+                                CommonData.setCurTeamModel(eleteam)
                             }
                         } catch (e: Exception) {
                         }

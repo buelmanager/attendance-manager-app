@@ -103,7 +103,7 @@ object FDDatabaseHelper {
     }
 
     fun getGroupDataToStore(
-            onDataListener:DataTypeListener.OnCompleteListener<QuerySnapshot>) {
+            onDataListener: DataTypeListener.OnCompleteListener<QuerySnapshot>) {
         FDDatabaseHelper.showProgress(true)
 
         firestore.collection(CORPS_TABLE)
@@ -134,23 +134,22 @@ object FDDatabaseHelper {
         val colRef = firestore.collection(CORPS_TABLE)
                 .document(CommonData.adminUid!!)
                 .collection(TEAM_TABLE)
-                //.whereEqualTo("groupUid" , CommonData.getGroupModel().uid)
+        //.whereEqualTo("groupUid" , CommonData.getGroupModel().uid)
 
-        colRef
-                .get().addOnSuccessListener { queryDocumentSnapshots ->
-                    val tempMap = HashMap<String, HolyModel.groupModel.teamModel?>()
-                    val documentSnapshots = queryDocumentSnapshots.documents as ArrayList<DocumentSnapshot>
+        colRef.get().addOnSuccessListener { queryDocumentSnapshots ->
+            val tempMap = HashMap<String, HolyModel.groupModel.teamModel?>()
+            val documentSnapshots = queryDocumentSnapshots.documents as ArrayList<DocumentSnapshot>
 
-                    for (documentSnapshot in documentSnapshots) {
-                        tempMap[documentSnapshot.id] = documentSnapshot.toObject<HolyModel.groupModel.teamModel>(HolyModel.groupModel.teamModel::class.java)
-                        tempMap[documentSnapshot.id]?.uid = documentSnapshot.id
-                    }
-                    CommonData.groupModel!!.team = tempMap
-                    CommonData.teamMap = tempMap
+            for (documentSnapshot in documentSnapshots) {
+                tempMap[documentSnapshot.id] = documentSnapshot.toObject<HolyModel.groupModel.teamModel>(HolyModel.groupModel.teamModel::class.java)
+                tempMap[documentSnapshot.id]?.uid = documentSnapshot.id
+            }
+            CommonData.groupModel!!.team = tempMap
+            CommonData.teamMap = tempMap
 
-                    FDDatabaseHelper.showProgress(false)
-                    onDataListener.onComplete(queryDocumentSnapshots)
-                }
+            FDDatabaseHelper.showProgress(false)
+            onDataListener.onComplete(queryDocumentSnapshots)
+        }
     }
 
     fun getTeamAllDataToStore(
@@ -184,8 +183,7 @@ object FDDatabaseHelper {
      * @param noprice
      */
     fun sendUpdateSimpleDoc(userModel: UserModel, noprice: String, onCompleteListener: DataTypeListener.OnCompleteListener<Boolean>) {
-        FireStoreManager.sendUpdateSimpleDoc(userModel, noprice, DataTypeListener.OnCompleteListener {
-            bool ->
+        FireStoreManager.sendUpdateSimpleDoc(userModel, noprice, DataTypeListener.OnCompleteListener { bool ->
             onCompleteListener.onComplete(bool as Boolean?)
         })
     }
@@ -203,8 +201,8 @@ object FDDatabaseHelper {
      */
     fun sendUserDataInsertUserModel(uid: String, userModel: UserModel, completeListener: DataTypeListener.OnCompleteListener<Boolean>) {
         //FireStoreManager.sendUserDataInsertUserModel(userModel, completeListener::onComplete as DataTypeListener.OnCompleteListener<Boolean>)
-        FireStoreManager.sendUserDataInsertUserModel(userModel, DataTypeListener.OnCompleteListener {
-            t ->completeListener.onComplete(t)
+        FireStoreManager.sendUserDataInsertUserModel(userModel, DataTypeListener.OnCompleteListener { t ->
+            completeListener.onComplete(t)
         })
     }
 
@@ -212,8 +210,8 @@ object FDDatabaseHelper {
         FireStoreWriteManager.delete(
                 firestore.collection(CORPS_TABLE)
                         .document(dataModel.uid),
-                DataTypeListener.OnCompleteListener {
-                    aBoolean -> listener?.onComplete(null)
+                DataTypeListener.OnCompleteListener { aBoolean ->
+                    listener?.onComplete(null)
                 }
         )
     }
@@ -223,8 +221,8 @@ object FDDatabaseHelper {
                 firestore.collection(CORPS_TABLE)
                         .document(dataModel.uid),
                 map,
-                DataTypeListener.OnCompleteListener {
-                    aBoolean -> listener?.onComplete(null)
+                DataTypeListener.OnCompleteListener { aBoolean ->
+                    listener?.onComplete(null)
                 }
         )
     }
@@ -235,8 +233,8 @@ object FDDatabaseHelper {
                 firestore.collection(CORPS_TABLE)
                         .document(dataModel.uid),
                 map,
-                DataTypeListener.OnCompleteListener {
-                    aBoolean -> listener?.onComplete(null)
+                DataTypeListener.OnCompleteListener { aBoolean ->
+                    listener?.onComplete(null)
                 }
         )
     }
@@ -246,8 +244,8 @@ object FDDatabaseHelper {
                 firestore.collection(CORPS_TABLE)
                         .document(dataModel.adminUid),
                 dataModel,
-                DataTypeListener.OnCompleteListener {
-                    aBoolean -> listener?.onComplete(null)
+                DataTypeListener.OnCompleteListener { aBoolean ->
+                    listener?.onComplete(null)
                 }
         )
     }
@@ -259,7 +257,7 @@ object FDDatabaseHelper {
                         .document(CommonData.corpsUid!!)
                         .collection(GROUP_TABLE)
                         .document(dataModel.uid)
-        , DataTypeListener.OnCompleteListener {
+                , DataTypeListener.OnCompleteListener {
             listener?.onComplete(null)
         })
     }
@@ -338,7 +336,7 @@ object FDDatabaseHelper {
     }
 
     fun sendAttendModifyData(dataModel: AttendModel, listener: Management.OnCompleteListener<*>?) {
-        FireStoreAttendManager.insert(dataModel , DataTypeListener.OnCompleteListener {
+        FireStoreAttendManager.insert(dataModel, DataTypeListener.OnCompleteListener {
             listener?.onComplete(null)
         })
     }
@@ -382,16 +380,14 @@ object FDDatabaseHelper {
 
         FireStoreManager.getUserData(
                 userModel,
-                DataTypeListener.OnCompleteListener {
-                    returnUserModel ->
+                DataTypeListener.OnCompleteListener { returnUserModel ->
                     onCompleteListener.onComplete(returnUserModel as UserModel?)
                 })
     }
 
     fun getSubAdminList(userType: String, onCompleteListener: DataTypeListener.OnCompleteListener<ArrayList<UserModel>>) {
         FireStoreManager.getSubAdminList(userType,
-                DataTypeListener.OnCompleteListener {
-                    userModels -> onCompleteListener.onComplete(userModels as ArrayList<UserModel>?) })
+                DataTypeListener.OnCompleteListener { userModels -> onCompleteListener.onComplete(userModels as ArrayList<UserModel>?) })
     }
 
     /**
@@ -458,7 +454,8 @@ object FDDatabaseHelper {
                     }
                 }
     }
-    fun getAllCorpsStoreData( onDataTypeListener: DataTypeListener.OnCompleteListener<QuerySnapshot>){
+
+    fun getAllCorpsStoreData(onDataTypeListener: DataTypeListener.OnCompleteListener<QuerySnapshot>) {
         FDDatabaseHelper.showProgress(true)
 
         firestore.collection(CORPS_TABLE)
@@ -473,6 +470,7 @@ object FDDatabaseHelper {
                     FDDatabaseHelper.showProgress(false)
                 }
     }
+
     /**
      * @param :          전체 corps 가지고 온다.
      * @param onFDDListener
@@ -623,14 +621,13 @@ object FDDatabaseHelper {
             }
 
             LoggerHelper.d("그룹리스트를 갱신중입니다.")
-            getGroupDataToStore (DataTypeListener.OnCompleteListener {
-                queryDocumentSnapshots ->
+            getGroupDataToStore(DataTypeListener.OnCompleteListener { queryDocumentSnapshots ->
                 setCurrentGrops(SimpleListener.OnCompleteListener {
                     //onSimpleListener.onComplete()
                 })
             })
 
-            getAllcorpsMembers (SimpleListener.OnCompleteListener {
+            getAllcorpsMembers(SimpleListener.OnCompleteListener {
                 onSimpleListener.onComplete()
             })
         })
@@ -641,7 +638,7 @@ object FDDatabaseHelper {
             val teams = SortMapUtil.sortTeamList as ArrayList<HolyModel.groupModel.teamModel>
             //LoggerHelper.d("teams.size : " + teams.size());
 
-            if(teams.size == 0){
+            if (teams.size == 0) {
                 CommonData.setCurTeamModel(null)
                 CommonData.memberModel = HolyModel.memberModel()
             }
@@ -665,60 +662,59 @@ object FDDatabaseHelper {
 
     fun setCurrentGrops(onSimpleListener: SimpleListener.OnCompleteListener): Boolean {
         //try {
-            LoggerHelper.d("setCurrentGrops")
-            LoggerHelper.d("CommonData.getHolyModel().group : " + CommonData.holyModel!!.group.toString())
-            LoggerHelper.d("CommonData.getHolyModel().group.values  : " + CommonData.holyModel!!.group.values )
+        LoggerHelper.d("setCurrentGrops")
+        LoggerHelper.d("CommonData.getHolyModel().group : " + CommonData.holyModel!!.group.toString())
+        LoggerHelper.d("CommonData.getHolyModel().group.values  : " + CommonData.holyModel!!.group.values)
 
-            val groups = CommonData.holyModel!!.group.values.also { list -> list.sortedBy { it.name }}
+        val groups = CommonData.holyModel!!.group.values.also { list -> list.sortedBy { it.name } }
 
-            LoggerHelper.d("groups.size : " + groups.size)
+        LoggerHelper.d("groups.size : " + groups.size)
 
-            if(groups.size == 0){
+        if (groups.size == 0) {
 
+            CommonData.setCurGroupModel(null)
+            CommonData.setCurTeamModel(null)
+            CommonData.memberModel = HolyModel.memberModel()
+
+            onSimpleListener.onComplete()
+            showProgress(false)
+            return true
+        }
+
+        for (eleGroup in groups) {
+
+            LoggerHelper.d("CommonData.groupModel : " + CommonData.groupModel)
+
+            if (CommonData.groupModel != null) {
+                LoggerHelper.d("CommonData.getGroupUid : " + CommonData.getGroupUid() + " // " + eleGroup.uid)
+                if (CommonData.getGroupUid() == eleGroup.uid) {
+                    CommonData.setCurGroupModel(eleGroup)
+                    LoggerHelper.d("그룹 설정 정보가 갱신됩니다.", eleGroup.convertMap())
+                }
+            } else {
+                //LoggerHelper.d("설정된 그룹 내용이 없습니다.");
                 CommonData.setCurGroupModel(null)
                 CommonData.setCurTeamModel(null)
                 CommonData.memberModel = HolyModel.memberModel()
-
                 onSimpleListener.onComplete()
                 showProgress(false)
                 return true
             }
+        }
 
-            for (eleGroup in groups) {
+        getTeamDataToStore(DataTypeListener.OnCompleteListener { queryDocumentSnapshots ->
+            setCurrentTeamMaps()
+        })
 
-                LoggerHelper.d("CommonData.groupModel : " + CommonData.groupModel)
-
-                if (CommonData.groupModel != null) {
-                    LoggerHelper.d("CommonData.getGroupUid : " + CommonData.getGroupUid() + " // " + eleGroup.uid)
-                    if (CommonData.getGroupUid() == eleGroup.uid) {
-                        CommonData.setCurGroupModel(eleGroup)
-                        LoggerHelper.d("그룹 설정 정보가 갱신됩니다.", eleGroup.convertMap())
-                    }
-                } else {
-                    //LoggerHelper.d("설정된 그룹 내용이 없습니다.");
-                    CommonData.setCurGroupModel(null)
-                    CommonData.setCurTeamModel(null)
-                    CommonData.memberModel = HolyModel.memberModel()
-                    onSimpleListener.onComplete()
-                    showProgress(false)
-                    return true
-                }
-            }
-
-            getTeamDataToStore (DataTypeListener.OnCompleteListener {
-                queryDocumentSnapshots ->
-                setCurrentTeamMaps()
-            })
-
-      /*  } catch (e: Exception) {
-            CommonData.setGroupModel(null)
-            CommonData.setTeamModel(null)
-            CommonData.setMemberModel(null)
-            //LoggerHelper.d("설정된 그룹 내용이 없습니다. e");
-            onSimpleListener.onComplete()
-            showProgress(false)
-            return true
-        }*/
+        /*  } catch (e: Exception) {
+              CommonData.setGroupModel(null)
+              CommonData.setTeamModel(null)
+              CommonData.setMemberModel(null)
+              //LoggerHelper.d("설정된 그룹 내용이 없습니다. e");
+              onSimpleListener.onComplete()
+              showProgress(false)
+              return true
+          }*/
 
         return false
     }
@@ -731,7 +727,7 @@ object FDDatabaseHelper {
             tempList.add(value.name)
         }
 
-        tempList.sortedBy { it }
+        tempList.sort()
 
         return tempList
     }
@@ -748,6 +744,8 @@ object FDDatabaseHelper {
             val key = iteratorKey.next()
             tempList.add(SortMapUtil.getInteger(tm[key]!!.name).toString())
         }
+
+        tempList.sort()
         return tempList
     }
 
@@ -755,7 +753,7 @@ object FDDatabaseHelper {
         var groupModel = HolyModel.groupModel()
 
         //그룹Map 에서 현재 설정된 "그룹"의 현재 날짜의 데이터를 commonData에 저장한다.
-        for (( key, value) in groupMap) {
+        for ((key, value) in groupMap) {
             if (value.name == name) {
                 groupModel = value
             }
@@ -768,7 +766,7 @@ object FDDatabaseHelper {
         var groupModel = HolyModel.groupModel()
 
         //그룹Map 에서 현재 설정된 "그룹"의 현재 날짜의 데이터를 commonData에 저장한다.
-        for (( key, value) in groupMap) {
+        for ((key, value) in groupMap) {
             if (key == name) {
                 groupModel = value
             }
@@ -802,8 +800,7 @@ object FDDatabaseHelper {
 
         LoggerHelper.d("getAttendDayData: [ " + dataModel.date + "/" + dataModel.day + "/" + dataModel.time + " ] 출석 정보를 가지고 옵니다. ")
 
-        FireStoreAttendManager.getAttendDayData(dataModel, DataTypeListener.OnCompleteListener {
-            stringStringHashMap ->
+        FireStoreAttendManager.getAttendDayData(dataModel, DataTypeListener.OnCompleteListener { stringStringHashMap ->
             FDDatabaseHelper.showProgress(false)
             onListener.onComplete(stringStringHashMap as HashMap<String, AttendModel>?)
         })
@@ -842,7 +839,6 @@ object FDDatabaseHelper {
         val attendRef = FirebaseFirestore.collection(FDDatabaseHelper.ATTEND_TABLE)
                 .document(FDDatabaseHelper.ATTEND)
                 .collection(FDDatabaseHelper.CORPS_TABLE)
-
 
 
         val holyModel = HolyModel()

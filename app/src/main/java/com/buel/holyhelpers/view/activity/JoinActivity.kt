@@ -88,6 +88,13 @@ class JoinActivity : BaseActivity(), View.OnClickListener {
      * ViewMode 에 맞게 화면을 구성한다.
      */
     private fun setViewMode() {
+
+        try{
+            if(CommonData.adminMode==null) CommonData.setAdminMode(AdminMode.NORMAL)
+
+        }catch (e:Exception){
+            CommonData.setAdminMode(AdminMode.NORMAL)
+        }
         if (CommonData.adminMode == AdminMode.MODIFY) {  //수정 모드
             setModifyViewMode()
         } else {                                            //가입 모드

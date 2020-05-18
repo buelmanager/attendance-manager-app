@@ -120,6 +120,7 @@ class YearBriefingRecyclerFragment : AbstBriefingFragment() {
             //LoggerHelper.d("CommonData.getAnalMode()  : " + CommonData.getAnalMode())
             if (CommonData.analMode == AnalMode.GROP_MODE) {
                 barChartModel = BarChartDataUtils.getAttandData(null!!, true)!!
+                return
             } else {
                 barChartModel = BarChartDataUtils.getAttandData(CommonData.teamModel, false)!!
             }

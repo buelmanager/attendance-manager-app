@@ -103,7 +103,7 @@ class MainActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
             LoggerHelper.d("startMainPage")
 
             setLayout()
-            //getAttend(SimpleListener.OnCompleteListener { setBriefingView() })
+            getAttend(SimpleListener.OnCompleteListener { setBriefingView() })
         })
     }
 
@@ -120,7 +120,12 @@ class MainActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
                 R.string.select_helpoer,
                 object : OnDialogSelectListner {
                     override fun onSelect(s: String) {
-                        if ((s == "0")) TutorialViewerUtil.getTeamAnalHelperTutorial(this@MainActivity) else if ((s == "1")) TutorialViewerUtil.getMemberAccountAdminTutorialModels(this@MainActivity) else if ((s == "2")) TutorialViewerUtil.getSelectionTutorialModels(this@MainActivity) else if ((s == "3")) TutorialViewerUtil.getCreateAccountTutorialModels(this@MainActivity)
+                        when (s) {
+                            "0" -> TutorialViewerUtil.getTeamAnalHelperTutorial(this@MainActivity)
+                            "1" -> TutorialViewerUtil.getMemberAccountAdminTutorialModels(this@MainActivity)
+                            "2" -> TutorialViewerUtil.getSelectionTutorialModels(this@MainActivity)
+                            "3" -> TutorialViewerUtil.getCreateAccountTutorialModels(this@MainActivity)
+                        }
                     }
                 })
     }
@@ -330,12 +335,16 @@ class MainActivity() : BaseActivity(), NavigationView.OnNavigationItemSelectedLi
      * 메인 화면
      */
     private fun setBriefingView() {
+
         val dateModelHashMap = attendDateMaps
+
+        LoggerHelper.s("dateModelHashMap", attendDateMaps.toString())
         if (attendDateMaps == null) {
             val ment = CommonString.GUIDE_FLOATING_BUTTON_ATTEND
             val title = CommonString.INFO_TITLE_DONT_ATTEND_DATA
             super.setGuideDailogAndOpenFabset(ment, title, super.fabFstBtn)
-        } else { //CommonData.getCurrentSelectViewPageNum()
+        } else {
+            //CommonData.getCurrentSelectViewPageNum()
             MainViewPager.setMainViewPage(this@MainActivity, 1)
         }
     }
